@@ -1,6 +1,5 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {AppContext} from '~/App';
 
 const DUMMY_DATA = [
   {
@@ -29,13 +28,9 @@ const HomeScreen = ({navigation}) => (
 );
 
 const RenderItem = ({name, id, navigation}) => {
-  const {setTitle} = React.useContext(AppContext);
   return (
     <TouchableOpacity
-      onPress={() => {
-        setTitle(name);
-        navigation.navigate('Details');
-      }}
+      onPress={() => navigation.navigate('Details', {name})}
       style={styles.item}>
       <Text style={styles.text}>{name}</Text>
       <Text style={styles.subtext}>{id}</Text>
