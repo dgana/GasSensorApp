@@ -23,7 +23,9 @@ export default (state, action) => {
     case 'SIGN_IN':
       return {
         ...state,
+        isLoading: false,
         userToken: action.token,
+        userInfo: action.userInfo,
       };
     case 'SIGN_OUT':
       return {

@@ -4,8 +4,8 @@ import {clearAll} from '~/utils';
 import {AuthContext} from '~/App';
 
 const Profile = () => {
-  const {signOut, userInfo} = React.useContext(AuthContext);
-  const {name, email} = userInfo;
+  const {signOut, userInfo = {}} = React.useContext(AuthContext);
+  const {name = '', email = ''} = userInfo;
 
   return (
     <View style={styles.container}>
