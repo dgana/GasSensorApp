@@ -24,6 +24,10 @@ const App = () => {
   // Handle user state changes
   function onAuthStateChanged(user) {
     if (state.isLoading) {
+      dispatch({
+        type: 'USER_INFO',
+        userInfo: {name: user.displayName, email: user.email},
+      });
       SplashScreen.hide();
     }
   }
@@ -96,7 +100,7 @@ const App = () => {
   );
 
   return (
-    <AuthContext.Provider value={authContext}>
+    <AuthContext.Provider value={{...authContext, userInfo: state.userInfo}}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
           {state.userToken === null ? (

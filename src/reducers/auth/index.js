@@ -1,10 +1,19 @@
 export const initialState = {
   isLoading: true,
   userToken: null,
+  userInfo: {
+    name: '',
+    email: '',
+  },
 };
 
 export default (state, action) => {
   switch (action.type) {
+    case 'USER_INFO':
+      return {
+        ...state,
+        userInfo: action.userInfo,
+      };
     case 'RESTORE_TOKEN':
       return {
         ...state,

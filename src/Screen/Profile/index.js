@@ -4,10 +4,13 @@ import {clearAll} from '~/utils';
 import {AuthContext} from '~/App';
 
 const Profile = () => {
-  const {signOut} = React.useContext(AuthContext);
+  const {signOut, userInfo} = React.useContext(AuthContext);
+  const {name, email} = userInfo;
 
   return (
     <View style={styles.container}>
+      <Text>Hi, {name}</Text>
+      <Text>{email}</Text>
       <TouchableOpacity
         onPress={() => {
           clearAll();
