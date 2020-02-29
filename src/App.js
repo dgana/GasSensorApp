@@ -10,6 +10,7 @@ import auth from '@react-native-firebase/auth';
 import DetailsScreen from '~/Screen/Detail';
 import HomeScreen from '~/Screen/Home';
 import SignInScreen from '~/Screen/SignIn';
+import SignUpScreen from '~/Screen/SignUp';
 import {useAsyncStorage} from '~/utils';
 import reducer, {initialState} from '~reducers/auth';
 
@@ -36,10 +37,10 @@ const App = () => {
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
-      let userToken;
+      let token;
 
       try {
-        userToken = await getItem();
+        token = await getItem();
       } catch (e) {
         console.warn(e);
       }
@@ -48,7 +49,7 @@ const App = () => {
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      dispatch({type: 'RESTORE_TOKEN', token: userToken});
+      dispatch({type: 'RESTORE_TOKEN', token});
     };
 
     bootstrapAsync();
@@ -57,28 +58,37 @@ const App = () => {
 
   const authContext = React.useMemo(
     () => ({
-      signIn: data => {
+      signIn: ({email, password, setErrorMessage}) => {
         // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
 
         auth()
-          .signInWithEmailAndPassword(data.email, data.password)
+          .signInWithEmailAndPassword(email, password)
           .then(async res => {
             const token = res.user._user.uid;
             await setItem(token);
             dispatch({type: 'SIGN_IN', token});
-          });
+          })
+          .catch(e => setErrorMessage(e.message));
       },
       signOut: () => dispatch({type: 'SIGN_OUT'}),
-      signUp: async data => {
+      signUp: async ({name, email, password, setErrorMessage}) => {
         // In a production app, we need to send user data to server and get a token
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-
-        dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+        auth()
+          .createUserWithEmailAndPassword(email, password)
+          .then(userCredentials => {
+            const token = userCredentials.user._user.uid;
+            dispatch({type: 'SIGN_IN', token});
+            return userCredentials.user.updateProfile({
+              displayName: name,
+            });
+          })
+          .catch(e => setErrorMessage(e.message));
       },
     }),
     // eslint-disable-next-line
@@ -89,12 +99,17 @@ const App = () => {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
-          {state.userToken == null ? (
+          {state.userToken === null ? (
             <>
               <Stack.Screen
                 name="SignIn"
                 component={SignInScreen}
                 options={{title: 'Sign In'}}
+              />
+              <Stack.Screen
+                name="SignUp"
+                component={SignUpScreen}
+                options={{title: 'Sign Up'}}
               />
             </>
           ) : (

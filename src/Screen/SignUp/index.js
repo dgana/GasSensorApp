@@ -8,21 +8,31 @@ import {
 } from 'react-native';
 import {AuthContext} from '~/App';
 
-function SignInScreen({navigation}) {
+function SignUpScreen({navigation}) {
+  const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  const {signIn} = React.useContext(AuthContext);
+  const {signUp} = React.useContext(AuthContext);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.greeting}>Hello, Welcome back!</Text>
+      <Text style={styles.greeting}>Hello, Sign up to get started!</Text>
       <View style={styles.errorMessage}>
         {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
       </View>
       <View style={styles.form}>
         <View>
+          <Text style={styles.inputTitle}>Full Name</Text>
+          <TextInput
+            style={styles.input}
+            value={name}
+            onChangeText={setName}
+            autoCapitalize="none"
+          />
+        </View>
+        <View style={styles.marginTop}>
           <Text style={styles.inputTitle}>Email Address</Text>
           <TextInput
             style={styles.input}
@@ -44,14 +54,14 @@ function SignInScreen({navigation}) {
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => signIn({email, password, setErrorMessage})}>
-        <Text style={styles.signIn}>Sign In</Text>
+        onPress={() => signUp({name, email, password, setErrorMessage})}>
+        <Text style={styles.buttonLink}>Sign Up</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.signUpButton}
-        onPress={() => navigation.navigate('SignUp')}>
-        <Text style={styles.signUpText}>
-          New to GasSensorApp? <Text style={styles.signUpLink}>Sign Up</Text>
+        style={styles.linkButton}
+        onPress={() => navigation.goBack()}>
+        <Text style={styles.linkText}>
+          Already have an account? <Text style={styles.link}>Login</Text>
         </Text>
       </TouchableOpacity>
     </View>
@@ -107,22 +117,22 @@ const styles = StyleSheet.create({
   marginTop: {
     marginTop: 32,
   },
-  signIn: {
+  buttonLink: {
     color: '#FFF',
     fontWeight: '500',
   },
-  signUpButton: {
+  linkButton: {
     alignSelf: 'center',
     marginTop: 32,
   },
-  signUpText: {
+  linkText: {
     color: '#414959',
     fontSize: 13,
   },
-  signUpLink: {
+  link: {
     fontWeight: '500',
     color: '#E9446A',
   },
 });
 
-export default SignInScreen;
+export default SignUpScreen;
