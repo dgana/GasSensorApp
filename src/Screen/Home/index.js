@@ -2,6 +2,8 @@ import React from 'react';
 import {FlatList, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Profile from '~/Screen/Profile';
+
 const Tab = createBottomTabNavigator();
 
 const DUMMY_DATA = [
@@ -57,14 +59,6 @@ const Dashboard = ({navigation}) => (
   </View>
 );
 
-const Profile = () => (
-  <View style={styles.container}>
-    <TouchableOpacity onPress={() => alert('haha')}>
-      <Text>Log out</Text>
-    </TouchableOpacity>
-  </View>
-);
-
 const RenderItem = ({name, id, navigation}) => {
   return (
     <TouchableOpacity
@@ -77,11 +71,6 @@ const RenderItem = ({name, id, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   item: {
     padding: 12,
     borderWidth: 1,

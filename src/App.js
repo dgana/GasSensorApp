@@ -11,21 +11,18 @@ import DetailsScreen from '~/Screen/Detail';
 import HomeScreen from '~/Screen/Home';
 import SignInScreen from '~/Screen/SignIn';
 import {useAsyncStorage} from '~/utils';
+import reducer, {initialState} from '~reducers/auth';
 
 const Stack = createStackNavigator();
 export const AuthContext = React.createContext();
 
 const App = () => {
-  const {getItem, storeItem} = useAsyncStorage('userToken');
-
-  const [initializing, setInitializing] = React.useState(true);
-  const [, setUser] = React.useState(null);
+  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const {getItem, setItem} = useAsyncStorage('userToken');
 
   // Handle user state changes
-  function onAuthStateChanged(u) {
-    setUser(u);
-    if (initializing) {
-      setInitializing(false);
+  function onAuthStateChanged(user) {
+    if (state.isLoading) {
       SplashScreen.hide();
     }
   }
@@ -36,45 +33,15 @@ const App = () => {
     // eslint-disable-next-line
   }, []);
 
-  const [state, dispatch] = React.useReducer(
-    (prevState, action) => {
-      switch (action.type) {
-        case 'RESTORE_TOKEN':
-          return {
-            ...prevState,
-            userToken: action.token,
-            isLoading: false,
-          };
-        case 'SIGN_IN':
-          return {
-            ...prevState,
-            isSignout: false,
-            userToken: action.token,
-          };
-        case 'SIGN_OUT':
-          return {
-            ...prevState,
-            isSignout: true,
-            userToken: null,
-          };
-      }
-    },
-    {
-      isLoading: true,
-      isSignout: false,
-      userToken: null,
-    },
-  );
-
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
 
       try {
-        userToken = getItem();
+        userToken = await getItem();
       } catch (e) {
-        // Restoring token failed
+        console.warn(e);
       }
 
       // After restoring token, we may need to validate it in production apps
@@ -98,10 +65,10 @@ const App = () => {
 
         auth()
           .signInWithEmailAndPassword(data.email, data.password)
-          .then(res => {
-            console.log(res);
-            storeItem(res.user._user.uid);
-            dispatch({type: 'SIGN_IN', token: res.user._user.uid});
+          .then(async res => {
+            const token = res.user._user.uid;
+            await setItem(token);
+            dispatch({type: 'SIGN_IN', token});
           });
       },
       signOut: () => dispatch({type: 'SIGN_OUT'}),
@@ -114,6 +81,7 @@ const App = () => {
         dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
       },
     }),
+    // eslint-disable-next-line
     [],
   );
 
