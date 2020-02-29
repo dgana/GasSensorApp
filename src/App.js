@@ -10,34 +10,26 @@ import HomeScreen from '~/Screen/Home';
 const Stack = createStackNavigator();
 export const AppContext = React.createContext();
 
-export default class App extends React.Component {
-  state = {
-    title: 'Sensor',
-  };
+const App = () => {
+  const [title, setTitle] = React.useState('Sensor');
+  return (
+    <AppContext.Provider value={{setTitle}}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{title: 'Discovered Sensors'}}
+          />
+          <Stack.Screen
+            name="Details"
+            component={DetailsScreen}
+            options={{title: `${title} Detail`}}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AppContext.Provider>
+  );
+};
 
-  setTitle = title => {
-    this.setState({title});
-  };
-
-  render() {
-    const {title} = this.state;
-    return (
-      <AppContext.Provider value={{setTitle: this.setTitle}}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{title: 'Discovered Sensors'}}
-            />
-            <Stack.Screen
-              name="Details"
-              component={DetailsScreen}
-              options={{title: `${title} Detail`}}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </AppContext.Provider>
-    );
-  }
-}
+export default App;
