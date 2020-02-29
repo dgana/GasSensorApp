@@ -85,6 +85,7 @@ const App = () => {
     };
 
     bootstrapAsync();
+    // eslint-disable-next-line
   }, []);
 
   const authContext = React.useMemo(
@@ -99,7 +100,6 @@ const App = () => {
           .signInWithEmailAndPassword(data.email, data.password)
           .then(res => {
             console.log(res);
-            console.log(storeItem, 'STORE');
             storeItem(res.user._user.uid);
             dispatch({type: 'SIGN_IN', token: res.user._user.uid});
           });
@@ -134,7 +134,7 @@ const App = () => {
               <Stack.Screen
                 name="Home"
                 component={HomeScreen}
-                options={{title: 'Discovered Sensors'}}
+                options={{title: 'Dashboard'}}
               />
               <Stack.Screen
                 name="Details"

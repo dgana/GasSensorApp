@@ -1,5 +1,8 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+const Tab = createBottomTabNavigator();
 
 const DUMMY_DATA = [
   {
@@ -16,7 +19,34 @@ const DUMMY_DATA = [
   },
 ];
 
-const HomeScreen = ({navigation}) => (
+const HomeScreen = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Dashboard"
+        component={Dashboard}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="account" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
+
+const Dashboard = ({navigation}) => (
   <View>
     <FlatList
       data={DUMMY_DATA}
@@ -24,6 +54,14 @@ const HomeScreen = ({navigation}) => (
         <RenderItem navigation={navigation} name={item.name} id={item.id} />
       )}
     />
+  </View>
+);
+
+const Profile = () => (
+  <View style={styles.container}>
+    <TouchableOpacity onPress={() => alert('haha')}>
+      <Text>Log out</Text>
+    </TouchableOpacity>
   </View>
 );
 
@@ -39,6 +77,11 @@ const RenderItem = ({name, id, navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   item: {
     padding: 12,
     borderWidth: 1,
