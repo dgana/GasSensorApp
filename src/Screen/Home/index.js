@@ -67,7 +67,7 @@ const Dashboard = ({navigation}) => (
     <TouchableOpacity
       onPress={() => navigation.navigate('AddDevice')}
       style={styles.addButton}>
-      <Icon name="plus" size={30} color="#01a699" />
+      <Icon name="plus" size={30} color="#5588EE" />
     </TouchableOpacity>
   </View>
 );
@@ -107,8 +107,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 70,
     position: 'absolute',
-    bottom: 10,
-    right: 10,
+    bottom: 16,
+    right: 16,
     height: 70,
     backgroundColor: '#fff',
     borderRadius: 100,

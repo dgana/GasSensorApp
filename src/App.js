@@ -125,12 +125,18 @@ const App = () => {
               <Stack.Screen
                 name="SignIn"
                 component={SignInScreen}
-                options={{title: 'Sign In'}}
+                options={{
+                  title: 'Sign In',
+                  headerShown: false,
+                }}
               />
               <Stack.Screen
                 name="SignUp"
                 component={SignUpScreen}
-                options={{title: 'Sign Up'}}
+                options={{
+                  title: 'Sign Up',
+                  headerShown: false,
+                }}
               />
             </>
           ) : (

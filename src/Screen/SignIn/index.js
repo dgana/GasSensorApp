@@ -5,10 +5,14 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from 'react-native';
 import {AuthContext} from '~/App';
 
 function SignInScreen({navigation}) {
+  const navigationOptions = {
+    header: null,
+  };
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -17,7 +21,10 @@ function SignInScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.greeting}>Hello, Welcome back!</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.greeting}>Hello, Welcome back!</Text>
+      </View>
+
       <View style={styles.errorMessage}>
         {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
       </View>
@@ -54,6 +61,10 @@ function SignInScreen({navigation}) {
           New to GasSensorApp? <Text style={styles.signUpLink}>Sign Up</Text>
         </Text>
       </TouchableOpacity>
+      <Image
+        style={styles.imageFooter}
+        source={require('~/assets/images/factory3.png')}
+      />
     </View>
   );
 }
@@ -61,6 +72,19 @@ function SignInScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+  },
+  imageFooter: {
+    resizeMode: 'stretch',
+    height: 280,
+    marginLeft: -50,
+  },
+  headerContainer: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: 90,
+    marginHorizontal: 30,
   },
   greeting: {
     marginTop: 32,
@@ -98,7 +122,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 30,
-    backgroundColor: '#E9446A',
+    backgroundColor: '#5588EE',
     borderRadius: 4,
     height: 52,
     alignItems: 'center',
@@ -118,10 +142,11 @@ const styles = StyleSheet.create({
   signUpText: {
     color: '#414959',
     fontSize: 13,
+    marginBottom: 30,
   },
   signUpLink: {
     fontWeight: '500',
-    color: '#E9446A',
+    color: '#5588EE',
   },
 });
 

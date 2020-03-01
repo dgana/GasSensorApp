@@ -12,10 +12,11 @@ import {
   AppState,
   FlatList,
   Dimensions,
+  Button,
   SafeAreaView,
+  Switch,
 } from 'react-native';
 import BleManager from 'react-native-ble-manager';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const window = Dimensions.get('window');
 
@@ -134,6 +135,7 @@ export default class App extends Component {
 
   startScan() {
     if (!this.state.scanning) {
+      //this.setState({peripherals: new Map()});
       BleManager.scan([], 3, true).then(results => {
         console.log('Scanning...');
         this.setState({scanning: true});
@@ -141,21 +143,21 @@ export default class App extends Component {
     }
   }
 
-  // retrieveConnected() {
-  //   BleManager.getConnectedPeripherals([]).then(results => {
-  //     if (results.length == 0) {
-  //       console.log('No connected peripherals');
-  //     }
-  //     console.log(results);
-  //     var peripherals = this.state.peripherals;
-  //     for (var i = 0; i < results.length; i++) {
-  //       var peripheral = results[i];
-  //       peripheral.connected = true;
-  //       peripherals.set(peripheral.id, peripheral);
-  //       this.setState({peripherals});
-  //     }
-  //   });
-  // }
+  retrieveConnected() {
+    BleManager.getConnectedPeripherals([]).then(results => {
+      if (results.length == 0) {
+        console.log('No connected peripherals');
+      }
+      console.log(results);
+      var peripherals = this.state.peripherals;
+      for (var i = 0; i < results.length; i++) {
+        var peripheral = results[i];
+        peripheral.connected = true;
+        peripherals.set(peripheral.id, peripheral);
+        this.setState({peripherals});
+      }
+    });
+  }
 
   handleDiscoverPeripheral(peripheral) {
     var peripherals = this.state.peripherals;
@@ -176,7 +178,6 @@ export default class App extends Component {
           .then(() => {
             let peripherals = this.state.peripherals;
             let p = peripherals.get(peripheral.id);
-            console.log(p);
             if (p) {
               p.connected = true;
               peripherals.set(peripheral.id, p);
@@ -261,35 +262,69 @@ export default class App extends Component {
     return (
       <TouchableHighlight onPress={() => this.test(item)}>
         <View style={[styles.row, {backgroundColor: color}]}>
-          <Text style={styles.bleName}>{item.name}</Text>
-          <Text style={styles.rssi}>RSSI: {item.rssi}</Text>
-          <Text style={styles.id}>{item.id}</Text>
+          <Text
+            style={{
+              fontSize: 12,
+              textAlign: 'center',
+              color: '#333333',
+              padding: 10,
+            }}>
+            {item.name}
+          </Text>
+          <Text
+            style={{
+              fontSize: 10,
+              textAlign: 'center',
+              color: '#333333',
+              padding: 2,
+            }}>
+            RSSI: {item.rssi}
+          </Text>
+          <Text
+            style={{
+              fontSize: 8,
+              textAlign: 'center',
+              color: '#333333',
+              padding: 2,
+              paddingBottom: 20,
+            }}>
+            {item.id}
+          </Text>
         </View>
       </TouchableHighlight>
     );
   }
 
   render() {
+    console.log(this.state.scanning);
     const list = Array.from(this.state.peripherals.values());
-    const btnScanTitle = this.state.scanning ? 'Scanning...' : 'Scan Bluetooth';
 
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.container}>
-          <TouchableOpacity
-            onPress={() => this.startScan()}
-            style={styles.scanContainer}>
-            <Text style={styles.scanText}>{btnScanTitle}</Text>
-          </TouchableOpacity>
+          <View style={styles.toolbar}>
+            <Text style={styles.toolbarTitle}>Bluetooth Device List</Text>
+            <View style={styles.toolbarButton}>
+              <Switch
+                value={this.state.scanning}
+                onValueChange={() => this.startScan()}
+              />
+            </View>
+          </View>
 
-          {/* <View style={styles.row}>
+          <View style={styles.row}>
             <Button
               title="Retrieve connected peripherals"
               onPress={() => this.retrieveConnected()}
             />
-          </View> */}
+          </View>
 
           <ScrollView style={styles.scroll}>
+            {list.length == 0 && (
+              <View style={{flex: 1, margin: 20}}>
+                <Text style={{textAlign: 'center'}}>No peripherals</Text>
+              </View>
+            )}
             <FlatList
               data={list}
               renderItem={({item}) => this.renderItem(item)}
@@ -317,34 +352,21 @@ const styles = StyleSheet.create({
   row: {
     margin: 10,
   },
-  scanContainer: {
-    backgroundColor: '#5588EE',
-    height: 52,
+  toolbar: {
+    paddingTop: 12,
+    paddingBottom: 12,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  scanText: {
-    color: '#FFF',
-    fontSize: 16,
+  toolbarButton: {
+    width: 80,
+    marginTop: 8,
+  },
+  toolbarTitle: {
+    textAlign: 'center',
     fontWeight: 'bold',
-  },
-  bleName: {
-    fontSize: 12,
-    textAlign: 'center',
-    color: '#333333',
-    padding: 10,
-  },
-  rssi: {
-    fontSize: 10,
-    textAlign: 'center',
-    color: '#333333',
-    padding: 2,
-  },
-  id: {
-    fontSize: 8,
-    textAlign: 'center',
-    color: '#333333',
-    padding: 2,
-    paddingBottom: 20,
+    fontSize: 18,
+    flex: 1,
+    marginTop: 6,
   },
 });

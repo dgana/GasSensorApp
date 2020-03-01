@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from 'react-native';
 import {AuthContext} from '~/App';
 
@@ -18,7 +19,9 @@ function SignUpScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.greeting}>Hello, Sign up to get started!</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.greeting}>Hello, Sign up to get started!</Text>
+      </View>
       <View style={styles.errorMessage}>
         {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
       </View>
@@ -64,6 +67,10 @@ function SignUpScreen({navigation}) {
           Already have an account? <Text style={styles.link}>Login</Text>
         </Text>
       </TouchableOpacity>
+      <Image
+        style={styles.imageFooter}
+        source={require('~/assets/images/factory1.png')}
+      />
     </View>
   );
 }
@@ -71,6 +78,20 @@ function SignUpScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+  },
+  imageFooter: {
+    resizeMode: 'stretch',
+    height: 280,
+    marginLeft: -50,
+    position: 'relative',
+  },
+  headerContainer: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: 35,
+    marginHorizontal: 30,
   },
   greeting: {
     marginTop: 32,
