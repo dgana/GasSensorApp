@@ -6,12 +6,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 import auth from '@react-native-firebase/auth';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import DetailsScreen from '~/Screen/Detail';
 import HomeScreen from '~/Screen/Home';
 import SignInScreen from '~/Screen/SignIn';
 import SignUpScreen from '~/Screen/SignUp';
+import AddDeviceScreen from '~/Screen/AddDevice';
 
 import {useAsyncStorage} from '~/utils';
 import reducer, {initialState} from '~reducers/auth';
@@ -95,7 +95,7 @@ const App = () => {
           .createUserWithEmailAndPassword(email, password)
           .then(userCredentials => {
             token = userCredentials.user._user.uid;
-            // WIP: userInfo must be from userCredentials
+            // WIP: userInfo must from userCredentials
             const userInfo = {name, email};
             dispatch({
               type: 'SIGN_IN',
@@ -135,13 +135,13 @@ const App = () => {
               <Stack.Screen
                 name="Home"
                 component={HomeScreen}
-                options={{
-                  title: 'Dashboard',
-                  headerRight: () => (
-                    <Icon name="plus" color={'#000'} size={30} />
-                  ),
-                }}
+                options={{title: 'Dashboard'}}
               />
+              {/* <Stack.Screen
+                name="AddDevice"
+                component={AddDeviceScreen}
+                options={{title: 'Add New Device'}}
+              /> */}
               <Stack.Screen
                 name="Details"
                 component={DetailsScreen}

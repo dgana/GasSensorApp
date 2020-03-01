@@ -19,6 +19,14 @@ const DUMMY_DATA = [
     name: 'Sensor C',
     id: 'GA2JS01-0DAK1J21-LS8JSN1',
   },
+  {
+    name: 'Sensor D',
+    id: 'F6JFY1F-KZIFHSFO-AFHSFO8',
+  },
+  {
+    name: 'Sensor E',
+    id: 'ALP2HT9-A8JDH1S2-OIZ83OF',
+  },
 ];
 
 const HomeScreen = () => {
@@ -49,13 +57,18 @@ const HomeScreen = () => {
 };
 
 const Dashboard = ({navigation}) => (
-  <View>
+  <View style={styles.container}>
     <FlatList
       data={DUMMY_DATA}
       renderItem={({item}) => (
         <RenderItem navigation={navigation} name={item.name} id={item.id} />
       )}
     />
+    <TouchableOpacity
+      onPress={() => navigation.navigate('AddDevice')}
+      style={styles.addButton}>
+      <Icon name="plus" size={30} color="#01a699" />
+    </TouchableOpacity>
   </View>
 );
 
@@ -71,6 +84,9 @@ const RenderItem = ({name, id, navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   item: {
     padding: 12,
     borderWidth: 1,
@@ -83,6 +99,23 @@ const styles = StyleSheet.create({
   subtext: {
     fontSize: 16,
     color: 'rgb(150,150,150)',
+  },
+  addButton: {
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 70,
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    height: 70,
+    backgroundColor: '#fff',
+    borderRadius: 100,
+  },
+  addText: {
+    color: '#FFF',
+    fontWeight: '500',
   },
 });
 
