@@ -24,11 +24,14 @@ const App = () => {
   const {getItem, setItem} = useAsyncStorage('userToken');
 
   // Handle user state changes
-  function onAuthStateChanged(user) {
+  function onAuthStateChanged(user = {}) {
     if (state.isLoading) {
       dispatch({
         type: 'USER_INFO',
-        userInfo: {name: user.displayName, email: user.email},
+        userInfo: {
+          name: user ? user.displayName : '',
+          email: user ? user.email : '',
+        },
       });
       SplashScreen.hide();
     }
@@ -73,11 +76,11 @@ const App = () => {
         auth()
           .signInWithEmailAndPassword(email, password)
           .then(async res => {
-            const user = res.user._user;
+            const user = res.user._user || {};
             const token = user.uid;
             const userInfo = {
-              name: user.displayName,
-              email: user.email,
+              name: user ? user.displayName : '',
+              email: user ? user.email : '',
             };
             await setItem(token);
             dispatch({type: 'SIGN_IN', token, userInfo});
@@ -137,11 +140,11 @@ const App = () => {
                 component={HomeScreen}
                 options={{title: 'Dashboard'}}
               />
-              {/* <Stack.Screen
+              <Stack.Screen
                 name="AddDevice"
                 component={AddDeviceScreen}
                 options={{title: 'Add New Device'}}
-              /> */}
+              />
               <Stack.Screen
                 name="Details"
                 component={DetailsScreen}
