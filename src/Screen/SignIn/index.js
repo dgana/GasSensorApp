@@ -6,18 +6,16 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {AuthContext} from '~/App';
 
 function SignInScreen({navigation}) {
-  const navigationOptions = {
-    header: null,
-  };
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  const {signIn} = React.useContext(AuthContext);
+  const {signIn, buttonLoading} = React.useContext(AuthContext);
 
   return (
     <View style={styles.container}>
@@ -52,8 +50,17 @@ function SignInScreen({navigation}) {
       <TouchableOpacity
         style={styles.button}
         onPress={() => signIn({email, password, setErrorMessage})}>
-        <Text style={styles.signIn}>Sign In</Text>
+        <Text style={styles.signIn}>{buttonLoading ? '' : 'Sign In'}</Text>
       </TouchableOpacity>
+      {buttonLoading && (
+        <View style={styles.loadingButton}>
+          <ActivityIndicator
+            animating={buttonLoading}
+            size="large"
+            color="white"
+          />
+        </View>
+      )}
       <TouchableOpacity
         style={styles.signUpButton}
         onPress={() => navigation.navigate('SignUp')}>
@@ -61,6 +68,7 @@ function SignInScreen({navigation}) {
           New to GasSensorApp? <Text style={styles.signUpLink}>Sign Up</Text>
         </Text>
       </TouchableOpacity>
+
       <Image
         style={styles.imageFooter}
         source={require('~/assets/images/factory3.png')}
@@ -73,6 +81,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  loadingButton: {
+    position: 'absolute',
+    top: '50.5%',
+    right: 0,
+    left: 0,
   },
   imageFooter: {
     resizeMode: 'stretch',

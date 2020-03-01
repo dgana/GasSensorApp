@@ -74,8 +74,8 @@ export default class App extends Component {
         } else {
           PermissionsAndroid.requestPermission(
             PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-          ).then(result => {
-            if (result) {
+          ).then(res => {
+            if (res) {
               console.log('User accept');
             } else {
               console.log('User refuse');

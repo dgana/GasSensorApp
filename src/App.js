@@ -68,6 +68,7 @@ const App = () => {
   const authContext = React.useMemo(
     () => ({
       signIn: ({email, password, setErrorMessage}) => {
+        dispatch({type: 'BUTTON_LOADING', loading: true});
         // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
@@ -85,10 +86,14 @@ const App = () => {
             await setItem(token);
             dispatch({type: 'SIGN_IN', token, userInfo});
           })
-          .catch(e => setErrorMessage(e.message));
+          .catch(e => {
+            dispatch({type: 'BUTTON_LOADING', loading: false});
+            setErrorMessage(e.message);
+          });
       },
       signOut: () => dispatch({type: 'SIGN_OUT'}),
       signUp: async ({name, email, password, setErrorMessage}) => {
+        dispatch({type: 'BUTTON_LOADING', loading: true});
         let token;
         // In a production app, we need to send user data to server and get a token
         // We will also need to handle errors if sign up failed
@@ -109,7 +114,10 @@ const App = () => {
               displayName: name,
             });
           })
-          .catch(e => setErrorMessage(e.message));
+          .catch(e => {
+            dispatch({type: 'BUTTON_LOADING', loading: false});
+            setErrorMessage(e.message);
+          });
       },
     }),
     // eslint-disable-next-line
@@ -117,7 +125,7 @@ const App = () => {
   );
 
   return (
-    <AuthContext.Provider value={{...authContext, userInfo: state.userInfo}}>
+    <AuthContext.Provider value={{...authContext, ...state}}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
           {state.userToken === null ? (

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {AuthContext} from '~/App';
 
@@ -15,7 +16,7 @@ function SignUpScreen({navigation}) {
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  const {signUp} = React.useContext(AuthContext);
+  const {signUp, buttonLoading} = React.useContext(AuthContext);
 
   return (
     <View style={styles.container}>
@@ -58,8 +59,17 @@ function SignUpScreen({navigation}) {
       <TouchableOpacity
         style={styles.button}
         onPress={() => signUp({name, email, password, setErrorMessage})}>
-        <Text style={styles.buttonLink}>Sign Up</Text>
+        <Text style={styles.buttonLink}>{buttonLoading ? '' : 'Sign Up'}</Text>
       </TouchableOpacity>
+      {buttonLoading && (
+        <View style={styles.loadingButton}>
+          <ActivityIndicator
+            animating={buttonLoading}
+            size="large"
+            color="white"
+          />
+        </View>
+      )}
       <TouchableOpacity
         style={styles.linkButton}
         onPress={() => navigation.goBack()}>
@@ -79,6 +89,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  loadingButton: {
+    position: 'absolute',
+    top: '54%',
+    right: 0,
+    left: 0,
   },
   imageFooter: {
     resizeMode: 'stretch',

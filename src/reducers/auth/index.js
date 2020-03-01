@@ -1,5 +1,6 @@
 export const initialState = {
   isLoading: true,
+  buttonLoading: false,
   userToken: null,
   userInfo: {
     name: '',
@@ -9,6 +10,11 @@ export const initialState = {
 
 export default (state, action) => {
   switch (action.type) {
+    case 'BUTTON_LOADING':
+      return {
+        ...state,
+        buttonLoading: action.loading,
+      };
     case 'USER_INFO':
       return {
         ...state,
@@ -19,6 +25,7 @@ export default (state, action) => {
         ...state,
         userToken: action.token,
         isLoading: false,
+        buttonLoading: false,
       };
     case 'SIGN_IN':
       return {
@@ -26,11 +33,13 @@ export default (state, action) => {
         isLoading: false,
         userToken: action.token,
         userInfo: action.userInfo,
+        buttonLoading: false,
       };
     case 'SIGN_OUT':
       return {
         ...state,
         userToken: null,
+        buttonLoading: false,
       };
   }
 };
