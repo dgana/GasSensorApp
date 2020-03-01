@@ -152,12 +152,12 @@ const App = () => {
               <Stack.Screen
                 name="Home"
                 component={HomeScreen}
-                options={{title: 'Dashboard'}}
+                options={{title: 'Home'}}
               />
               <Stack.Screen
                 name="AddDevice"
                 component={AddDeviceScreen}
-                options={{title: 'Add New Device'}}
+                options={{title: 'Add Device'}}
               />
               <Stack.Screen
                 name="Details"
