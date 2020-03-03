@@ -10,7 +10,7 @@ export const useAsyncStorage = key => {
   return {getItem, setItem};
 };
 
-export const clearAll = async () => {
+export const clearStorage = async () => {
   try {
     const asyncStorageKeys = await AsyncStorage.getAllKeys();
     if (asyncStorageKeys.length > 0) {

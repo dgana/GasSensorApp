@@ -1,3 +1,3 @@
-import {useAsyncStorage, clearAll, getMultiple} from './auth';
+import {useAsyncStorage, clearStorage, getMultiple} from './auth';
 
-export {useAsyncStorage, clearAll, getMultiple};
+export {useAsyncStorage, clearStorage, getMultiple};

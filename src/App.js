@@ -12,9 +12,18 @@ import HomeScreen from '~/Screen/Home';
 import SignInScreen from '~/Screen/SignIn';
 import SignUpScreen from '~/Screen/SignUp';
 import AddDeviceScreen from '~/Screen/AddDevice';
+import ForgotPasswordScreen from '~/Screen/ForgotPassword';
 
-import {useAsyncStorage} from '~/utils';
+import {useAsyncStorage, clearStorage} from '~/utils';
 import reducer, {initialState} from '~reducers/auth';
+
+import {
+  BUTTON_LOADING,
+  USER_INFO,
+  RESTORE_TOKEN,
+  SIGN_IN,
+  SIGN_OUT,
+} from '~/reducers/auth/constants';
 
 const Stack = createStackNavigator();
 export const AuthContext = React.createContext();
@@ -24,15 +33,10 @@ const App = () => {
   const {getItem, setItem} = useAsyncStorage('userToken');
 
   // Handle user state changes
-  function onAuthStateChanged(user = {}) {
+  function onAuthStateChanged({displayName: name, email, emailVerified}) {
     if (state.isLoading) {
-      dispatch({
-        type: 'USER_INFO',
-        userInfo: {
-          name: user ? user.displayName : '',
-          email: user ? user.email : '',
-        },
-      });
+      const userInfo = {name, email};
+      dispatch({type: USER_INFO, userInfo, emailVerified});
       SplashScreen.hide();
     }
   }
@@ -58,7 +62,7 @@ const App = () => {
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      dispatch({type: 'RESTORE_TOKEN', token});
+      dispatch({type: RESTORE_TOKEN, token});
     };
 
     bootstrapAsync();
@@ -67,57 +71,73 @@ const App = () => {
 
   const authContext = React.useMemo(
     () => ({
-      signIn: ({email, password, setErrorMessage}) => {
-        dispatch({type: 'BUTTON_LOADING', loading: true});
+      signIn: async ({email: e, password: p, setErrorMessage}) => {
         // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
+        dispatch({type: BUTTON_LOADING, loading: true});
 
-        auth()
-          .signInWithEmailAndPassword(email, password)
-          .then(async res => {
-            const user = res.user._user || {};
-            const token = user.uid;
-            const userInfo = {
-              name: user ? user.displayName : '',
-              email: user ? user.email : '',
-            };
-            await setItem(token);
-            dispatch({type: 'SIGN_IN', token, userInfo});
-          })
-          .catch(e => {
-            dispatch({type: 'BUTTON_LOADING', loading: false});
-            setErrorMessage(e.message);
-          });
+        try {
+          const {user} = await auth().signInWithEmailAndPassword(e, p);
+          const {uid, displayName: name, email, emailVerified} = user;
+
+          if (!emailVerified) {
+            const message =
+              '[auth/email-verification] Please check your registered email to be verified';
+            throw {message};
+          }
+
+          const userInfo = {name, email};
+          await setItem(uid);
+          dispatch({type: SIGN_IN, token: uid, userInfo, emailVerified});
+        } catch (err) {
+          dispatch({type: BUTTON_LOADING, loading: false});
+          setErrorMessage(err.message);
+        }
       },
-      signOut: () => dispatch({type: 'SIGN_OUT'}),
-      signUp: async ({name, email, password, setErrorMessage}) => {
-        dispatch({type: 'BUTTON_LOADING', loading: true});
-        let token;
+      signOut: () => {
+        clearStorage();
+        dispatch({type: SIGN_OUT});
+      },
+      signUp: async ({
+        name,
+        email: e,
+        password: p,
+        setErrorMessage,
+        navigation,
+      }) => {
         // In a production app, we need to send user data to server and get a token
         // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
-        auth()
-          .createUserWithEmailAndPassword(email, password)
-          .then(userCredentials => {
-            token = userCredentials.user._user.uid;
-            // WIP: userInfo must from userCredentials
-            const userInfo = {name, email};
-            dispatch({
-              type: 'SIGN_IN',
-              token,
-              userInfo,
-            });
-            return userCredentials.user.updateProfile({
-              displayName: name,
-            });
-          })
-          .catch(e => {
-            dispatch({type: 'BUTTON_LOADING', loading: false});
-            setErrorMessage(e.message);
-          });
+        dispatch({type: BUTTON_LOADING, loading: true});
+
+        try {
+          const {user} = await auth().createUserWithEmailAndPassword(e, p);
+          dispatch({type: BUTTON_LOADING, loading: false});
+          user.sendEmailVerification();
+          user.updateProfile({displayName: name});
+
+          // eslint-disable-next-line no-alert
+          alert('Please check your email to be verified');
+          navigation.navigate('SignIn');
+        } catch (err) {
+          dispatch({type: BUTTON_LOADING, loading: false});
+          setErrorMessage(err.message);
+        }
+      },
+      resetPassword: async ({email, setErrorMessage, navigation}) => {
+        dispatch({type: BUTTON_LOADING, loading: true});
+
+        try {
+          await auth().sendPasswordResetEmail(email);
+          dispatch({type: BUTTON_LOADING, loading: false});
+
+          // eslint-disable-next-line no-alert
+          alert('Please check your email to reset password');
+          navigation.navigate('SignIn');
+        } catch (err) {
+          dispatch({type: BUTTON_LOADING, loading: false});
+          setErrorMessage(err.message);
+        }
       },
     }),
     // eslint-disable-next-line
@@ -128,7 +148,7 @@ const App = () => {
     <AuthContext.Provider value={{...authContext, ...state}}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
-          {state.userToken === null ? (
+          {!state.userToken || !state.emailVerified ? (
             <>
               <Stack.Screen
                 name="SignIn"
@@ -143,6 +163,14 @@ const App = () => {
                 component={SignUpScreen}
                 options={{
                   title: 'Sign Up',
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="ForgotPassword"
+                component={ForgotPasswordScreen}
+                options={{
+                  title: 'Forgot Password',
                   headerShown: false,
                 }}
               />

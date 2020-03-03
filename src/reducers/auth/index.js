@@ -1,7 +1,16 @@
+import {
+  BUTTON_LOADING,
+  USER_INFO,
+  RESTORE_TOKEN,
+  SIGN_IN,
+  SIGN_OUT,
+} from './constants';
+
 export const initialState = {
   isLoading: true,
   buttonLoading: false,
   userToken: null,
+  emailVerified: false,
   userInfo: {
     name: '',
     email: '',
@@ -10,32 +19,31 @@ export const initialState = {
 
 export default (state, action) => {
   switch (action.type) {
-    case 'BUTTON_LOADING':
+    case BUTTON_LOADING:
       return {
         ...state,
         buttonLoading: action.loading,
       };
-    case 'USER_INFO':
+    case USER_INFO:
       return {
         ...state,
         userInfo: action.userInfo,
+        emailVerified: action.emailVerified,
+        isLoading: false,
       };
-    case 'RESTORE_TOKEN':
+    case RESTORE_TOKEN:
       return {
         ...state,
         userToken: action.token,
-        isLoading: false,
-        buttonLoading: false,
       };
-    case 'SIGN_IN':
+    case SIGN_IN:
       return {
         ...state,
-        isLoading: false,
         userToken: action.token,
         userInfo: action.userInfo,
-        buttonLoading: false,
+        emailVerified: action.emailVerified,
       };
-    case 'SIGN_OUT':
+    case SIGN_OUT:
       return {
         ...state,
         userToken: null,

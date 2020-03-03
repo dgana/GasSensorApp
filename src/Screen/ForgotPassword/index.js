@@ -10,33 +10,28 @@ import {
 } from 'react-native';
 import {AuthContext} from '~/App';
 
-function SignUpScreen({navigation}) {
-  const [name, setName] = React.useState('');
+function ForgotPasswordScreen({navigation}) {
   const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  const {signUp, buttonLoading} = React.useContext(AuthContext);
+  const {resetPassword, buttonLoading} = React.useContext(AuthContext);
 
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.greeting}>Hello, Sign up to get started!</Text>
+        <Text style={styles.greeting}>Forgot your password?</Text>
       </View>
+      <View style={styles.descriptionContainer}>
+        <Text style={styles.description}>
+          Enter your email address to reset password
+        </Text>
+      </View>
+
       <View style={styles.errorMessage}>
         {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
       </View>
       <View style={styles.form}>
         <View>
-          <Text style={styles.inputTitle}>Full Name</Text>
-          <TextInput
-            style={styles.input}
-            value={name}
-            onChangeText={setName}
-            autoCapitalize="none"
-          />
-        </View>
-        <View style={styles.marginTop}>
           <Text style={styles.inputTitle}>Email Address</Text>
           <TextInput
             style={styles.input}
@@ -45,23 +40,13 @@ function SignUpScreen({navigation}) {
             autoCapitalize="none"
           />
         </View>
-        <View style={styles.marginTop}>
-          <Text style={styles.inputTitle}>Password</Text>
-          <TextInput
-            style={styles.input}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            autoCapitalize="none"
-          />
-        </View>
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() =>
-          signUp({name, email, password, setErrorMessage, navigation})
-        }>
-        <Text style={styles.buttonLink}>{buttonLoading ? '' : 'Sign Up'}</Text>
+        onPress={() => resetPassword({email, setErrorMessage, navigation})}>
+        <Text style={styles.signIn}>
+          {buttonLoading ? '' : 'Reset Password'}
+        </Text>
       </TouchableOpacity>
       {buttonLoading && (
         <View style={styles.loadingButton}>
@@ -73,15 +58,16 @@ function SignUpScreen({navigation}) {
         </View>
       )}
       <TouchableOpacity
-        style={styles.linkButton}
-        onPress={() => navigation.goBack()}>
-        <Text style={styles.linkText}>
-          Already have an account? <Text style={styles.link}>Login</Text>
+        style={styles.signUpButton}
+        onPress={() => navigation.navigate('SignIn')}>
+        <Text style={styles.signUpText}>
+          Remember your password? <Text style={styles.signUpLink}>Sign In</Text>
         </Text>
       </TouchableOpacity>
+
       <Image
         style={styles.imageFooter}
-        source={require('~/assets/images/factory1.png')}
+        source={require('~/assets/images/factory2.png')}
       />
     </View>
   );
@@ -94,21 +80,24 @@ const styles = StyleSheet.create({
   },
   loadingButton: {
     position: 'absolute',
-    top: '54%',
+    top: '60.5%',
     right: 0,
     left: 0,
   },
   imageFooter: {
     resizeMode: 'stretch',
-    height: 220,
+    height: 200,
     marginLeft: -50,
-    position: 'relative',
   },
   headerContainer: {
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    marginTop: 90,
+    marginTop: 170,
+    marginHorizontal: 30,
+  },
+  descriptionContainer: {
+    paddingTop: 12,
     marginHorizontal: 30,
   },
   greeting: {
@@ -116,6 +105,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '400',
     textAlign: 'center',
+  },
+  description: {
+    fontSize: 14,
   },
   errorMessage: {
     height: 72,
@@ -153,25 +145,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  marginTop: {
-    marginTop: 32,
-  },
-  buttonLink: {
+  signIn: {
     color: '#FFF',
     fontWeight: '500',
   },
-  linkButton: {
+  signUpButton: {
     alignSelf: 'center',
     marginTop: 32,
   },
-  linkText: {
+  signUpText: {
     color: '#414959',
     fontSize: 13,
+    marginBottom: 30,
   },
-  link: {
+  signUpLink: {
     fontWeight: '500',
     color: '#5588EE',
   },
 });
 
-export default SignUpScreen;
+export default ForgotPasswordScreen;

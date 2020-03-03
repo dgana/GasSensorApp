@@ -68,6 +68,13 @@ function SignInScreen({navigation}) {
           New to GasSensorApp? <Text style={styles.signUpLink}>Sign Up</Text>
         </Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.forgotPasswordButton}
+        onPress={() => navigation.navigate('ForgotPassword')}>
+        <Text style={styles.signUpText}>
+          <Text style={styles.forgotPasswordLink}>Forgot your password?</Text>
+        </Text>
+      </TouchableOpacity>
 
       <Image
         style={styles.imageFooter}
@@ -84,13 +91,13 @@ const styles = StyleSheet.create({
   },
   loadingButton: {
     position: 'absolute',
-    top: '50.5%',
+    top: '51%',
     right: 0,
     left: 0,
   },
   imageFooter: {
     resizeMode: 'stretch',
-    height: 280,
+    height: 250,
     marginLeft: -50,
   },
   headerContainer: {
@@ -153,6 +160,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 32,
   },
+  forgotPasswordButton: {
+    alignSelf: 'center',
+    marginTop: -20,
+  },
   signUpText: {
     color: '#414959',
     fontSize: 13,
@@ -160,6 +171,10 @@ const styles = StyleSheet.create({
   },
   signUpLink: {
     fontWeight: '500',
+    color: '#5588EE',
+  },
+  forgotPasswordLink: {
+    fontWeight: '400',
     color: '#5588EE',
   },
 });

@@ -1,16 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {clearAll} from '~/utils';
 import {AuthContext} from '~/App';
 
 const Profile = () => {
   const {signOut, userInfo = {}} = React.useContext(AuthContext);
   const {name = '', email = ''} = userInfo;
-
-  const logout = () => {
-    clearAll();
-    signOut();
-  };
 
   return (
     <View style={styles.container}>
@@ -24,7 +18,7 @@ const Profile = () => {
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.info}>{email}</Text>
 
-          <TouchableOpacity onPress={logout} style={styles.buttonContainer}>
+          <TouchableOpacity onPress={signOut} style={styles.buttonContainer}>
             <Text style={styles.logoutText}>Log Out</Text>
           </TouchableOpacity>
         </View>
