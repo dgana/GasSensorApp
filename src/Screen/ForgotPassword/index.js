@@ -8,6 +8,8 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {AuthContext} from '~/App';
 
 function ForgotPasswordScreen({navigation}) {
@@ -18,6 +20,11 @@ function ForgotPasswordScreen({navigation}) {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.arrow}
+        onPress={() => navigation.goBack()}>
+        <Icon name="arrow-left" color="#a0a0a0" size={30} />
+      </TouchableOpacity>
       <View style={styles.headerContainer}>
         <Text style={styles.greeting}>Forgot your password?</Text>
       </View>
@@ -78,6 +85,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  arrow: {
+    marginHorizontal: 26,
+    marginTop: 60,
+  },
   loadingButton: {
     position: 'absolute',
     top: '60.5%',
@@ -93,7 +104,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    marginTop: 170,
+    marginTop: 120,
     marginHorizontal: 30,
   },
   descriptionContainer: {

@@ -12,13 +12,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {AuthContext} from '~/App';
 
-function SignUpScreen({navigation}) {
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+function PhoneAuthScreen({navigation}) {
+  const [phoneNumber, setPhoneNumber] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  const {signUp, buttonLoading} = React.useContext(AuthContext);
+  const {phoneLogin, buttonLoading} = React.useContext(AuthContext);
 
   return (
     <View style={styles.container}>
@@ -28,47 +26,32 @@ function SignUpScreen({navigation}) {
         <Icon name="arrow-left" color="#a0a0a0" size={30} />
       </TouchableOpacity>
       <View style={styles.headerContainer}>
-        <Text style={styles.greeting}>Hello, Sign up to get started!</Text>
+        <Text style={styles.greeting}>Sign in with phone number</Text>
       </View>
+      <View style={styles.descriptionContainer}>
+        <Text style={styles.description}>Enter your phone number</Text>
+      </View>
+
       <View style={styles.errorMessage}>
         {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
       </View>
       <View style={styles.form}>
         <View>
-          <Text style={styles.inputTitle}>Full Name</Text>
+          <Text style={styles.inputTitle}>Phone Number</Text>
           <TextInput
             style={styles.input}
-            value={name}
-            onChangeText={setName}
-            autoCapitalize="none"
-          />
-        </View>
-        <View style={styles.marginTop}>
-          <Text style={styles.inputTitle}>Email Address</Text>
-          <TextInput
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-          />
-        </View>
-        <View style={styles.marginTop}>
-          <Text style={styles.inputTitle}>Password</Text>
-          <TextInput
-            style={styles.input}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            autoCapitalize="none"
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+            keyboardType={'phone-pad'}
           />
         </View>
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() =>
-          signUp({name, email, password, setErrorMessage, navigation})
-        }>
-        <Text style={styles.buttonLink}>{buttonLoading ? '' : 'Sign Up'}</Text>
+        onPress={() => phoneLogin({phoneNumber, setErrorMessage, navigation})}>
+        <Text style={styles.signIn}>
+          {buttonLoading ? '' : 'Get verification code'}
+        </Text>
       </TouchableOpacity>
       {buttonLoading && (
         <View style={styles.loadingButton}>
@@ -80,12 +63,14 @@ function SignUpScreen({navigation}) {
         </View>
       )}
       <TouchableOpacity
-        style={styles.linkButton}
+        style={styles.signUpButton}
         onPress={() => navigation.navigate('SignIn')}>
-        <Text style={styles.linkText}>
-          Already have an account? <Text style={styles.link}>Log In</Text>
+        <Text style={styles.signUpText}>
+          Already have an account?{' '}
+          <Text style={styles.signUpLink}>Sign In</Text>
         </Text>
       </TouchableOpacity>
+
       <Image
         style={styles.imageFooter}
         source={require('~/assets/images/factory1.png')}
@@ -105,21 +90,24 @@ const styles = StyleSheet.create({
   },
   loadingButton: {
     position: 'absolute',
-    top: '54%',
+    top: '60.5%',
     right: 0,
     left: 0,
   },
   imageFooter: {
     resizeMode: 'stretch',
-    height: 220,
+    height: 200,
     marginLeft: -50,
-    position: 'relative',
   },
   headerContainer: {
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    marginTop: -5,
+    marginTop: 110,
+    marginHorizontal: 30,
+  },
+  descriptionContainer: {
+    paddingTop: 12,
     marginHorizontal: 30,
   },
   greeting: {
@@ -127,6 +115,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '400',
     textAlign: 'center',
+  },
+  description: {
+    fontSize: 14,
   },
   errorMessage: {
     height: 72,
@@ -164,25 +155,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  marginTop: {
-    marginTop: 32,
-  },
-  buttonLink: {
+  signIn: {
     color: '#FFF',
     fontWeight: '500',
   },
-  linkButton: {
+  signUpButton: {
     alignSelf: 'center',
     marginTop: 32,
   },
-  linkText: {
+  signUpText: {
     color: '#414959',
     fontSize: 13,
+    marginBottom: 30,
   },
-  link: {
+  signUpLink: {
     fontWeight: '500',
     color: '#5588EE',
   },
 });
 
-export default SignUpScreen;
+export default PhoneAuthScreen;

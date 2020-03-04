@@ -13,6 +13,8 @@ import SignInScreen from '~/Screen/SignIn';
 import SignUpScreen from '~/Screen/SignUp';
 import AddDeviceScreen from '~/Screen/AddDevice';
 import ForgotPasswordScreen from '~/Screen/ForgotPassword';
+import PhoneAuthScreen from '~/Screen/PhoneAuth';
+import WelcomeScreen from '~/Screen/Welcome';
 
 import {useAsyncStorage, clearStorage} from '~/utils';
 import reducer, {initialState} from '~reducers/auth';
@@ -139,6 +141,22 @@ const App = () => {
           setErrorMessage(err.message);
         }
       },
+      phoneLogin: async ({phoneNumber, setErrorMessage, navigation}) => {
+        dispatch({type: BUTTON_LOADING, loading: true});
+
+        try {
+          const result = await auth().signInWithPhoneNumber(phoneNumber, true);
+          console.log('RESPOND SUCCESS PHONE AUTH', result);
+          dispatch({type: BUTTON_LOADING, loading: false});
+
+          // eslint-disable-next-line no-alert
+          alert('Please check your sms to get verification code');
+          navigation.navigate('SignIn');
+        } catch (err) {
+          dispatch({type: BUTTON_LOADING, loading: false});
+          setErrorMessage(err.message);
+        }
+      },
     }),
     // eslint-disable-next-line
     [],
@@ -150,6 +168,14 @@ const App = () => {
         <Stack.Navigator initialRouteName="Home">
           {!state.userToken || !state.emailVerified ? (
             <>
+              <Stack.Screen
+                name="Welcome"
+                component={WelcomeScreen}
+                options={{
+                  title: 'Welcome',
+                  headerShown: false,
+                }}
+              />
               <Stack.Screen
                 name="SignIn"
                 component={SignInScreen}
@@ -171,6 +197,14 @@ const App = () => {
                 component={ForgotPasswordScreen}
                 options={{
                   title: 'Forgot Password',
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="PhoneAuth"
+                component={PhoneAuthScreen}
+                options={{
+                  title: 'Phone Auth',
                   headerShown: false,
                 }}
               />
