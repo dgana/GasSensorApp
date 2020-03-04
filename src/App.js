@@ -15,6 +15,7 @@ import AddDeviceScreen from '~/Screen/AddDevice';
 import ForgotPasswordScreen from '~/Screen/ForgotPassword';
 import PhoneAuthScreen from '~/Screen/PhoneAuth';
 import WelcomeScreen from '~/Screen/Welcome';
+import PhoneVerificationScreen from '~/Screen/PhoneVerification';
 
 import {useAsyncStorage, clearStorage} from '~/utils';
 import reducer, {initialState} from '~reducers/auth';
@@ -146,12 +147,22 @@ const App = () => {
 
         try {
           const result = await auth().signInWithPhoneNumber(phoneNumber, true);
-          console.log('RESPOND SUCCESS PHONE AUTH', result);
           dispatch({type: BUTTON_LOADING, loading: false});
 
           // eslint-disable-next-line no-alert
           alert('Please check your sms to get verification code');
-          navigation.navigate('SignIn');
+          navigation.navigate('PhoneVerification', {confirm: result.confirm});
+        } catch (err) {
+          dispatch({type: BUTTON_LOADING, loading: false});
+          setErrorMessage(err.message);
+        }
+      },
+      phoneVerification: async ({code, setErrorMessage, confirm}) => {
+        dispatch({type: BUTTON_LOADING, loading: true});
+        try {
+          const result = await confirm(Object.values(code).join(''));
+          console.log(result, 'YUHUUUUUUUUU');
+          dispatch({type: BUTTON_LOADING, loading: false});
         } catch (err) {
           dispatch({type: BUTTON_LOADING, loading: false});
           setErrorMessage(err.message);
@@ -205,6 +216,14 @@ const App = () => {
                 component={PhoneAuthScreen}
                 options={{
                   title: 'Phone Auth',
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="PhoneVerification"
+                component={PhoneVerificationScreen}
+                options={{
+                  title: 'Phone Verification',
                   headerShown: false,
                 }}
               />

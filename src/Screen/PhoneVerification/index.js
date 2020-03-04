@@ -12,12 +12,20 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {AuthContext} from '~/App';
 
-function PhoneAuthScreen({navigation}) {
-  const [countryCode] = React.useState('+62');
-  const [phoneNumber, setPhoneNumber] = React.useState('');
+function PhoneVerificationScreen({navigation, route}) {
+  const {params = {}} = route;
+  const {confirm} = params;
+  const [confirmFunc] = React.useState(confirm);
+  const [code, setCode] = React.useState({1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0});
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  const {phoneLogin, buttonLoading} = React.useContext(AuthContext);
+  const {phoneVerification, buttonLoading} = React.useContext(AuthContext);
+
+  const second = React.useRef(null);
+  const third = React.useRef(null);
+  const fourth = React.useRef(null);
+  const fifth = React.useRef(null);
+  const sixth = React.useRef(null);
 
   return (
     <View style={styles.container}>
@@ -27,10 +35,12 @@ function PhoneAuthScreen({navigation}) {
         <Icon name="arrow-left" color="#a0a0a0" size={30} />
       </TouchableOpacity>
       <View style={styles.headerContainer}>
-        <Text style={styles.greeting}>Sign in with phone number</Text>
+        <Text style={styles.greeting}>Phone Verification</Text>
       </View>
       <View style={styles.descriptionContainer}>
-        <Text style={styles.description}>Enter your phone number</Text>
+        <Text style={styles.description}>
+          Enter 6 digit code sent to your phone
+        </Text>
       </View>
 
       <View style={styles.errorMessage}>
@@ -38,19 +48,64 @@ function PhoneAuthScreen({navigation}) {
       </View>
       <View style={styles.form}>
         <View>
-          <Text style={styles.inputTitle}>Phone Number</Text>
+          <Text style={styles.inputTitle}>Verification Code</Text>
           <View style={styles.phoneContainer}>
             <TextInput
-              style={styles.inputCountryCode}
-              value={countryCode}
-              editable={false}
-              selectTextOnFocus={false}
+              style={styles.inputCode}
+              value={code[1]}
+              onChangeText={e => {
+                second.current.focus();
+                setCode(state => ({...state, 1: e}));
+              }}
+              keyboardType={'phone-pad'}
             />
             <TextInput
-              style={styles.inputNumber}
-              value={phoneNumber}
-              onChangeText={setPhoneNumber}
-              placeholder="8125051234"
+              ref={second}
+              style={styles.inputCode}
+              value={code[2]}
+              onChangeText={e => {
+                third.current.focus();
+                setCode(state => ({...state, 2: e}));
+              }}
+              keyboardType={'phone-pad'}
+            />
+            <TextInput
+              ref={third}
+              style={styles.inputCode}
+              value={code[3]}
+              onChangeText={e => {
+                fourth.current.focus();
+                setCode(state => ({...state, 3: e}));
+              }}
+              keyboardType={'phone-pad'}
+            />
+            <TextInput
+              ref={fourth}
+              style={styles.inputCode}
+              value={code[4]}
+              onChangeText={e => {
+                fifth.current.focus();
+                setCode(state => ({...state, 4: e}));
+              }}
+              keyboardType={'phone-pad'}
+            />
+            <TextInput
+              ref={fifth}
+              style={styles.inputCode}
+              value={code[5]}
+              onChangeText={e => {
+                sixth.current.focus();
+                setCode(state => ({...state, 5: e}));
+              }}
+              keyboardType={'phone-pad'}
+            />
+            <TextInput
+              ref={sixth}
+              style={styles.inputCode}
+              value={code[6]}
+              onChangeText={async e => {
+                setCode(state => ({...state, 6: e}));
+              }}
               keyboardType={'phone-pad'}
             />
           </View>
@@ -59,15 +114,13 @@ function PhoneAuthScreen({navigation}) {
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
-          phoneLogin({
-            phoneNumber: countryCode + phoneNumber,
+          phoneVerification({
+            code,
             setErrorMessage,
-            navigation,
+            confirm: confirmFunc,
           })
         }>
-        <Text style={styles.signIn}>
-          {buttonLoading ? '' : 'Get verification code'}
-        </Text>
+        <Text style={styles.signIn}>{buttonLoading ? '' : 'Verify'}</Text>
       </TouchableOpacity>
       {buttonLoading && (
         <View style={styles.loadingButton}>
@@ -86,7 +139,6 @@ function PhoneAuthScreen({navigation}) {
           <Text style={styles.signUpLink}>Sign In</Text>
         </Text>
       </TouchableOpacity>
-
       <Image
         style={styles.imageFooter}
         source={require('~/assets/images/factory1.png')}
@@ -119,7 +171,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    marginTop: 130,
+    marginTop: 120,
     marginHorizontal: 30,
   },
   descriptionContainer: {
@@ -157,7 +209,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginBottom: 12,
   },
-  inputCountryCode: {
+  inputCode: {
     flex: 1,
     borderBottomColor: '#8A8F9E',
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -165,16 +217,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#161F3D',
     marginRight: 12,
-    backgroundColor: '#fafafa',
     textAlign: 'center',
-  },
-  inputNumber: {
-    flex: 3,
-    borderBottomColor: '#8A8F9E',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    height: 40,
-    fontSize: 15,
-    color: '#161F3D',
   },
   button: {
     marginHorizontal: 30,
@@ -207,4 +250,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PhoneAuthScreen;
+export default PhoneVerificationScreen;
