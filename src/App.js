@@ -38,8 +38,9 @@ const App = () => {
   const {getItem, setItem} = useAsyncStorage('userToken');
 
   // Handle user state changes
-  function onAuthStateChanged({displayName: name, email, phoneNumber}) {
+  function onAuthStateChanged(user) {
     if (state.isLoading) {
+      const {displayName: name, email, phoneNumber} = user || {};
       const userInfo = {name, email, phoneNumber};
       dispatch({type: USER_INFO, userInfo});
       SplashScreen.hide();
