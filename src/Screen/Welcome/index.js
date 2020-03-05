@@ -16,7 +16,6 @@ function WelcomeScreen({navigation}) {
           source={require('~/assets/images/GasSensorLogo.png')}
         />
         <Text style={styles.newText1}>Welcome to,</Text>
-
         <Text style={styles.newText2}>Gas Sensor App</Text>
       </View>
       <View style={styles.opacityContainer} />
@@ -70,11 +69,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: 100,
-    backgroundColor: '#DCDCDC',
+    backgroundColor: 'white',
   },
   opacityContainer: {
     position: 'relative',
-    height: 270,
+    height: 280,
     backgroundColor: 'white',
     opacity: 0.85,
     bottom: -330,
@@ -86,7 +85,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     position: 'absolute',
     opacity: 0.8,
-    top: 0,
+    top: 100,
     right: -20,
   },
   header: {

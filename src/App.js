@@ -2,6 +2,7 @@
 import 'react-native-gesture-handler';
 
 import React from 'react';
+import {Alert} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
@@ -47,7 +48,8 @@ const App = () => {
 
   React.useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
+    // unsubscribe on unmount
+    return subscriber;
     // eslint-disable-next-line
   }, []);
 
@@ -126,8 +128,7 @@ const App = () => {
           user.sendEmailVerification();
           user.updateProfile({displayName: name});
 
-          // eslint-disable-next-line no-alert
-          alert('Please check your email to be verified');
+          Alert.alert('Please check your email to be verified');
           navigation.navigate('SignIn');
         } catch (err) {
           dispatch({type: BUTTON_LOADING, loading: false});
@@ -141,8 +142,7 @@ const App = () => {
           await auth().sendPasswordResetEmail(email);
           dispatch({type: BUTTON_LOADING, loading: false});
 
-          // eslint-disable-next-line no-alert
-          alert('Please check your email to reset password');
+          Alert.alert('Please check your email to reset password');
           navigation.navigate('SignIn');
         } catch (err) {
           dispatch({type: BUTTON_LOADING, loading: false});
@@ -157,8 +157,7 @@ const App = () => {
           dispatch({type: BUTTON_LOADING, loading: false});
           dispatch({type: CONFIRM_PHONE, phone});
 
-          // eslint-disable-next-line no-alert
-          alert('Please check your sms to get verification code');
+          Alert.alert('Please check your sms to get verification code');
           navigation.navigate('PhoneVerification');
         } catch (err) {
           dispatch({type: BUTTON_LOADING, loading: false});

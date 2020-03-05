@@ -182,7 +182,7 @@ function PhoneVerificationScreen({navigation}) {
       </TouchableOpacity>
       <Image
         style={styles.imageFooter}
-        source={require('~/assets/images/factory1.png')}
+        source={require('~/assets/images/factory3.png')}
       />
     </View>
   );
