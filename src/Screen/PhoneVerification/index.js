@@ -1,3 +1,4 @@
+/* eslint-disable eslint-comments/no-unlimited-disable */
 import React from 'react';
 import {
   TextInput,
@@ -12,20 +13,34 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {AuthContext} from '~/App';
 
-function PhoneVerificationScreen({navigation, route}) {
-  const {params = {}} = route;
-  const {confirm} = params;
-  const [confirmFunc] = React.useState(confirm);
-  const [code, setCode] = React.useState({1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0});
+function PhoneVerificationScreen({navigation}) {
+  const [code, setCode] = React.useState({
+    1: undefined,
+    2: undefined,
+    3: undefined,
+    4: undefined,
+    5: undefined,
+    6: undefined,
+  });
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  const {phoneVerification, buttonLoading} = React.useContext(AuthContext);
+  const {phoneVerification, buttonLoading, phone} = React.useContext(
+    AuthContext,
+  );
 
+  const first = React.useRef(null);
   const second = React.useRef(null);
   const third = React.useRef(null);
   const fourth = React.useRef(null);
   const fifth = React.useRef(null);
   const sixth = React.useRef(null);
+
+  React.useEffect(() => {
+    if (Object.values(code).filter(x => x >= 0).length === 6) {
+      phoneVerification({code, setErrorMessage, phone});
+    }
+    // eslint-disable-next-line
+  }, [code]);
 
   return (
     <View style={styles.container}>
@@ -51,75 +66,101 @@ function PhoneVerificationScreen({navigation, route}) {
           <Text style={styles.inputTitle}>Verification Code</Text>
           <View style={styles.phoneContainer}>
             <TextInput
+              ref={first}
               style={styles.inputCode}
               value={code[1]}
+              maxLength={1}
               onChangeText={e => {
-                second.current.focus();
+                if (e) {
+                  second.current.focus();
+                } else {
+                  first.current.focus();
+                }
                 setCode(state => ({...state, 1: e}));
               }}
-              keyboardType={'phone-pad'}
+              keyboardType={'numeric'}
             />
             <TextInput
               ref={second}
               style={styles.inputCode}
               value={code[2]}
+              maxLength={1}
               onChangeText={e => {
-                third.current.focus();
+                if (e) {
+                  third.current.focus();
+                } else {
+                  first.current.focus();
+                }
                 setCode(state => ({...state, 2: e}));
               }}
-              keyboardType={'phone-pad'}
+              keyboardType={'numeric'}
             />
             <TextInput
               ref={third}
               style={styles.inputCode}
               value={code[3]}
+              maxLength={1}
               onChangeText={e => {
-                fourth.current.focus();
+                if (e) {
+                  fourth.current.focus();
+                } else {
+                  second.current.focus();
+                }
                 setCode(state => ({...state, 3: e}));
               }}
-              keyboardType={'phone-pad'}
+              keyboardType={'numeric'}
             />
             <TextInput
               ref={fourth}
               style={styles.inputCode}
               value={code[4]}
+              maxLength={1}
               onChangeText={e => {
-                fifth.current.focus();
+                if (e) {
+                  fifth.current.focus();
+                } else {
+                  third.current.focus();
+                }
                 setCode(state => ({...state, 4: e}));
               }}
-              keyboardType={'phone-pad'}
+              keyboardType={'numeric'}
             />
             <TextInput
               ref={fifth}
               style={styles.inputCode}
               value={code[5]}
+              maxLength={1}
               onChangeText={e => {
-                sixth.current.focus();
+                if (e) {
+                  sixth.current.focus();
+                } else {
+                  fourth.current.focus();
+                }
                 setCode(state => ({...state, 5: e}));
               }}
-              keyboardType={'phone-pad'}
+              keyboardType={'numeric'}
             />
             <TextInput
               ref={sixth}
               style={styles.inputCode}
               value={code[6]}
+              maxLength={1}
               onChangeText={async e => {
+                if (e) {
+                  // sixth.current.focus();
+                } else {
+                  fifth.current.focus();
+                }
                 setCode(state => ({...state, 6: e}));
               }}
-              keyboardType={'phone-pad'}
+              keyboardType={'numeric'}
             />
           </View>
         </View>
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() =>
-          phoneVerification({
-            code,
-            setErrorMessage,
-            confirm: confirmFunc,
-          })
-        }>
+        onPress={() => phoneVerification({code, setErrorMessage, phone})}>
         <Text style={styles.signIn}>{buttonLoading ? '' : 'Verify'}</Text>
       </TouchableOpacity>
       {buttonLoading && (
@@ -214,7 +255,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#8A8F9E',
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 40,
-    fontSize: 15,
+    fontSize: 18,
     color: '#161F3D',
     marginRight: 12,
     textAlign: 'center',

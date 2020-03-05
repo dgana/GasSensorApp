@@ -24,6 +24,7 @@ import {
   BUTTON_LOADING,
   USER_INFO,
   RESTORE_TOKEN,
+  CONFIRM_PHONE,
   SIGN_IN,
   SIGN_OUT,
 } from '~/reducers/auth/constants';
@@ -36,10 +37,10 @@ const App = () => {
   const {getItem, setItem} = useAsyncStorage('userToken');
 
   // Handle user state changes
-  function onAuthStateChanged({displayName: name, email, emailVerified}) {
+  function onAuthStateChanged({displayName: name, email, phoneNumber}) {
     if (state.isLoading) {
-      const userInfo = {name, email};
-      dispatch({type: USER_INFO, userInfo, emailVerified});
+      const userInfo = {name, email, phoneNumber};
+      dispatch({type: USER_INFO, userInfo});
       SplashScreen.hide();
     }
   }
@@ -82,17 +83,23 @@ const App = () => {
 
         try {
           const {user} = await auth().signInWithEmailAndPassword(e, p);
-          const {uid, displayName: name, email, emailVerified} = user;
+          const {
+            uid,
+            displayName: name,
+            email,
+            phoneNumber,
+            emailVerified,
+          } = user;
 
           if (!emailVerified) {
-            const message =
-              '[auth/email-verification] Please check your registered email to be verified';
+            const desc = 'Please check your registered email to be verified';
+            const message = `[auth/email-verification] ${desc}`;
             throw {message};
           }
 
-          const userInfo = {name, email};
+          const userInfo = {name, email, phoneNumber};
           await setItem(uid);
-          dispatch({type: SIGN_IN, token: uid, userInfo, emailVerified});
+          dispatch({type: SIGN_IN, token: uid, userInfo});
         } catch (err) {
           dispatch({type: BUTTON_LOADING, loading: false});
           setErrorMessage(err.message);
@@ -146,23 +153,26 @@ const App = () => {
         dispatch({type: BUTTON_LOADING, loading: true});
 
         try {
-          const result = await auth().signInWithPhoneNumber(phoneNumber, true);
+          const phone = await auth().signInWithPhoneNumber(phoneNumber, true);
           dispatch({type: BUTTON_LOADING, loading: false});
+          dispatch({type: CONFIRM_PHONE, phone});
 
           // eslint-disable-next-line no-alert
           alert('Please check your sms to get verification code');
-          navigation.navigate('PhoneVerification', {confirm: result.confirm});
+          navigation.navigate('PhoneVerification');
         } catch (err) {
           dispatch({type: BUTTON_LOADING, loading: false});
           setErrorMessage(err.message);
         }
       },
-      phoneVerification: async ({code, setErrorMessage, confirm}) => {
+      phoneVerification: async ({code, setErrorMessage, phone}) => {
         dispatch({type: BUTTON_LOADING, loading: true});
         try {
-          const result = await confirm(Object.values(code).join(''));
-          console.log(result, 'YUHUUUUUUUUU');
-          dispatch({type: BUTTON_LOADING, loading: false});
+          const user = await phone.confirm(Object.values(code).join(''));
+          const {uid, displayName: name, email, phoneNumber} = user;
+          const userInfo = {name, email, phoneNumber};
+          await setItem(uid);
+          dispatch({type: SIGN_IN, token: uid, userInfo});
         } catch (err) {
           dispatch({type: BUTTON_LOADING, loading: false});
           setErrorMessage(err.message);
@@ -177,7 +187,7 @@ const App = () => {
     <AuthContext.Provider value={{...authContext, ...state}}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
-          {!state.userToken || !state.emailVerified ? (
+          {!state.userToken ? (
             <>
               <Stack.Screen
                 name="Welcome"

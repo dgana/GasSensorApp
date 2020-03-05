@@ -2,6 +2,7 @@ import {
   BUTTON_LOADING,
   USER_INFO,
   RESTORE_TOKEN,
+  CONFIRM_PHONE,
   SIGN_IN,
   SIGN_OUT,
 } from './constants';
@@ -10,10 +11,11 @@ export const initialState = {
   isLoading: true,
   buttonLoading: false,
   userToken: null,
-  emailVerified: false,
+  phone: null,
   userInfo: {
     name: '',
     email: '',
+    phoneNumber: '',
   },
 };
 
@@ -24,11 +26,15 @@ export default (state, action) => {
         ...state,
         buttonLoading: action.loading,
       };
+    case CONFIRM_PHONE:
+      return {
+        ...state,
+        phone: action.phone,
+      };
     case USER_INFO:
       return {
         ...state,
         userInfo: action.userInfo,
-        emailVerified: action.emailVerified,
         isLoading: false,
       };
     case RESTORE_TOKEN:
@@ -41,13 +47,18 @@ export default (state, action) => {
         ...state,
         userToken: action.token,
         userInfo: action.userInfo,
-        emailVerified: action.emailVerified,
       };
     case SIGN_OUT:
       return {
         ...state,
         userToken: null,
         buttonLoading: false,
+        phone: null,
+        userInfo: {
+          name: '',
+          email: '',
+          phoneNumber: '',
+        },
       };
   }
 };
