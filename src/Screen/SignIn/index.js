@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   },
   error: {
-    color: '#E9446A',
+    color: '#4286F4',
     fontSize: 13,
     fontWeight: '600',
     textAlign: 'center',

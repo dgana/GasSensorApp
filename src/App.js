@@ -7,6 +7,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-community/google-signin';
 
 import DetailsScreen from '~/Screen/Detail';
 import HomeScreen from '~/Screen/Home';
@@ -176,6 +177,31 @@ const App = () => {
         } catch (err) {
           dispatch({type: BUTTON_LOADING, loading: false});
           setErrorMessage(err.message);
+        }
+      },
+      googleLogin: async () => {
+        try {
+          // add any configuration settings here:
+          await GoogleSignin.configure();
+
+          const data = await GoogleSignin.signIn();
+
+          // create a new firebase credential with the token
+          const credential = auth.GoogleAuthProvider.credential(
+            data.idToken,
+            data.accessToken,
+          );
+          // login with credential
+          const firebaseUserCredential = await auth().signInWithCredential(
+            credential,
+          );
+          const user = firebaseUserCredential.user.toJSON();
+          const {uid, displayName: name, email, phoneNumber} = user;
+          const userInfo = {name, email, phoneNumber};
+          await setItem(uid);
+          dispatch({type: SIGN_IN, token: uid, userInfo});
+        } catch (e) {
+          console.error(e);
         }
       },
     }),

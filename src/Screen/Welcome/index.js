@@ -2,8 +2,10 @@ import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
+import {AuthContext} from '~/App';
 
 function WelcomeScreen({navigation}) {
+  const {googleLogin} = React.useContext(AuthContext);
   return (
     <View style={styles.container}>
       <Image
@@ -15,23 +17,23 @@ function WelcomeScreen({navigation}) {
           style={styles.imageHeader}
           source={require('~/assets/images/GasSensorLogo.png')}
         />
-        <Text style={styles.newText1}>Welcome to,</Text>
-        <Text style={styles.newText2}>Gas Sensor App</Text>
+        <Text style={styles.newText}>Welcome to,</Text>
+        <Text style={styles.newText}>Gas Sensor App</Text>
       </View>
       <View style={styles.opacityContainer} />
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          disabled={true}
-          style={{...styles.button, ...styles.facebookColor}}
-          onPress={() => navigation.navigate('FacebookAuth')}>
+          // disabled={true}
+          style={{...styles.button, ...styles.googleColor}}
+          onPress={googleLogin}>
           <View style={styles.buttonView}>
             <IconAnt
-              name="facebook-square"
+              name="google"
               color="white"
               size={20}
               style={styles.icon}
             />
-            <Text style={styles.text}>Connect with Facebook</Text>
+            <Text style={styles.text}>Connect with Google</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -92,18 +94,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  newText1: {
+  newText: {
     fontSize: 30,
-    position: 'absolute',
-    top: 100,
-    fontWeight: '900',
-    fontFamily: 'Avenir',
-    color: '#323232',
-  },
-  newText2: {
-    fontSize: 30,
-    position: 'absolute',
-    top: 140,
+    top: -80,
     fontWeight: '900',
     fontFamily: 'Avenir',
     color: '#323232',
@@ -121,7 +114,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     opacity: 0.8,
     position: 'relative',
-    top: 150,
+    top: 180,
     width: 150,
   },
   button: {
@@ -133,14 +126,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
   },
-  facebookColor: {
-    backgroundColor: '#4267B2',
+  googleColor: {
+    backgroundColor: '#176BEF',
   },
   phoneColor: {
-    backgroundColor: '#5588EE',
+    backgroundColor: '#4286F4',
   },
   loginColor: {
-    backgroundColor: '#E9446A',
+    backgroundColor: '#db4537',
   },
   text: {
     color: '#FFF',

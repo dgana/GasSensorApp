@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   info: {
     fontSize: 16,
-    color: '#E9446A',
+    color: '#4286F4',
     marginTop: 10,
   },
   buttonContainer: {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     width: 250,
     borderRadius: 30,
-    backgroundColor: '#E9446A',
+    backgroundColor: '#4286F4',
   },
   logoutText: {
     color: '#FFF',
