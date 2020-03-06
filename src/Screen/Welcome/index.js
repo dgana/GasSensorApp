@@ -127,13 +127,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   googleColor: {
-    backgroundColor: '#176BEF',
+    backgroundColor: '#FF3E30',
   },
   phoneColor: {
-    backgroundColor: '#4286F4',
+    backgroundColor: '#34C758',
   },
   loginColor: {
-    backgroundColor: '#db4537',
+    backgroundColor: '#4286F4',
   },
   text: {
     color: '#FFF',

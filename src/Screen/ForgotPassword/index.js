@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   },
   error: {
-    color: '#4286F4',
+    color: '#E9446A',
     fontSize: 13,
     fontWeight: '600',
     textAlign: 'center',
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 30,
-    backgroundColor: '#4286F4',
+    backgroundColor: '#E9446A',
     borderRadius: 4,
     height: 52,
     alignItems: 'center',

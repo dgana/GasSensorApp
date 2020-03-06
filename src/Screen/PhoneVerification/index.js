@@ -15,12 +15,12 @@ import {AuthContext} from '~/App';
 
 function PhoneVerificationScreen({navigation}) {
   const [code, setCode] = React.useState({
-    1: undefined,
-    2: undefined,
-    3: undefined,
-    4: undefined,
-    5: undefined,
-    6: undefined,
+    1: '',
+    2: '',
+    3: '',
+    4: '',
+    5: '',
+    6: '',
   });
   const [errorMessage, setErrorMessage] = React.useState('');
 
@@ -36,7 +36,7 @@ function PhoneVerificationScreen({navigation}) {
   const sixth = React.useRef(null);
 
   React.useEffect(() => {
-    if (Object.values(code).filter(x => x >= 0).length === 6) {
+    if (Object.values(code).filter(x => x !== '').length === 6) {
       phoneVerification({code, setErrorMessage, phone});
     }
     // eslint-disable-next-line
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   },
   error: {
-    color: '#4286F4',
+    color: '#E9446A',
     fontSize: 13,
     fontWeight: '600',
     textAlign: 'center',
