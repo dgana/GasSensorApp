@@ -7,7 +7,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-community/google-signin';
+import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 
 import DetailsScreen from '~/Screen/Detail';
 import HomeScreen from '~/Screen/Home';
@@ -179,8 +179,10 @@ const App = () => {
           setErrorMessage(err.message);
         }
       },
-      googleLogin: async () => {
+      googleLogin: async ({navigation}) => {
         try {
+          await GoogleSignin.hasPlayServices();
+
           // add any configuration settings here:
           await GoogleSignin.configure();
 
@@ -200,8 +202,16 @@ const App = () => {
           const userInfo = {name, email, phoneNumber};
           await setItem(uid);
           dispatch({type: SIGN_IN, token: uid, userInfo});
-        } catch (e) {
-          console.error(e);
+        } catch (err) {
+          if (err.code === statusCodes.SIGN_IN_CANCELLED) {
+            navigation.navigate('Welcome');
+          } else if (err.code === statusCodes.IN_PROGRESS) {
+            navigation.navigate('Welcome');
+          } else if (err.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+            navigation.navigate('Welcome');
+          } else {
+            console.warn(err);
+          }
         }
       },
     }),

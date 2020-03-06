@@ -25,7 +25,7 @@ function WelcomeScreen({navigation}) {
         <TouchableOpacity
           // disabled={true}
           style={{...styles.button, ...styles.googleColor}}
-          onPress={googleLogin}>
+          onPress={() => googleLogin({navigation})}>
           <View style={styles.buttonView}>
             <IconAnt
               name="google"
