@@ -16,8 +16,13 @@ function SignInScreen({navigation}) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [hidePassword, setHidePassword] = React.useState(true);
 
   const {signIn, buttonLoading} = React.useContext(AuthContext);
+
+  const setPasswordVisibility = () => {
+    setHidePassword(state => !state);
+  };
 
   return (
     <View style={styles.container}>
@@ -50,9 +55,29 @@ function SignInScreen({navigation}) {
             style={styles.input}
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
+            secureTextEntry={hidePassword}
             autoCapitalize="none"
           />
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.touchableButton}
+            onPress={setPasswordVisibility}>
+            {hidePassword ? (
+              <Icon
+                name="eye-off"
+                color="#a0a0a0"
+                size={24}
+                style={styles.hidePasswordIcon}
+              />
+            ) : (
+              <Icon
+                name="eye"
+                color="#a0a0a0"
+                size={24}
+                style={styles.hidePasswordIcon}
+              />
+            )}
+          </TouchableOpacity>
         </View>
       </View>
       <TouchableOpacity
@@ -188,6 +213,16 @@ const styles = StyleSheet.create({
   forgotPasswordLink: {
     fontWeight: '400',
     color: '#5588EE',
+  },
+  touchableButton: {
+    position: 'absolute',
+    right: 3,
+    height: 40,
+    width: 35,
+    padding: 2,
+  },
+  hidePasswordIcon: {
+    marginTop: 12,
   },
 });
 

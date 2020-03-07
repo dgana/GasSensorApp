@@ -4,15 +4,14 @@ import {AuthContext} from '~/App';
 
 const Profile = () => {
   const {signOut, userInfo} = React.useContext(AuthContext);
-  const {name, email, phoneNumber} = userInfo;
+  const {name, email, phoneNumber, photoURL} = userInfo;
+
+  const uri = photoURL || 'https://bootdey.com/img/Content/avatar/avatar6.png';
 
   return (
     <View style={styles.container}>
       <View style={styles.header} />
-      <Image
-        style={styles.avatar}
-        source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}
-      />
+      <Image style={styles.avatar} source={{uri}} />
       <View style={styles.body}>
         <View style={styles.bodyContent}>
           <Text style={styles.name}>{name}</Text>

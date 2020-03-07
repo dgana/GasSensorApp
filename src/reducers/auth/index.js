@@ -16,6 +16,7 @@ export const initialState = {
     name: '',
     email: '',
     phoneNumber: '',
+    photoURL: '',
   },
 };
 
@@ -58,6 +59,7 @@ export default (state, action) => {
           name: '',
           email: '',
           phoneNumber: '',
+          photoURL: '',
         },
       };
   }

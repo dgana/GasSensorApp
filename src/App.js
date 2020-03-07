@@ -41,8 +41,8 @@ const App = () => {
   // Handle user state changes
   function onAuthStateChanged(user) {
     if (state.isLoading) {
-      const {displayName: name, email, phoneNumber} = user || {};
-      const userInfo = {name, email, phoneNumber};
+      const {displayName: name, email, phoneNumber, photoURL} = user || {};
+      const userInfo = {name, email, phoneNumber, photoURL};
       dispatch({type: USER_INFO, userInfo});
       SplashScreen.hide();
     }
@@ -93,6 +93,7 @@ const App = () => {
             email,
             phoneNumber,
             emailVerified,
+            photoURL,
           } = user;
 
           if (!emailVerified) {
@@ -101,7 +102,7 @@ const App = () => {
             throw {message};
           }
 
-          const userInfo = {name, email, phoneNumber};
+          const userInfo = {name, email, phoneNumber, photoURL};
           await setItem(uid);
           dispatch({type: SIGN_IN, token: uid, userInfo});
         } catch (err) {
@@ -186,8 +187,8 @@ const App = () => {
         dispatch({type: BUTTON_LOADING, loading: true});
         try {
           const user = await phone.confirm(Object.values(code).join(''));
-          const {uid, displayName: name, email, phoneNumber} = user;
-          const userInfo = {name, email, phoneNumber};
+          const {uid, displayName: name, email, phoneNumber, photoURL} = user;
+          const userInfo = {name, email, phoneNumber, photoURL};
           await setItem(uid);
           dispatch({type: SIGN_IN, token: uid, userInfo});
         } catch (err) {
@@ -214,8 +215,8 @@ const App = () => {
             credential,
           );
           const user = firebaseUserCredential.user.toJSON();
-          const {uid, displayName: name, email, phoneNumber} = user;
-          const userInfo = {name, email, phoneNumber};
+          const {uid, displayName: name, email, phoneNumber, photoURL} = user;
+          const userInfo = {name, email, phoneNumber, photoURL};
           await setItem(uid);
           dispatch({type: SIGN_IN, token: uid, userInfo});
         } catch (err) {
