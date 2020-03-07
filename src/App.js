@@ -110,8 +110,24 @@ const App = () => {
         }
       },
       signOut: () => {
-        clearStorage();
-        dispatch({type: SIGN_OUT});
+        Alert.alert(
+          'Sign out',
+          'Are you sure you want to log out?',
+          [
+            {
+              text: 'Yes',
+              onPress: () => {
+                clearStorage();
+                dispatch({type: SIGN_OUT});
+              },
+            },
+            {
+              text: 'No',
+              style: 'cancel',
+            },
+          ],
+          {cancelable: false},
+        );
       },
       signUp: async ({
         name,

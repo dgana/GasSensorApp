@@ -1,22 +1,23 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import {AuthContext} from '~/App';
 
 const Profile = () => {
-  const {signOut, userInfo = {}} = React.useContext(AuthContext);
-  const {name = '', email = ''} = userInfo;
+  const {signOut, userInfo} = React.useContext(AuthContext);
+  const {name, email, phoneNumber} = userInfo;
 
   return (
     <View style={styles.container}>
       <View style={styles.header} />
-      {/* <Image
+      <Image
         style={styles.avatar}
         source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}
-      /> */}
+      />
       <View style={styles.body}>
         <View style={styles.bodyContent}>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.info}>{email}</Text>
+          <Text style={styles.info}>{phoneNumber}</Text>
 
           <TouchableOpacity onPress={signOut} style={styles.buttonContainer}>
             <Text style={styles.logoutText}>Log Out</Text>
@@ -32,8 +33,8 @@ const styles = StyleSheet.create({
     height: 150,
   },
   avatar: {
-    width: 130,
-    height: 130,
+    width: 100,
+    height: 100,
     borderRadius: 63,
     borderWidth: 4,
     borderColor: 'white',
