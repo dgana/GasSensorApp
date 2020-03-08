@@ -8,6 +8,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
+import firestore from '@react-native-firebase/firestore';
 
 import DetailsScreen from '~/Screen/Detail';
 import HomeScreen from '~/Screen/Home';
@@ -77,6 +78,25 @@ const App = () => {
     // eslint-disable-next-line
   }, []);
 
+  React.useEffect(() => {
+    if (state.userToken) {
+      const getQuery = async () => {
+        const querySnapshot = await firestore()
+          .collection('users')
+          .doc(state.userToken)
+          .get();
+        if (!querySnapshot.exists) {
+          firestore()
+            .collection('users')
+            .doc(state.userToken)
+            .set({name: state.userInfo.name, email: state.userInfo.email});
+        }
+      };
+      getQuery();
+    }
+    // eslint-disable-next-line
+  }, [state.userToken]);
+
   const authContext = React.useMemo(
     () => ({
       signIn: async ({email: e, password: p, setErrorMessage}) => {
@@ -112,7 +132,7 @@ const App = () => {
       },
       signOut: () => {
         Alert.alert(
-          'Sign out',
+          'Log out',
           'Are you sure you want to log out?',
           [
             {
