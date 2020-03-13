@@ -13,18 +13,20 @@ function WelcomeScreen({navigation}) {
         source={require('~/assets/images/industry.png')}
       />
       <View style={styles.header}>
-        <Image
-          style={styles.imageHeader}
-          source={require('~/assets/images/GasSensorLogo.png')}
-        />
-        <Text style={styles.newText}>Welcome to,</Text>
-        <Text style={styles.newText}>Gas Sensor App</Text>
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.headerText}>Welcome to,</Text>
+          <Text style={styles.headerText}>Gas Sensor App</Text>
+        </View>
+        <View style={styles.headerImageContainer}>
+          <Image
+            style={styles.headerImage}
+            source={require('~/assets/images/GasSensorLogo.png')}
+          />
+        </View>
       </View>
-      <View style={styles.opacityContainer} />
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          // disabled={true}
-          style={{...styles.button, ...styles.googleColor}}
+          style={[styles.button, styles.googleColor]}
           onPress={() => googleLogin({navigation})}>
           <View style={styles.buttonView}>
             <IconAnt
@@ -37,7 +39,7 @@ function WelcomeScreen({navigation}) {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          style={{...styles.button, ...styles.phoneColor}}
+          style={[styles.button, styles.phoneColor]}
           onPress={() => navigation.navigate('PhoneAuth')}>
           <View style={styles.buttonView}>
             <IconMaterial
@@ -50,7 +52,7 @@ function WelcomeScreen({navigation}) {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          style={{...styles.button, ...styles.loginColor}}
+          style={[styles.button, styles.loginColor]}
           onPress={() => navigation.navigate('SignIn')}>
           <Text style={styles.text}>Log In</Text>
         </TouchableOpacity>
@@ -63,6 +65,7 @@ function WelcomeScreen({navigation}) {
           </Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.opacityContainer} />
     </View>
   );
 }
@@ -70,36 +73,46 @@ function WelcomeScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: 100,
-    backgroundColor: 'white',
-  },
-  opacityContainer: {
-    position: 'relative',
-    height: 280,
-    backgroundColor: 'white',
-    opacity: 0.85,
-    bottom: -330,
-  },
-  buttonContainer: {
-    position: 'relative',
-    height: 270,
   },
   imageContainer: {
     position: 'absolute',
-    opacity: 0.8,
-    top: 100,
-    right: -20,
+  },
+  opacityContainer: {
+    position: 'relative',
+    height: 300,
+    backgroundColor: 'white',
+    opacity: 0.7,
+    bottom: 0,
   },
   header: {
     flex: 1,
     alignItems: 'center',
   },
-  newText: {
+  headerTextContainer: {
+    flex: 0.5,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  headerText: {
     fontSize: 30,
-    top: -80,
     fontWeight: '900',
     fontFamily: 'Avenir',
     color: '#323232',
+  },
+  headerImageContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  headerImage: {
+    resizeMode: 'contain',
+    opacity: 0.8,
+    width: 150,
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    zIndex: 1,
+    width: '100%',
   },
   icon: {
     marginRight: 8,
@@ -108,22 +121,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  imageHeader: {
-    flex: 1,
-    alignSelf: 'center',
-    resizeMode: 'contain',
-    opacity: 0.8,
-    position: 'relative',
-    top: 180,
-    width: 150,
-  },
   button: {
     marginTop: 12,
     marginHorizontal: 30,
     borderRadius: 8,
     height: 52,
     alignItems: 'center',
-    textAlign: 'center',
     justifyContent: 'center',
   },
   googleColor: {
@@ -143,11 +146,11 @@ const styles = StyleSheet.create({
   signUpButton: {
     alignSelf: 'center',
     marginTop: 26,
+    marginBottom: 30,
   },
   signUpText: {
     color: '#414959',
     fontSize: 13,
-    marginBottom: 30,
   },
   signUpLink: {
     fontWeight: '500',

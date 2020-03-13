@@ -80,20 +80,22 @@ function SignInScreen({navigation}) {
           </TouchableOpacity>
         </View>
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => signIn({email, password, setErrorMessage})}>
-        <Text style={styles.signIn}>{buttonLoading ? '' : 'Sign In'}</Text>
-      </TouchableOpacity>
-      {buttonLoading && (
-        <View style={styles.loadingButton}>
-          <ActivityIndicator
-            animating={buttonLoading}
-            size="large"
-            color="white"
-          />
-        </View>
-      )}
+      <View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => signIn({email, password, setErrorMessage})}>
+          <Text style={styles.signIn}>{buttonLoading ? '' : 'Sign In'}</Text>
+        </TouchableOpacity>
+        {buttonLoading && (
+          <View style={styles.loadingButton}>
+            <ActivityIndicator
+              animating={buttonLoading}
+              size="large"
+              color="white"
+            />
+          </View>
+        )}
+      </View>
       <TouchableOpacity
         style={styles.signUpButton}
         onPress={() => navigation.navigate('SignUp')}>
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
   },
   loadingButton: {
     position: 'absolute',
-    top: '51%',
+    top: 8,
     right: 0,
     left: 0,
   },
