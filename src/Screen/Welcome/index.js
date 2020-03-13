@@ -4,6 +4,11 @@ import IconAnt from 'react-native-vector-icons/AntDesign';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AuthContext} from '~/App';
 
+import LinkText from '~/component/LinkText';
+import Button from '~/component/Button';
+
+import theme from '~/utils/theme';
+
 function WelcomeScreen({navigation}) {
   const {googleLogin} = React.useContext(AuthContext);
   return (
@@ -25,7 +30,7 @@ function WelcomeScreen({navigation}) {
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
+        <Button
           style={[styles.button, styles.googleColor]}
           onPress={() => googleLogin({navigation})}>
           <View style={styles.buttonView}>
@@ -37,8 +42,8 @@ function WelcomeScreen({navigation}) {
             />
             <Text style={styles.text}>Connect with Google</Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </Button>
+        <Button
           style={[styles.button, styles.phoneColor]}
           onPress={() => navigation.navigate('PhoneAuth')}>
           <View style={styles.buttonView}>
@@ -50,20 +55,18 @@ function WelcomeScreen({navigation}) {
             />
             <Text style={styles.text}>Connect with Phone</Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, styles.loginColor]}
+        </Button>
+        <Button
+          style={styles.button}
           onPress={() => navigation.navigate('SignIn')}>
           <Text style={styles.text}>Log In</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.signUpButton}
-          onPress={() => navigation.navigate('SignUp')}>
-          <Text style={styles.signUpText}>
-            Dont't have an account?{' '}
-            <Text style={styles.signUpLink}>Sign Up</Text>
-          </Text>
-        </TouchableOpacity>
+        </Button>
+        <LinkText
+          onPress={() => navigation.navigate('SignUp')}
+          description="Dont't have an account?"
+          linkText="Sign Up"
+          style={styles.linkText}
+        />
       </View>
       <View style={styles.opacityContainer} />
     </View>
@@ -123,11 +126,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 12,
-    marginHorizontal: 30,
-    borderRadius: 8,
-    height: 52,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: theme.primary,
   },
   googleColor: {
     backgroundColor: '#FF3E30',
@@ -143,18 +142,8 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     fontFamily: 'Avenir',
   },
-  signUpButton: {
-    alignSelf: 'center',
-    marginTop: 26,
+  linkText: {
     marginBottom: 30,
-  },
-  signUpText: {
-    color: '#414959',
-    fontSize: 13,
-  },
-  signUpLink: {
-    fontWeight: '500',
-    color: '#5588EE',
   },
 });
 

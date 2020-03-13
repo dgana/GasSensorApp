@@ -1,21 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Text,
   View,
+  Text,
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
 import theme from '~/utils/theme';
 
-const Button = ({onPress, loading, color}) => {
+const Button = ({onPress, loading, style, text, children, ...restProps}) => {
   return (
-    <View>
-      <TouchableOpacity
-        style={[styles.button, {backgroundColor: color}]}
-        onPress={onPress}>
-        <Text style={styles.buttonText}>{loading ? '' : 'Sign Up'}</Text>
+    <View {...restProps}>
+      <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
+        {text ? <ButtonText loading={loading} text={text} /> : children}
       </TouchableOpacity>
       {loading && (
         <View style={styles.loadingButton}>
@@ -26,10 +24,14 @@ const Button = ({onPress, loading, color}) => {
   );
 };
 
+const ButtonText = ({loading, text}) => (
+  <Text style={styles.buttonText}>{loading ? '' : text}</Text>
+);
+
 const styles = StyleSheet.create({
   button: {
     marginHorizontal: 30,
-    borderRadius: 4,
+    borderRadius: 6,
     height: 52,
     alignItems: 'center',
     justifyContent: 'center',
@@ -49,12 +51,13 @@ const styles = StyleSheet.create({
 Button.propTypes = {
   onPress: PropTypes.func.isRequired,
   loading: PropTypes.bool,
-  color: PropTypes.string,
+  style: PropTypes.string,
+  children: PropTypes.node,
 };
 
 Button.defaultProps = {
   loading: false,
-  color: theme.primary,
+  style: {backgroundColor: theme.primary},
 };
 
 export default Button;

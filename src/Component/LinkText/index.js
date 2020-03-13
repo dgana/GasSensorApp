@@ -3,9 +3,19 @@ import PropTypes from 'prop-types';
 import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import theme from '~/utils/theme';
 
-const LinkText = ({onPress, description, linkText, linkColor}) => {
+const LinkText = ({
+  onPress,
+  description,
+  linkText,
+  linkColor,
+  style,
+  ...restProps
+}) => {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity
+      {...restProps}
+      style={[styles.button, style]}
+      onPress={onPress}>
       <Text style={styles.text}>
         {description}{' '}
         <Text style={[styles.link, {color: linkColor}]}>{linkText}</Text>
