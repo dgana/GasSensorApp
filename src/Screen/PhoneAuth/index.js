@@ -1,14 +1,11 @@
 import React from 'react';
-import {
-  TextInput,
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {TextInput, Text, View, StyleSheet, Image} from 'react-native';
+
+import BackIcon from '~/component/BackIcon';
+import ErrorMessage from '~/component/ErrorMessage';
+import Button from '~/component/Button';
+import LinkText from '~/component/LinkText';
+import theme from '~/utils/theme';
 
 import {AuthContext} from '~/App';
 
@@ -19,13 +16,17 @@ function PhoneAuthScreen({navigation}) {
 
   const {phoneLogin, buttonLoading} = React.useContext(AuthContext);
 
+  const onPressButton = () =>
+    phoneLogin({
+      phoneNumber: countryCode + phoneNumber,
+      setErrorMessage,
+      navigation,
+    });
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.arrow}
-        onPress={() => navigation.goBack()}>
-        <Icon name="arrow-left" color="#a0a0a0" size={30} />
-      </TouchableOpacity>
+      <BackIcon onPress={() => navigation.goBack()} />
+
       <View style={styles.headerContainer}>
         <Text style={styles.greeting}>Sign in with phone number</Text>
       </View>
@@ -33,9 +34,10 @@ function PhoneAuthScreen({navigation}) {
         <Text style={styles.description}>Enter your phone number</Text>
       </View>
 
-      <View style={styles.errorMessage}>
-        {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
-      </View>
+      <ErrorMessage
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
+      />
       <View style={styles.form}>
         <View>
           <Text style={styles.inputTitle}>Phone Number</Text>
@@ -56,37 +58,16 @@ function PhoneAuthScreen({navigation}) {
           </View>
         </View>
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() =>
-          phoneLogin({
-            phoneNumber: countryCode + phoneNumber,
-            setErrorMessage,
-            navigation,
-          })
-        }>
-        <Text style={styles.signIn}>
-          {buttonLoading ? '' : 'Get verification code'}
-        </Text>
-      </TouchableOpacity>
-      {buttonLoading && (
-        <View style={styles.loadingButton}>
-          <ActivityIndicator
-            animating={buttonLoading}
-            size="large"
-            color="white"
-          />
-        </View>
-      )}
-      <TouchableOpacity
-        style={styles.signUpButton}
-        onPress={() => navigation.navigate('SignIn')}>
-        <Text style={styles.signUpText}>
-          Already have an account?{' '}
-          <Text style={styles.signUpLink}>Sign In</Text>
-        </Text>
-      </TouchableOpacity>
-
+      <Button
+        onPress={onPressButton}
+        loading={buttonLoading}
+        text="Get Verification Code"
+      />
+      <LinkText
+        onPress={() => navigation.navigate('SignIn')}
+        description="Already have an account?"
+        linkText="Sign In"
+      />
       <Image
         style={styles.imageFooter}
         source={require('~/assets/images/factory1.png')}
@@ -100,110 +81,56 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  arrow: {
-    marginHorizontal: 26,
-    marginTop: 60,
-  },
-  loadingButton: {
-    position: 'absolute',
-    top: '59%',
-    right: 0,
-    left: 0,
-  },
-  imageFooter: {
-    resizeMode: 'stretch',
-    height: 210,
-    marginLeft: -50,
-  },
   headerContainer: {
-    flex: 1,
-    alignItems: 'center',
     flexDirection: 'row',
-    marginTop: 130,
+    marginTop: 120,
     marginHorizontal: 30,
+  },
+  greeting: {
+    fontSize: 18,
   },
   descriptionContainer: {
     paddingTop: 12,
     marginHorizontal: 30,
   },
-  greeting: {
-    marginTop: 32,
-    fontSize: 18,
-    fontWeight: '400',
-    textAlign: 'center',
-  },
   description: {
     fontSize: 14,
-  },
-  errorMessage: {
-    height: 72,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 30,
-  },
-  error: {
-    color: '#E9446A',
-    fontSize: 13,
-    fontWeight: '600',
-    textAlign: 'center',
   },
   form: {
     marginBottom: 70,
     marginHorizontal: 30,
   },
   inputTitle: {
-    color: '#8A8F9E',
+    color: theme.gray,
     fontSize: 10,
     textTransform: 'uppercase',
     marginBottom: 12,
   },
   inputCountryCode: {
     flex: 1,
-    borderBottomColor: '#8A8F9E',
+    borderBottomColor: theme.gray,
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 40,
     fontSize: 15,
-    color: '#161F3D',
+    color: theme.black,
     marginRight: 12,
-    backgroundColor: '#fafafa',
+    backgroundColor: theme.lightGray,
     textAlign: 'center',
   },
   inputNumber: {
     flex: 3,
-    borderBottomColor: '#8A8F9E',
+    borderBottomColor: theme.gray,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    height: 40,
     fontSize: 15,
-    color: '#161F3D',
-  },
-  button: {
-    marginHorizontal: 30,
-    backgroundColor: '#4286F4',
-    borderRadius: 4,
-    height: 52,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  signIn: {
-    color: '#FFF',
-    fontWeight: '500',
-  },
-  signUpButton: {
-    alignSelf: 'center',
-    marginTop: 32,
-  },
-  signUpText: {
-    color: '#414959',
-    fontSize: 13,
-    marginBottom: 30,
-  },
-  signUpLink: {
-    fontWeight: '500',
-    color: '#5588EE',
+    color: theme.black,
   },
   phoneContainer: {
-    flex: 1,
     flexDirection: 'row',
+  },
+  imageFooter: {
+    position: 'absolute',
+    bottom: 0,
+    marginLeft: -50,
   },
 });
 
