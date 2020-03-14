@@ -7,13 +7,32 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
+import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import theme from '~/utils/theme';
 
-const Button = ({onPress, loading, style, text, children, ...restProps}) => {
+const Button = ({
+  onPress,
+  loading,
+  style,
+  text,
+  children,
+  icon,
+  ...restProps
+}) => {
   return (
     <View {...restProps}>
       <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-        {text ? <ButtonText loading={loading} text={text} /> : children}
+        <View style={styles.buttonView}>
+          {icon && (
+            <IconMaterial
+              name={icon.name}
+              color={icon.color}
+              size={icon.size}
+              style={[styles.icon, icon.style]}
+            />
+          )}
+          {text ? <ButtonText loading={loading} text={text} /> : children}
+        </View>
       </TouchableOpacity>
       {loading && (
         <View style={styles.loadingButton}>
@@ -25,7 +44,7 @@ const Button = ({onPress, loading, style, text, children, ...restProps}) => {
 };
 
 const ButtonText = ({loading, text}) => (
-  <Text style={styles.buttonText}>{loading ? '' : text}</Text>
+  <Text style={styles.text}>{loading ? '' : text}</Text>
 );
 
 const styles = StyleSheet.create({
@@ -42,9 +61,17 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
   },
-  buttonText: {
+  text: {
     color: theme.white,
-    fontWeight: '500',
+    fontWeight: '800',
+    fontFamily: 'Avenir',
+  },
+  buttonView: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  icon: {
+    marginRight: 8,
   },
 });
 

@@ -1,7 +1,5 @@
 import React from 'react';
-import {Text, View, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import IconAnt from 'react-native-vector-icons/AntDesign';
-import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Text, View, StyleSheet, Image} from 'react-native';
 import {AuthContext} from '~/App';
 
 import LinkText from '~/component/LinkText';
@@ -14,10 +12,10 @@ function WelcomeScreen({navigation}) {
   return (
     <View style={styles.container}>
       <Image
-        style={styles.imageContainer}
+        style={styles.backgroundImage}
         source={require('~/assets/images/industry.png')}
       />
-      <View style={styles.header}>
+      <View style={styles.headerContainer}>
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerText}>Welcome to,</Text>
           <Text style={styles.headerText}>Gas Sensor App</Text>
@@ -32,35 +30,21 @@ function WelcomeScreen({navigation}) {
       <View style={styles.buttonContainer}>
         <Button
           style={[styles.button, styles.googleColor]}
-          onPress={() => googleLogin({navigation})}>
-          <View style={styles.buttonView}>
-            <IconAnt
-              name="google"
-              color="white"
-              size={20}
-              style={styles.icon}
-            />
-            <Text style={styles.text}>Connect with Google</Text>
-          </View>
-        </Button>
+          onPress={() => googleLogin({navigation})}
+          text="Connect with Google"
+          icon={{name: 'google', color: 'white', size: 18}}
+        />
         <Button
           style={[styles.button, styles.phoneColor]}
-          onPress={() => navigation.navigate('PhoneAuth')}>
-          <View style={styles.buttonView}>
-            <IconMaterial
-              name="phone-in-talk"
-              color="white"
-              size={20}
-              style={styles.icon}
-            />
-            <Text style={styles.text}>Connect with Phone</Text>
-          </View>
-        </Button>
+          onPress={() => navigation.navigate('PhoneAuth')}
+          text="Connect with Phone"
+          icon={{name: 'phone-in-talk', color: 'white', size: 20}}
+        />
         <Button
           style={styles.button}
-          onPress={() => navigation.navigate('SignIn')}>
-          <Text style={styles.text}>Log In</Text>
-        </Button>
+          onPress={() => navigation.navigate('SignIn')}
+          text="Log In"
+        />
         <LinkText
           onPress={() => navigation.navigate('SignUp')}
           description="Dont't have an account?"
@@ -77,17 +61,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  imageContainer: {
+  backgroundImage: {
     position: 'absolute',
   },
-  opacityContainer: {
-    position: 'relative',
-    height: 300,
-    backgroundColor: 'white',
-    opacity: 0.7,
-    bottom: 0,
-  },
-  header: {
+  headerContainer: {
     flex: 1,
     alignItems: 'center',
   },
@@ -117,13 +94,6 @@ const styles = StyleSheet.create({
     zIndex: 1,
     width: '100%',
   },
-  icon: {
-    marginRight: 8,
-  },
-  buttonView: {
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
   button: {
     marginTop: 12,
     backgroundColor: theme.primary,
@@ -134,16 +104,16 @@ const styles = StyleSheet.create({
   phoneColor: {
     backgroundColor: '#34C758',
   },
-  loginColor: {
-    backgroundColor: '#4286F4',
-  },
-  text: {
-    color: '#FFF',
-    fontWeight: '800',
-    fontFamily: 'Avenir',
-  },
   linkText: {
-    marginBottom: 30,
+    marginBottom: 36,
+    marginTop: 24,
+  },
+  opacityContainer: {
+    position: 'relative',
+    height: 300,
+    backgroundColor: 'white',
+    opacity: 0.95,
+    bottom: 0,
   },
 });
 
