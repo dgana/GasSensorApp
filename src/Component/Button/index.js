@@ -13,10 +13,10 @@ import theme from '~/utils/theme';
 const Button = ({
   onPress,
   loading,
-  style,
   text,
-  children,
   icon,
+  style,
+  children,
   ...restProps
 }) => {
   return (
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
 Button.propTypes = {
   onPress: PropTypes.func.isRequired,
   loading: PropTypes.bool,
-  style: PropTypes.string,
+  style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   children: PropTypes.node,
 };
 

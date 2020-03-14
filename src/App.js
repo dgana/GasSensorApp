@@ -10,15 +10,15 @@ import auth from '@react-native-firebase/auth';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 import firestore from '@react-native-firebase/firestore';
 
-import DetailsScreen from '~/Screen/Detail';
-import HomeScreen from '~/Screen/Home';
-import SignInScreen from '~/Screen/SignIn';
-import SignUpScreen from '~/Screen/SignUp';
-import AddDeviceScreen from '~/Screen/AddDevice';
-import ForgotPasswordScreen from '~/Screen/ForgotPassword';
-import PhoneAuthScreen from '~/Screen/PhoneAuth';
-import WelcomeScreen from '~/Screen/Welcome';
-import PhoneVerificationScreen from '~/Screen/PhoneVerification';
+import DetailsScreen from '~/screen/Detail';
+import HomeScreen from '~/screen/Home';
+import SignInScreen from '~/screen/SignIn';
+import SignUpScreen from '~/screen/SignUp';
+import AddDeviceScreen from '~/screen/AddDevice';
+import ForgotPasswordScreen from '~/screen/ForgotPassword';
+import PhoneAuthScreen from '~/screen/PhoneAuth';
+import WelcomeScreen from '~/screen/Welcome';
+import PhoneVerificationScreen from '~/screen/PhoneVerification';
 
 import {useAsyncStorage, clearStorage} from '~/utils';
 import reducer, {initialState} from '~reducers/auth';

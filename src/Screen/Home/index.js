@@ -2,7 +2,7 @@ import React from 'react';
 import {FlatList, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Profile from '~/Screen/Profile';
+import Profile from '~/screen/Profile';
 
 const Tab = createBottomTabNavigator();
 

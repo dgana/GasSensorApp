@@ -1,27 +1,19 @@
 /* eslint-disable eslint-comments/no-unlimited-disable */
 import React from 'react';
-import {
-  TextInput,
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {TextInput, Text, View, StyleSheet, Image} from 'react-native';
+
+import BackIcon from '~/component/BackIcon';
+import ErrorMessage from '~/component/ErrorMessage';
+import Button from '~/component/Button';
+import LinkText from '~/component/LinkText';
+import ArrayMap from '~/component/ArrayMap';
 
 import {AuthContext} from '~/App';
 
+const initialCodeState = {1: '', 2: '', 3: '', 4: '', 5: '', 6: ''};
+
 function PhoneVerificationScreen({navigation}) {
-  const [code, setCode] = React.useState({
-    1: '',
-    2: '',
-    3: '',
-    4: '',
-    5: '',
-    6: '',
-  });
+  const [code, setCode] = React.useState(initialCodeState);
   const [errorMessage, setErrorMessage] = React.useState('');
 
   const {phoneVerification, buttonLoading, phone} = React.useContext(
@@ -42,13 +34,57 @@ function PhoneVerificationScreen({navigation}) {
     // eslint-disable-next-line
   }, [code]);
 
+  const onPressButton = () => phoneVerification({code, setErrorMessage, phone});
+  const onPressLink = () => navigation.navigate('SignIn');
+  const onKeyPress = (e, i) => {
+    if (e.nativeEvent.key === 'Backspace') {
+      setCode(state => ({...state, [i + 1]: ''}));
+      mapInputCode[i].back.current.focus();
+    }
+  };
+  const onChangeText = (e, i) => {
+    setCode(state => ({...state, [i + 1]: e}));
+    if (e) {
+      mapInputCode[i].next.current.focus();
+    }
+  };
+
+  const mapInputCode = [
+    {
+      ref: first,
+      back: first,
+      next: second,
+    },
+    {
+      ref: second,
+      back: first,
+      next: third,
+    },
+    {
+      ref: third,
+      back: second,
+      next: fourth,
+    },
+    {
+      ref: fourth,
+      back: third,
+      next: fifth,
+    },
+    {
+      ref: fifth,
+      back: fourth,
+      next: sixth,
+    },
+    {
+      ref: sixth,
+      back: fifth,
+      next: sixth,
+    },
+  ];
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.arrow}
-        onPress={() => navigation.goBack()}>
-        <Icon name="arrow-left" color="#a0a0a0" size={30} />
-      </TouchableOpacity>
+      <BackIcon onPress={() => navigation.goBack()} />
       <View style={styles.headerContainer}>
         <Text style={styles.greeting}>Phone Verification</Text>
       </View>
@@ -58,128 +94,37 @@ function PhoneVerificationScreen({navigation}) {
         </Text>
       </View>
 
-      <View style={styles.errorMessage}>
-        {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
-      </View>
+      <ErrorMessage
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
+      />
+
       <View style={styles.form}>
         <View>
           <Text style={styles.inputTitle}>Verification Code</Text>
           <View style={styles.phoneContainer}>
-            <TextInput
-              ref={first}
-              style={styles.inputCode}
-              value={code[1]}
-              maxLength={1}
-              onChangeText={e => {
-                if (e) {
-                  second.current.focus();
-                } else {
-                  first.current.focus();
-                }
-                setCode(state => ({...state, 1: e}));
-              }}
-              keyboardType={'numeric'}
-            />
-            <TextInput
-              ref={second}
-              style={styles.inputCode}
-              value={code[2]}
-              maxLength={1}
-              onChangeText={e => {
-                if (e) {
-                  third.current.focus();
-                } else {
-                  first.current.focus();
-                }
-                setCode(state => ({...state, 2: e}));
-              }}
-              keyboardType={'numeric'}
-            />
-            <TextInput
-              ref={third}
-              style={styles.inputCode}
-              value={code[3]}
-              maxLength={1}
-              onChangeText={e => {
-                if (e) {
-                  fourth.current.focus();
-                } else {
-                  second.current.focus();
-                }
-                setCode(state => ({...state, 3: e}));
-              }}
-              keyboardType={'numeric'}
-            />
-            <TextInput
-              ref={fourth}
-              style={styles.inputCode}
-              value={code[4]}
-              maxLength={1}
-              onChangeText={e => {
-                if (e) {
-                  fifth.current.focus();
-                } else {
-                  third.current.focus();
-                }
-                setCode(state => ({...state, 4: e}));
-              }}
-              keyboardType={'numeric'}
-            />
-            <TextInput
-              ref={fifth}
-              style={styles.inputCode}
-              value={code[5]}
-              maxLength={1}
-              onChangeText={e => {
-                if (e) {
-                  sixth.current.focus();
-                } else {
-                  fourth.current.focus();
-                }
-                setCode(state => ({...state, 5: e}));
-              }}
-              keyboardType={'numeric'}
-            />
-            <TextInput
-              ref={sixth}
-              style={styles.inputCode}
-              value={code[6]}
-              maxLength={1}
-              onChangeText={async e => {
-                if (e) {
-                  // sixth.current.focus();
-                } else {
-                  fifth.current.focus();
-                }
-                setCode(state => ({...state, 6: e}));
-              }}
-              keyboardType={'numeric'}
-            />
+            <ArrayMap data={mapInputCode}>
+              {(x, i) => (
+                <TextInput
+                  ref={x.ref}
+                  style={styles.inputCode}
+                  value={code[i + 1]}
+                  maxLength={1}
+                  keyboardType={'numeric'}
+                  onKeyPress={e => onKeyPress(e, i)}
+                  onChangeText={e => onChangeText(e, i)}
+                />
+              )}
+            </ArrayMap>
           </View>
         </View>
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => phoneVerification({code, setErrorMessage, phone})}>
-        <Text style={styles.signIn}>{buttonLoading ? '' : 'Verify'}</Text>
-      </TouchableOpacity>
-      {buttonLoading && (
-        <View style={styles.loadingButton}>
-          <ActivityIndicator
-            animating={buttonLoading}
-            size="large"
-            color="white"
-          />
-        </View>
-      )}
-      <TouchableOpacity
-        style={styles.signUpButton}
-        onPress={() => navigation.navigate('SignIn')}>
-        <Text style={styles.signUpText}>
-          Already have an account?{' '}
-          <Text style={styles.signUpLink}>Sign In</Text>
-        </Text>
-      </TouchableOpacity>
+      <Button onPress={onPressButton} loading={buttonLoading} text="Verify" />
+      <LinkText
+        onPress={onPressLink}
+        description="Already have an account?"
+        linkText="Sign In"
+      />
       <Image
         style={styles.imageFooter}
         source={require('~/assets/images/factory3.png')}
@@ -193,52 +138,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  arrow: {
-    marginHorizontal: 26,
-    marginTop: 60,
-  },
-  loadingButton: {
-    position: 'absolute',
-    top: '59%',
-    right: 0,
-    left: 0,
-  },
-  imageFooter: {
-    resizeMode: 'stretch',
-    height: 210,
-    marginLeft: -50,
-  },
   headerContainer: {
-    flex: 1,
-    alignItems: 'center',
     flexDirection: 'row',
     marginTop: 120,
     marginHorizontal: 30,
+  },
+  greeting: {
+    fontSize: 18,
   },
   descriptionContainer: {
     paddingTop: 12,
     marginHorizontal: 30,
   },
-  greeting: {
-    marginTop: 32,
-    fontSize: 18,
-    fontWeight: '400',
-    textAlign: 'center',
-  },
   description: {
     fontSize: 14,
-  },
-  errorMessage: {
-    height: 72,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 30,
-  },
-  error: {
-    color: '#E9446A',
-    fontSize: 13,
-    fontWeight: '600',
-    textAlign: 'center',
   },
   form: {
     marginBottom: 70,
@@ -250,6 +163,9 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginBottom: 12,
   },
+  phoneContainer: {
+    flexDirection: 'row',
+  },
   inputCode: {
     flex: 1,
     borderBottomColor: '#8A8F9E',
@@ -257,37 +173,13 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 18,
     color: '#161F3D',
-    marginRight: 12,
+    marginRight: 10,
     textAlign: 'center',
   },
-  button: {
-    marginHorizontal: 30,
-    backgroundColor: '#4286F4',
-    borderRadius: 4,
-    height: 52,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  signIn: {
-    color: '#FFF',
-    fontWeight: '500',
-  },
-  signUpButton: {
-    alignSelf: 'center',
-    marginTop: 32,
-  },
-  signUpText: {
-    color: '#414959',
-    fontSize: 13,
-    marginBottom: 30,
-  },
-  signUpLink: {
-    fontWeight: '500',
-    color: '#5588EE',
-  },
-  phoneContainer: {
-    flex: 1,
-    flexDirection: 'row',
+  imageFooter: {
+    position: 'absolute',
+    bottom: 0,
+    marginLeft: -50,
   },
 });
 
