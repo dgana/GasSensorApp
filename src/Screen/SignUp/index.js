@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, View, StyleSheet, Image} from 'react-native';
 
 import BackIcon from '~/component/BackIcon';
+import ErrorMessage from '~/component/ErrorMessage';
 import TextInput from '~/component/TextInput';
 import Button from '~/component/Button';
 import LinkText from '~/component/LinkText';
@@ -33,9 +34,10 @@ function SignUpScreen({navigation}) {
       <View style={styles.headerContainer}>
         <Text style={styles.greeting}>Hello, Sign up to get started!</Text>
       </View>
-      <View style={styles.errorMessage}>
-        {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
-      </View>
+      <ErrorMessage
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
+      />
       <View style={styles.form}>
         <TextInput label="full name" value={name} onChangeText={setName} />
         <TextInput
