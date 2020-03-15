@@ -1,20 +1,40 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+// import PropTypes from 'prop-types';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-function DetailScreen() {
+import GaugeMeter from '~/screen/GaugeMeter';
+import Chart from '~/screen/Chart';
+
+const Tab = createBottomTabNavigator();
+
+const DetailScreen = props => {
   return (
-    <View style={styles.container}>
-      <Text>Details Screen</Text>
-    </View>
+    <Tab.Navigator>
+      <Tab.Screen
+        name="GaugeMeter"
+        component={GaugeMeter}
+        options={{
+          tabBarLabel: 'Gauge Meter',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="gauge" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Chart"
+        component={Chart}
+        options={{
+          tabBarLabel: 'Chart',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="chart-line" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+DetailScreen.propTypes = {};
 
 export default DetailScreen;
