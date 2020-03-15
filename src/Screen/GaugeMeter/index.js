@@ -2,12 +2,28 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import {View, Text, StyleSheet} from 'react-native';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
+import database from '@react-native-firebase/database';
+import {useAsyncStorage} from '~/utils';
 
 const MAX_POINTS = 1500;
 
 const GaugeMeterScreen = () => {
-  const [points] = React.useState(512);
+  const [points, setPoints] = React.useState(0);
+  const {getItem} = useAsyncStorage('userToken');
   const fill = (points / MAX_POINTS) * 100;
+
+  React.useEffect(() => {
+    const callDatabase = async () => {
+      const idUser = await getItem();
+      const snapshot = await database()
+        .ref(`${idUser}/Methane01`)
+        .once('value');
+      setPoints(snapshot.val().PPM);
+    };
+    callDatabase();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <View style={styles.container}>
       <AnimatedCircularProgress
