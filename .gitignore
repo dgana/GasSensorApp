@@ -60,3 +60,6 @@ buck-out/
 
 # Android
 /android/app/google-services.json
+
+# ENV
+.env

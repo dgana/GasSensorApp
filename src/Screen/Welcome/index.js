@@ -1,11 +1,13 @@
 import React from 'react';
-import {Text, View, StyleSheet, Image} from 'react-native';
+import {Text, View, StyleSheet, Image, Dimensions} from 'react-native';
 import {AuthContext} from '~/App';
 
 import LinkText from '~/component/LinkText';
 import Button from '~/component/Button';
 
 import theme from '~/utils/theme';
+
+const window = Dimensions.get('window');
 
 function WelcomeScreen({navigation}) {
   const {googleLogin} = React.useContext(AuthContext);
@@ -62,6 +64,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   backgroundImage: {
+    width: window.width + 24,
     position: 'absolute',
   },
   headerContainer: {
@@ -81,11 +84,11 @@ const styles = StyleSheet.create({
   },
   headerImageContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   headerImage: {
     resizeMode: 'contain',
-    opacity: 0.8,
+    opacity: 0.85,
     width: 150,
   },
   buttonContainer: {

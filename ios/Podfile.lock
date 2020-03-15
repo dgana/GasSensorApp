@@ -477,7 +477,7 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
   - React-jsinspector (0.61.5)
-  - react-native-ble-manager (7.1.4):
+  - react-native-ble-manager (7.2.0):
     - React
   - react-native-safe-area-context (0.7.3):
     - React
@@ -547,7 +547,7 @@ PODS:
     - React
   - RNReanimated (1.7.0):
     - React
-  - RNScreens (2.2.0):
+  - RNScreens (2.3.0):
     - React
   - RNSVG (12.0.3):
     - React
@@ -750,7 +750,7 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
-  react-native-ble-manager: 347c402fd39f591e40f6169f888cf77e8e5aa531
+  react-native-ble-manager: fda5f6b20092f2b2d356676bd1f3dc7065bb4329
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
@@ -772,7 +772,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNGoogleSignin: a00f87261ea13df9a5cea8deafa6927d6f2c3562
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
-  RNScreens: 812b79d384e2bea7eebc4ec981469160d4948fd5
+  RNScreens: 03bf608b92ac0acf323f47d8f5b63a8f829340c8
   RNSVG: 7e16ddfc6e00d5aa69c9eb83e699bcce5dcb85d4
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b

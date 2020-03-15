@@ -9,6 +9,7 @@ import SplashScreen from 'react-native-splash-screen';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 import firestore from '@react-native-firebase/firestore';
+import {WEB_CLIENT_ID} from 'react-native-dotenv';
 
 import DetailsScreen from '~/screen/Detail';
 import HomeScreen from '~/screen/Home';
@@ -221,7 +222,9 @@ const App = () => {
           await GoogleSignin.hasPlayServices();
 
           // add any configuration settings here:
-          await GoogleSignin.configure();
+          await GoogleSignin.configure({
+            webClientId: WEB_CLIENT_ID,
+          });
 
           const data = await GoogleSignin.signIn();
 

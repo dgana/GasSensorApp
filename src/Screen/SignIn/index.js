@@ -87,12 +87,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   },
   imageFooter: {
-    position: 'absolute',
-    bottom: 0,
     marginLeft: -50,
   },
   linkText: {
     marginTop: 8,
+    marginBottom: 16,
   },
 });
 

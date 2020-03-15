@@ -56,7 +56,7 @@ const TextInputForm = ({
 
 const styles = StyleSheet.create({
   marginBottom: {
-    marginBottom: 32,
+    marginBottom: 26,
   },
   inputTitle: {
     color: theme.gray,

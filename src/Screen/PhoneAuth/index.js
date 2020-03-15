@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row',
-    marginTop: 120,
+    marginTop: 80,
     marginHorizontal: 30,
   },
   greeting: {
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderBottomColor: theme.gray,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    height: 40,
+    height: 50,
     fontSize: 15,
     color: theme.black,
     marginRight: 12,
@@ -128,8 +128,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   imageFooter: {
-    position: 'absolute',
-    bottom: 0,
     marginLeft: -50,
   },
 });
