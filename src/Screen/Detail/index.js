@@ -17,7 +17,7 @@ const DetailScreen = props => {
         options={{
           tabBarLabel: 'Gauge Meter',
           tabBarIcon: ({color, size}) => (
-            <Icon name="gauge" color={color} size={size} />
+            <Icon name="chart-donut" color={color} size={size} />
           ),
         }}
       />
