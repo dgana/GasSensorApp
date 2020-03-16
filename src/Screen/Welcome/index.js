@@ -10,7 +10,7 @@ import theme from '~/utils/theme';
 const window = Dimensions.get('window');
 
 function WelcomeScreen({navigation}) {
-  const {googleLogin} = React.useContext(AuthContext);
+  const {googleLogin, buttonLoading} = React.useContext(AuthContext);
   return (
     <View style={styles.container}>
       <Image
@@ -31,18 +31,22 @@ function WelcomeScreen({navigation}) {
       </View>
       <View style={styles.buttonContainer}>
         <Button
+          containerStyle={styles.buttonMargin}
           style={[styles.button, styles.googleColor]}
           onPress={() => googleLogin({navigation})}
           text="Connect with Google"
           icon={{name: 'google', color: 'white', size: 18}}
+          loading={buttonLoading}
         />
         <Button
+          containerStyle={styles.buttonMargin}
           style={[styles.button, styles.phoneColor]}
           onPress={() => navigation.navigate('PhoneAuth')}
           text="Connect with Phone"
           icon={{name: 'phone-in-talk', color: 'white', size: 20}}
         />
         <Button
+          containerStyle={styles.buttonMargin}
           style={styles.button}
           onPress={() => navigation.navigate('SignIn')}
           text="Log In"
@@ -97,8 +101,10 @@ const styles = StyleSheet.create({
     zIndex: 1,
     width: '100%',
   },
+  buttonMargin: {
+    marginBottom: 12,
+  },
   button: {
-    marginTop: 12,
     backgroundColor: theme.primary,
   },
   googleColor: {

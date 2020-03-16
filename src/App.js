@@ -51,8 +51,9 @@ const App = () => {
   }
 
   React.useEffect(() => {
+    // add any google signin auth configuration settings here:
+    GoogleSignin.configure({webClientId: WEB_CLIENT_ID});
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    // unsubscribe on unmount
     return subscriber;
     // eslint-disable-next-line
   }, []);
@@ -138,8 +139,10 @@ const App = () => {
           [
             {
               text: 'Yes',
-              onPress: () => {
-                clearStorage();
+              onPress: async () => {
+                await clearStorage();
+                await GoogleSignin.revokeAccess();
+                await GoogleSignin.signOut();
                 dispatch({type: SIGN_OUT});
               },
             },
@@ -220,13 +223,8 @@ const App = () => {
       googleLogin: async ({navigation}) => {
         try {
           await GoogleSignin.hasPlayServices();
-
-          // add any configuration settings here:
-          await GoogleSignin.configure({
-            webClientId: WEB_CLIENT_ID,
-          });
-
           const data = await GoogleSignin.signIn();
+          dispatch({type: BUTTON_LOADING, loading: true});
 
           // create a new firebase credential with the token
           const credential = auth.GoogleAuthProvider.credential(

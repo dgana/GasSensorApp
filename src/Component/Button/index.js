@@ -17,13 +17,14 @@ const Button = ({
   icon,
   style,
   children,
+  containerStyle,
   ...restProps
 }) => {
   return (
-    <View {...restProps}>
+    <View style={containerStyle} {...restProps}>
       <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
         <View style={styles.buttonView}>
-          {icon && (
+          {icon && !loading && (
             <IconMaterial
               name={icon.name}
               color={icon.color}
@@ -57,7 +58,9 @@ const styles = StyleSheet.create({
   },
   loadingButton: {
     position: 'absolute',
-    top: 8,
+    justifyContent: 'center',
+    top: 0,
+    bottom: 0,
     right: 0,
     left: 0,
   },
@@ -78,12 +81,18 @@ const styles = StyleSheet.create({
 Button.propTypes = {
   onPress: PropTypes.func.isRequired,
   loading: PropTypes.bool,
+  text: PropTypes.string,
+  icon: PropTypes.object,
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  containerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   children: PropTypes.node,
 };
 
 Button.defaultProps = {
   loading: false,
+  text: '',
+  icon: {},
+  containerStyle: {},
   style: {backgroundColor: theme.primary},
 };
 
