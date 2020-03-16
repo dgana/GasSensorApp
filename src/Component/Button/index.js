@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   text: {
     color: theme.white,
     fontWeight: '800',
-    fontFamily: 'Avenir',
+    fontFamily: 'Avenir-Black',
   },
   buttonView: {
     alignItems: 'center',

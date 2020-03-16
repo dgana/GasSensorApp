@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     fontWeight: '100',
   },
   unit: {
-    fontFamily: 'Avenir',
+    fontFamily: 'Avenir-Black',
     textAlign: 'center',
     color: '#7591af',
     fontSize: 16,

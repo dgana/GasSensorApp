@@ -81,9 +81,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerText: {
-    fontSize: 30,
+    fontSize: 28,
+    lineHeight: 38,
     fontWeight: '900',
-    fontFamily: 'Avenir',
+    fontFamily: 'Avenir-Black',
     color: '#323232',
   },
   headerImageContainer: {
