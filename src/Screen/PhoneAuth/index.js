@@ -97,20 +97,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   form: {
-    marginBottom: 70,
+    marginBottom: 60,
     marginHorizontal: 30,
   },
   inputTitle: {
     color: theme.gray,
     fontSize: 10,
     textTransform: 'uppercase',
-    marginBottom: 12,
+    marginBottom: 18,
   },
   inputCountryCode: {
     flex: 1,
     borderBottomColor: theme.gray,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    height: 50,
     fontSize: 15,
     color: theme.black,
     marginRight: 12,
@@ -125,6 +124,7 @@ const styles = StyleSheet.create({
     color: theme.black,
   },
   phoneContainer: {
+    height: 42,
     flexDirection: 'row',
   },
   imageFooter: {

@@ -8,7 +8,6 @@ import Button from '~/component/Button';
 import LinkText from '~/component/LinkText';
 
 import {AuthContext} from '~/App';
-import theme from '~/utils/theme';
 
 function SignUpScreen({navigation}) {
   const [name, setName] = React.useState('');
@@ -74,29 +73,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   headerContainer: {
-    flex: 1,
-    alignItems: 'center',
     flexDirection: 'row',
-    marginTop: -5,
     marginHorizontal: 30,
   },
   greeting: {
     marginTop: 32,
     fontSize: 18,
-    fontWeight: '400',
-    textAlign: 'center',
-  },
-  errorMessage: {
-    height: 72,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 30,
-  },
-  error: {
-    color: theme.secondary,
-    fontSize: 13,
-    fontWeight: '600',
-    textAlign: 'center',
   },
   form: {
     marginHorizontal: 30,

@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row',
-    marginTop: 120,
+    marginTop: 80,
     marginHorizontal: 30,
   },
   greeting: {
@@ -177,8 +177,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   imageFooter: {
-    position: 'absolute',
-    bottom: 0,
     marginLeft: -50,
   },
 });

@@ -5,7 +5,7 @@ import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import database from '@react-native-firebase/database';
 import {useAsyncStorage} from '~/utils';
 
-const MAX_POINTS = 1500;
+const MAX_POINTS = 5000;
 
 const GaugeMeterScreen = () => {
   const [points, setPoints] = React.useState(0);
@@ -15,10 +15,11 @@ const GaugeMeterScreen = () => {
   React.useEffect(() => {
     const callDatabase = async () => {
       const idUser = await getItem();
-      const snapshot = await database()
+      await database()
         .ref(`${idUser}/Methane01`)
-        .once('value');
-      setPoints(snapshot.val().PPM);
+        .on('value', function(snapshot) {
+          setPoints(snapshot.val().PPM);
+        });
     };
     callDatabase();
     // eslint-disable-next-line react-hooks/exhaustive-deps
