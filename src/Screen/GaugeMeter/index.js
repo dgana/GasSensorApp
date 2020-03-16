@@ -18,7 +18,9 @@ const GaugeMeterScreen = () => {
       await database()
         .ref(`${idUser}/Methane01`)
         .on('value', function(snapshot) {
-          setPoints(snapshot.val().PPM);
+          if (snapshot.val()) {
+            setPoints(snapshot.val().PPM);
+          }
         });
     };
     callDatabase();

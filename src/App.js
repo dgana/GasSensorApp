@@ -141,8 +141,11 @@ const App = () => {
               text: 'Yes',
               onPress: async () => {
                 await clearStorage();
-                await GoogleSignin.revokeAccess();
-                await GoogleSignin.signOut();
+                const isGoogleSignIn = await GoogleSignin.isSignedIn();
+                if (isGoogleSignIn) {
+                  await GoogleSignin.revokeAccess();
+                  await GoogleSignin.signOut();
+                }
                 dispatch({type: SIGN_OUT});
               },
             },
