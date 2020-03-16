@@ -18,10 +18,11 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* GasSensorAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* GasSensorAppTests.m */; };
 		450BDE78240F07450073EFA7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 450BDE77240F07450073EFA7 /* GoogleService-Info.plist */; };
+		45ED0083241FFFEB00FD988A /* alarm_frenzy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 45ED0082241FFDD200FD988A /* alarm_frenzy.mp3 */; };
 		5E4F5D59DE724D27A043AC21 /* libPods-GasSensorApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BC21D7A0EEDB972D4487B7 /* libPods-GasSensorApp.a */; };
+		C1FEAAE9442B4507A775EAA2 /* Avenir-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3431494569344B0B8D6AE53 /* Avenir-Black.ttf */; };
 		DE7664AC1573BB2BBCC4171D /* libPods-GasSensorApp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D480AF2CC2F42946198A032F /* libPods-GasSensorApp-tvOS.a */; };
 		F76AAD4B50676B6A8E3B7CE8 /* libPods-GasSensorAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E1D86741628177F0031F1E /* libPods-GasSensorAppTests.a */; };
-		C1FEAAE9442B4507A775EAA2 /* Avenir-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3431494569344B0B8D6AE53 /* Avenir-Black.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,18 +60,19 @@
 		2D02E47B1E0B4A5D006451C7 /* GasSensorApp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GasSensorApp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* GasSensorApp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GasSensorApp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		450BDE77240F07450073EFA7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		45ED0082241FFDD200FD988A /* alarm_frenzy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = alarm_frenzy.mp3; path = ../../src/assets/sounds/alarm_frenzy.mp3; sourceTree = "<group>"; };
 		5ADB2CC2889992C89D9BCBC6 /* Pods-GasSensorApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GasSensorApp.debug.xcconfig"; path = "Target Support Files/Pods-GasSensorApp/Pods-GasSensorApp.debug.xcconfig"; sourceTree = "<group>"; };
 		676FBEC7335C108F225C0D76 /* Pods-GasSensorApp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GasSensorApp-tvOS.release.xcconfig"; path = "Target Support Files/Pods-GasSensorApp-tvOS/Pods-GasSensorApp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		87A8D8EA5A120ABD01B48CB8 /* Pods-GasSensorAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GasSensorAppTests.release.xcconfig"; path = "Target Support Files/Pods-GasSensorAppTests/Pods-GasSensorAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		9DB307FDF54F05FDA4DBEA24 /* Pods-GasSensorApp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GasSensorApp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-GasSensorApp-tvOS/Pods-GasSensorApp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		A4BC21D7A0EEDB972D4487B7 /* libPods-GasSensorApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GasSensorApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7484A96348E32DD8D885E17 /* Pods-GasSensorApp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GasSensorApp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-GasSensorApp-tvOSTests/Pods-GasSensorApp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D3431494569344B0B8D6AE53 /* Avenir-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Avenir-Black.ttf"; path = "../src/assets/fonts/Avenir-Black.ttf"; sourceTree = "<group>"; };
 		D480AF2CC2F42946198A032F /* libPods-GasSensorApp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GasSensorApp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EEDE62879BF461F754CD0452 /* Pods-GasSensorApp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GasSensorApp-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-GasSensorApp-tvOSTests/Pods-GasSensorApp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		F73E0EC19DDB1A7D6E076A73 /* Pods-GasSensorAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GasSensorAppTests.debug.xcconfig"; path = "Target Support Files/Pods-GasSensorAppTests/Pods-GasSensorAppTests.debug.xcconfig"; sourceTree = "<group>"; };
-		D3431494569344B0B8D6AE53 /* Avenir-Black.ttf */ = {isa = PBXFileReference; name = "Avenir-Black.ttf"; path = "../src/assets/fonts/Avenir-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +153,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0F7DFCC49DB647EE8D3F1BC6 /* Resources */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				A4BC21D7A0EEDB972D4487B7 /* libPods-GasSensorApp.a */,
@@ -176,6 +179,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		45ED0081241FFD9200FD988A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				45ED0082241FFDD200FD988A /* alarm_frenzy.mp3 */,
+			);
+			name = Resources;
+			path = /Users/dgana/Documents/GasSensorApp/ios/Resources;
+			sourceTree = "<absolute>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,8 +204,8 @@
 				00E356EF1AD99517003FC87E /* GasSensorAppTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+				45ED0081241FFD9200FD988A /* Resources */,
 				2E595410FB5A99CAE34932CA /* Pods */,
-				0F7DFCC49DB647EE8D3F1BC6 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -358,6 +370,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				45ED0083241FFFEB00FD988A /* alarm_frenzy.mp3 in Resources */,
 				450BDE78240F07450073EFA7 /* GoogleService-Info.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				C1FEAAE9442B4507A775EAA2 /* Avenir-Black.ttf in Resources */,
