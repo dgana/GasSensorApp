@@ -134,7 +134,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "iot.gassensorapp"
+        applicationId "com.gassensorapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -186,6 +186,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-push-notification')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:0.61.5"  // From node_modules
     implementation 'com.google.firebase:firebase-analytics:17.2.2'

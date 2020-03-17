@@ -1,13 +1,15 @@
 import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import {Platform} from 'react-native';
+import {SENDER_ID} from 'react-native-dotenv';
 
 class NotificationManager {
   configure = (onRegister, onNotification, onOpenNotification) => {
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: function(token) {
-        console.log('[NotificationManager] onRegister Token:', token);
+        onRegister(token.token);
+        console.log('[NotificationManager] onRegister Token:', token.token);
       },
       // (required) Called when a remote or local notification is opened or received
       onNotification: function(notification) {
@@ -17,8 +19,6 @@ class NotificationManager {
           if (notification.data.openedInForeground) {
             notification.userInteraction = true;
           }
-        } else {
-          notification.userInteraction = true;
         }
 
         if (notification.userInteraction) {
@@ -27,15 +27,27 @@ class NotificationManager {
           onNotification(notification);
         }
 
+        if (Platform.OS === 'android') {
+          notification.userInteraction = true;
+        }
+
         // Only call callback if not from foreground
         if (Platform.OS === 'ios') {
           if (!notification.data.openedInForeground) {
-            notification.finish('backgroundFetchResultNoData');
+            notification.finish(PushNotificationIOS.FetchResult.NoData);
           }
         } else {
-          notification.finish('backgroundFetchResultNoData');
+          notification.finish(PushNotificationIOS.FetchResult.NoData);
         }
       },
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true,
+      },
+      popInitialNotification: true,
+      requestPermissions: true,
+      senderID: SENDER_ID,
     });
   };
 
@@ -90,7 +102,7 @@ class NotificationManager {
   };
 
   unregister = () => {
-    PushNotification.unregister;
+    PushNotification.unregister();
   };
 }
 

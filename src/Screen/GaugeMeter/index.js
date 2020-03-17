@@ -32,6 +32,7 @@ const GaugeMeterScreen = () => {
 
   const onOpenNotification = notify => {
     console.log('[Notification] onOpenNotification ', notify);
+    // eslint-disable-next-line no-alert
     alert('Open Notification');
   };
 
