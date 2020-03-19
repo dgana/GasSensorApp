@@ -4,9 +4,6 @@ import {View, Text, StyleSheet} from 'react-native';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import database from '@react-native-firebase/database';
 import {useAsyncStorage} from '~/utils';
-import Button from '~/component/Button';
-import {notificationManager} from '~/NotificationManager';
-import {SENDER_ID} from 'react-native-dotenv';
 
 const MAX_POINTS = 5000;
 
@@ -14,29 +11,6 @@ const GaugeMeterScreen = () => {
   const [points, setPoints] = React.useState(0);
   const {getItem} = useAsyncStorage('userToken');
   const fill = (points / MAX_POINTS) * 100;
-
-  React.useEffect(() => {
-    notificationManager.configure(
-      onRegister,
-      onNotification,
-      onOpenNotification,
-      SENDER_ID,
-    );
-  }, []);
-
-  const onRegister = token => {
-    console.log('[Notification] Registered ', token);
-  };
-
-  const onNotification = notify => {
-    console.log('[Notification] onNotification ', notify);
-  };
-
-  const onOpenNotification = notify => {
-    console.log('[Notification] onOpenNotification ', notify);
-    // eslint-disable-next-line no-alert
-    alert('Open Notification');
-  };
 
   React.useEffect(() => {
     const callDatabase = async () => {
@@ -53,25 +27,6 @@ const GaugeMeterScreen = () => {
     callDatabase();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const sendNotification = () => {
-    const options = {
-      soundName: 'alarm_frenzy.mp3', // 'default',
-      playSound: true,
-      vibrate: true,
-    };
-    notificationManager.showNotification(
-      1,
-      'App Notification',
-      'LocalNotification',
-      {},
-      options,
-    );
-  };
-
-  const cancelNotification = () => {
-    notificationManager.cancelAllLocalNotification();
-  };
 
   return (
     <View style={styles.container}>
@@ -91,8 +46,6 @@ const GaugeMeterScreen = () => {
           </>
         )}
       </AnimatedCircularProgress>
-      <Button onPress={sendNotification} text="Send Notification" />
-      <Button onPress={cancelNotification} text="Cancel Notification" />
     </View>
   );
 };
