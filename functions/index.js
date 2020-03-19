@@ -24,7 +24,7 @@ exports.sendNotification = functions.database
     // Get FCM Token
     const getToken = await admin
       .database()
-      .ref(`${userId}/notificationToken`)
+      .ref(`${userId}/fcm_token`)
       .once('value');
 
     console.log('FCM Token ', getToken.val());

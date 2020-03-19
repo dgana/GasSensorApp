@@ -31,7 +31,7 @@ const HomeScreen = () => {
       const callDatabase = async () => {
         const idUser = await getItem();
         await database()
-          .ref(`${idUser}/notificationToken`)
+          .ref(`${idUser}/fcm_token`)
           .set(token);
       };
       callDatabase();
