@@ -10,9 +10,47 @@ admin.initializeApp();
 // Send FCM notification to certain user based on ppm level
 exports.sendNotification = functions.database
   .ref('{userId}/{deviceId}/PPM')
-  .onUpdate((change, context) => {
+  .onUpdate(async (change, context) => {
     const userId = context.params.userId;
     const deviceId = context.params.deviceId;
 
-    // const getDeviceTokensPromise = admin.database().ref('')
+    const ppmValue = change.after.val();
+
+    // If no PPM or under 500 we exit the function.
+    if (!ppmValue || ppmValue < 500) {
+      return console.log('User', userId, 'Device', deviceId, 'PPM', ppmValue);
+    }
+
+    // Get FCM Token
+    const getToken = await admin
+      .database()
+      .ref(`${userId}/notificationToken`)
+      .once('value');
+
+    console.log('FCM Token ', getToken.val());
+
+    // Get the user profile.
+    const user = await admin.auth().getUser(userId);
+    const {displayName = '', photoURL = ''} = user;
+
+    console.log('User profile, ', user);
+
+    const body = `${displayName}, device ${deviceId} detected methane gas ${ppmValue} ppm`;
+    const icon = photoURL;
+
+    // Notification details.
+    const payload = {
+      notification: {
+        title: 'Methane Gas Detected',
+        body,
+        icon,
+      },
+    };
+
+    // Send notification
+    const response = await admin
+      .messaging()
+      .sendToDevice(getToken.val(), payload);
+
+    return response;
   });

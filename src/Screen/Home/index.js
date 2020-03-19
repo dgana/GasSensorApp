@@ -1,16 +1,20 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import database from '@react-native-firebase/database';
 
 import Dashboard from '~/screen/Dashboard';
 import Profile from '~/screen/Profile';
 
 import {notificationManager} from '~/NotificationManager';
 import {SENDER_ID} from 'react-native-dotenv';
+import {useAsyncStorage} from '~/utils';
 
 const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => {
+  const {getItem} = useAsyncStorage('userToken');
+
   React.useEffect(() => {
     notificationManager.configure(
       onRegister,
@@ -18,11 +22,22 @@ const HomeScreen = () => {
       onOpenNotification,
       SENDER_ID,
     );
-  }, []);
+  }, [onRegister]);
 
-  const onRegister = token => {
-    console.log('[Notification] Registered ', token);
-  };
+  const onRegister = React.useCallback(
+    token => {
+      console.log('[Notification] Registered ', token);
+
+      const callDatabase = async () => {
+        const idUser = await getItem();
+        await database()
+          .ref(`${idUser}/notificationToken`)
+          .set(token);
+      };
+      callDatabase();
+    },
+    [getItem],
+  );
 
   const onNotification = notify => {
     console.log('[Notification] onNotification ', notify);
