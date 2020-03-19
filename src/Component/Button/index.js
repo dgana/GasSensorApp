@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     height: 52,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: theme.primary,
   },
   loadingButton: {
     position: 'absolute',
@@ -93,7 +94,7 @@ Button.defaultProps = {
   text: '',
   icon: {},
   containerStyle: {},
-  style: {backgroundColor: theme.primary},
+  style: {},
 };
 
 export default Button;

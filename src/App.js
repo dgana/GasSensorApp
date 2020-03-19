@@ -16,6 +16,9 @@ import HomeScreen from '~/screen/Home';
 import SignInScreen from '~/screen/SignIn';
 import SignUpScreen from '~/screen/SignUp';
 import AddDeviceScreen from '~/screen/AddDevice';
+import AddBluetoothScreen from '~/screen/AddBluetooth';
+import AddDeviceIdScreen from '~/screen/AddDeviceId';
+
 import ForgotPasswordScreen from '~/screen/ForgotPassword';
 import PhoneAuthScreen from '~/screen/PhoneAuth';
 import WelcomeScreen from '~/screen/Welcome';
@@ -331,6 +334,16 @@ const App = () => {
                 name="Details"
                 component={DetailsScreen}
                 options={({route}) => ({title: `${route.params.name} Detail`})}
+              />
+              <Stack.Screen
+                name="AddDeviceId"
+                component={AddDeviceIdScreen}
+                options={{title: 'Add Device ID'}}
+              />
+              <Stack.Screen
+                name="AddBluetooth"
+                component={AddBluetoothScreen}
+                options={{title: 'Add Bluetooth Device'}}
               />
             </>
           )}
