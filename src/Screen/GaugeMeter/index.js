@@ -6,6 +6,7 @@ import database from '@react-native-firebase/database';
 import {useAsyncStorage} from '~/utils';
 import Button from '~/component/Button';
 import {notificationManager} from '~/NotificationManager';
+import {SENDER_ID} from 'react-native-dotenv';
 
 const MAX_POINTS = 5000;
 
@@ -19,6 +20,7 @@ const GaugeMeterScreen = () => {
       onRegister,
       onNotification,
       onOpenNotification,
+      SENDER_ID,
     );
   }, []);
 
@@ -45,9 +47,6 @@ const GaugeMeterScreen = () => {
           const value = snapshot.val();
           if (value) {
             setPoints(value.PPM);
-            // if (value.PPM >= 405) {
-            //   sendNotification();
-            // }
           }
         });
     };

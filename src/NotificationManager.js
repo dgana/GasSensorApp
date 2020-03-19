@@ -1,10 +1,9 @@
 import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import {Platform} from 'react-native';
-import {SENDER_ID} from 'react-native-dotenv';
 
 class NotificationManager {
-  configure = (onRegister, onNotification, onOpenNotification) => {
+  configure = (onRegister, onNotification, onOpenNotification, senderId) => {
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: function(token) {
@@ -47,7 +46,7 @@ class NotificationManager {
       },
       popInitialNotification: true,
       requestPermissions: true,
-      senderID: SENDER_ID,
+      senderID: senderId,
     });
   };
 

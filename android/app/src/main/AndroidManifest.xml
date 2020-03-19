@@ -13,12 +13,11 @@
       android:allowBackup="false"
       android:theme="@style/AppTheme">
 
-      <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_name"
-                android:value="rn-push-notification-channel"/>
-      <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description"
-                  android:value="rn-push-notification-channel"/>
-      <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
-                  android:resource="@android:color/white"/>
+      <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_name" android:value="rn-push-notification-channel"/>
+      <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_description" android:value="rn-push-notification-channel"/>
+      <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="rn-push-notification-channel-id" />
+      
+      <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@android:color/white"/>
 
       <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
       <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">
