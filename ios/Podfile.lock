@@ -327,6 +327,8 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
+  - Permission-Notifications (2.0.10):
+    - RNPermissions
   - Protobuf (3.11.4)
   - RCTRequired (0.61.5)
   - RCTTypeSafety (0.61.5):
@@ -536,7 +538,7 @@ PODS:
     - React
   - RNCMaskedView (0.1.7):
     - React
-  - RNCPushNotificationIOS (1.0.7):
+  - RNCPushNotificationIOS (1.1.0):
     - React
   - RNFBApp (6.3.4):
     - Firebase/Core (~> 6.13.0)
@@ -565,6 +567,8 @@ PODS:
   - RNGoogleSignin (3.0.4):
     - GoogleSignIn (~> 5.0.0)
     - React
+  - RNPermissions (2.0.10):
+    - React
   - RNReanimated (1.7.0):
     - React
   - RNScreens (2.3.0):
@@ -581,6 +585,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -616,6 +621,7 @@ DEPENDENCIES:
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-community/google-signin`)"
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -664,6 +670,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  Permission-Notifications:
+    :path: "../node_modules/react-native-permissions/ios/Notifications.podspec"
   RCTRequired:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -728,6 +736,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
     :path: "../node_modules/@react-native-community/google-signin"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -772,6 +782,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
+  Permission-Notifications: c9eb3a2da68dc0f37a8dc67d37bd28d150c5041d
   Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
   RCTRequired: b153add4da6e7dbc44aebf93f3cf4fcae392ddf1
   RCTTypeSafety: 9aa1b91d7f9310fc6eadc3cf95126ffe818af320
@@ -797,7 +808,7 @@ SPEC CHECKSUMS:
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   RNCAsyncStorage: e0dd7c8a36543b4ef84969acd9f8aceba3a92dc2
   RNCMaskedView: 76c40a1d41c3e2535df09246a2b5487f04de0814
-  RNCPushNotificationIOS: eea954fa69537d4a8db898fe1b1a06e2b7e15841
+  RNCPushNotificationIOS: ec3e8c17cda6a92a0bb97a53ec5ecf5771d94d21
   RNFBApp: 7d4006751de8bb5cafa2e8d2e7d94ee250df81db
   RNFBAuth: ed8b865db45f7ded9dbf535e390cba2ba672aede
   RNFBDatabase: 1201eb94eff3ab457d3e898fb5c347ddc67e00db
@@ -805,12 +816,13 @@ SPEC CHECKSUMS:
   RNFBMessaging: 51cc7f6beaf4c4feac6f18ea941bba5854e3d9c6
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNGoogleSignin: a00f87261ea13df9a5cea8deafa6927d6f2c3562
+  RNPermissions: 1008d3511fee0e25739cf81c4af0d1b2248f1053
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
   RNScreens: 03bf608b92ac0acf323f47d8f5b63a8f829340c8
   RNSVG: 7e16ddfc6e00d5aa69c9eb83e699bcce5dcb85d4
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: de7133c8ec4634cdcf11d861cdd5711ba47c9887
+PODFILE CHECKSUM: 0c92ff002b29eeb38542b5dc3a591daedbc5d208
 
-COCOAPODS: 1.9.0
+COCOAPODS: 1.9.1

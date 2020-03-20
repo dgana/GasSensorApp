@@ -5,7 +5,6 @@ import {View, StyleSheet} from 'react-native';
 import ErrorMessage from '~/component/ErrorMessage';
 import TextInput from '~/component/TextInput';
 import Button from '~/component/Button';
-import theme from '~/utils/theme';
 
 const AddDeviceIdScreen = props => {
   const [deviceName, setDeviceName] = React.useState('');

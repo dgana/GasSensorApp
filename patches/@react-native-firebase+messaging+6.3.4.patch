@@ -1,0 +1,30 @@
+diff --git a/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessagingAppDelegateInterceptor.m b/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessagingAppDelegateInterceptor.m
+index c2150a5..60f6083 100644
+--- a/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessagingAppDelegateInterceptor.m
++++ b/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessagingAppDelegateInterceptor.m
+@@ -44,6 +44,7 @@ - (void)setPromiseResolve:(RCTPromiseResolveBlock)resolve andPromiseReject:(RCTP
+ 
+ // called when `registerForRemoteNotifications` completes successfully
+ - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
++  [FIRMessaging messaging].APNSToken = deviceToken;
+   if (_registerPromiseResolver != nil) {
+     _registerPromiseResolver(@([RCTConvert BOOL:@([UIApplication sharedApplication].isRegisteredForRemoteNotifications)]));
+     _registerPromiseResolver = nil;
+diff --git a/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessagingModule.m b/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessagingModule.m
+index 89f1d4a..f997228 100644
+--- a/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessagingModule.m
++++ b/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessagingModule.m
+@@ -181,13 +181,6 @@ - (NSDictionary *)constantsToExport {
+   (RCTPromiseResolveBlock) resolve
+     : (RCTPromiseRejectBlock) reject
+ ) {
+-  if ([UIApplication sharedApplication].isRegisteredForRemoteNotifications == YES) {
+-    return resolve(@([RCTConvert BOOL:@(YES)]));
+-  }
+-
+-  [[RNFBMessagingAppDelegateInterceptor sharedInstance] setPromiseResolve:resolve andPromiseReject:reject];
+-  [[UIApplication sharedApplication] registerForRemoteNotifications];
+-}
+ 
+ RCT_EXPORT_METHOD(unregisterForRemoteNotifications:
+   (RCTPromiseResolveBlock) resolve

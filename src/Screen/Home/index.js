@@ -1,7 +1,9 @@
 import React from 'react';
+import {Platform} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import database from '@react-native-firebase/database';
+import messaging from '@react-native-firebase/messaging';
 
 import Dashboard from '~/screen/Dashboard';
 import Profile from '~/screen/Profile';
@@ -15,6 +17,31 @@ const Tab = createBottomTabNavigator();
 const HomeScreen = () => {
   const {getItem} = useAsyncStorage('userToken');
 
+  const writeDatabase = React.useCallback(
+    async fcmToken => {
+      const idUser = await getItem();
+      await database()
+        .ref(`${idUser}/fcm_token`)
+        .set(fcmToken);
+    },
+    [getItem],
+  );
+
+  React.useEffect(() => {
+    const registerNotificationIOS = async () => {
+      try {
+        await messaging().registerForRemoteNotifications();
+        const fcmToken = await messaging().getToken();
+        console.log('FCM TOKEN ', fcmToken);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (Platform.OS === 'ios') {
+      registerNotificationIOS();
+    }
+  }, []);
+
   React.useEffect(() => {
     notificationManager.configure(
       onRegister,
@@ -24,20 +51,9 @@ const HomeScreen = () => {
     );
   }, [onRegister]);
 
-  const onRegister = React.useCallback(
-    token => {
-      console.log('[Notification] Registered ', token);
-
-      const callDatabase = async () => {
-        const idUser = await getItem();
-        await database()
-          .ref(`${idUser}/fcm_token`)
-          .set(token);
-      };
-      callDatabase();
-    },
-    [getItem],
-  );
+  const onRegister = React.useCallback(token => writeDatabase(token), [
+    writeDatabase,
+  ]);
 
   const onNotification = notify => {
     console.log('[Notification] onNotification ', notify);
