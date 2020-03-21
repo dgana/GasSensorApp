@@ -3,7 +3,7 @@ import React from 'react';
 import {Platform} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import database from '@react-native-firebase/database';
+import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 
 import Dashboard from '~/screen/Dashboard';
@@ -16,16 +16,24 @@ import {useAsyncStorage} from '~/utils';
 const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => {
-  const {getItem} = useAsyncStorage('userToken');
+  const {getItem: getAsyncToken} = useAsyncStorage('userToken');
+  const {setItem: setAsyncFCM} = useAsyncStorage('fcmToken');
 
-  const writeDatabase = React.useCallback(
+  const writeFirestore = React.useCallback(
     async fcmToken => {
-      const idUser = await getItem();
-      await database()
-        .ref(`${idUser}/fcm_token`)
-        .set(fcmToken);
+      await setAsyncFCM(fcmToken);
+      const idUser = await getAsyncToken();
+      const getUserDoc = await firestore()
+        .collection('users')
+        .doc(idUser);
+      const getFields = await getUserDoc.get();
+      const getPrevToken = await getFields.get('fcm_token');
+      if (!getPrevToken.includes(fcmToken)) {
+        const fcm_token = [...getPrevToken, fcmToken];
+        await getUserDoc.set({fcm_token}, {merge: true});
+      }
     },
-    [getItem],
+    [setAsyncFCM, getAsyncToken],
   );
 
   /**
@@ -38,7 +46,8 @@ const HomeScreen = () => {
         const granted = await messaging().registerForRemoteNotifications();
         if (granted) {
           const fcmToken = await messaging().getToken();
-          writeDatabase(fcmToken);
+          console.log('FCM TOKEN ', fcmToken);
+          writeFirestore(fcmToken);
         }
       } catch (error) {
         console.warn(error);
@@ -59,9 +68,14 @@ const HomeScreen = () => {
     );
   }, [onRegister]);
 
-  const onRegister = React.useCallback(token => writeDatabase(token), [
-    writeDatabase,
-  ]);
+  const onRegister = React.useCallback(
+    token => {
+      if (Platform.OS === 'android') {
+        writeFirestore(token);
+      }
+    },
+    [writeFirestore],
+  );
 
   const onNotification = notify => {
     console.log('[Notification] onNotification ', notify);

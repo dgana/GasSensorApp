@@ -6,9 +6,9 @@ class NotificationManager {
   configure = (onRegister, onNotification, onOpenNotification, senderId) => {
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
-      onRegister: function(token) {
-        onRegister(token.token);
-        console.log('[NotificationManager] onRegister Token:', token.token);
+      onRegister: function(response) {
+        onRegister(response.token);
+        console.log('[NotificationManager] onRegister Token:', response.token);
       },
       // (required) Called when a remote or local notification is opened or received
       onNotification: function(notification) {

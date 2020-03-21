@@ -1,7 +1,10 @@
 const functions = require('firebase-functions');
 
-// Create and Deploy Your Cloud Functions
-// https://firebase.google.com/docs/functions/write-firebase-functions
+/**
+ * Create and Deploy Your Cloud Functions
+ * @see https://firebase.google.com/docs/functions/write-firebase-functions
+ * @see https://firebase.google.com/docs/reference/admin/node/admin.messaging.Messaging
+ */
 
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 const admin = require('firebase-admin');
@@ -22,12 +25,19 @@ exports.sendNotification = functions.database
     }
 
     // Get FCM Token
-    const getToken = await admin
-      .database()
-      .ref(`${userId}/fcm_token`)
-      .once('value');
+    const getUserData = await admin
+      .firestore()
+      .collection('users')
+      .doc(userId)
+      .get();
 
-    console.log('FCM Token ', getToken.val());
+    const getToken = getUserData.get('fcm_token');
+
+    if (!getToken) {
+      return console.log('user has no fcm token!');
+    }
+
+    console.log('FCM Token ', getToken);
 
     // Get the user profile.
     const user = await admin.auth().getUser(userId);
@@ -49,9 +59,7 @@ exports.sendNotification = functions.database
     };
 
     // Send notification
-    const response = await admin
-      .messaging()
-      .sendToDevice(getToken.val(), payload);
+    const response = await admin.messaging().sendToDevice(getToken, payload);
 
     return response;
   });

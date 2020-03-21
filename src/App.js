@@ -41,7 +41,10 @@ export const AuthContext = React.createContext();
 
 const App = () => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
-  const {getItem, setItem} = useAsyncStorage('userToken');
+  const {getItem: getAsyncToken, setItem: setAsyncToken} = useAsyncStorage(
+    'userToken',
+  );
+  const {getItem: getAsyncFCM} = useAsyncStorage('fcmToken');
 
   // Handle user state changes
   function onAuthStateChanged(user) {
@@ -67,7 +70,7 @@ const App = () => {
       let token;
 
       try {
-        token = await getItem();
+        token = await getAsyncToken();
       } catch (e) {
         console.warn(e);
       }
@@ -128,7 +131,7 @@ const App = () => {
           }
 
           const userInfo = {name, email, phoneNumber, photoURL};
-          await setItem(uid);
+          await setAsyncToken(uid);
           dispatch({type: SIGN_IN, token: uid, userInfo});
         } catch (err) {
           dispatch({type: BUTTON_LOADING, loading: false});
@@ -143,6 +146,17 @@ const App = () => {
             {
               text: 'Yes',
               onPress: async () => {
+                const idUser = await getAsyncToken();
+                const fcmToken = await getAsyncFCM();
+
+                const getUserDoc = await firestore()
+                  .collection('users')
+                  .doc(idUser);
+                const getFields = await getUserDoc.get();
+                const getPrevToken = await getFields.get('fcm_token');
+                const fcm_token = getPrevToken.filter(x => x !== fcmToken);
+                await getUserDoc.set({fcm_token}, {merge: true});
+
                 await clearStorage();
                 const isGoogleSignIn = await GoogleSignin.isSignedIn();
                 if (isGoogleSignIn) {
@@ -219,7 +233,7 @@ const App = () => {
           const user = await phone.confirm(Object.values(code).join(''));
           const {uid, displayName: name, email, phoneNumber, photoURL} = user;
           const userInfo = {name, email, phoneNumber, photoURL};
-          await setItem(uid);
+          await setAsyncToken(uid);
           dispatch({type: SIGN_IN, token: uid, userInfo});
         } catch (err) {
           dispatch({type: BUTTON_LOADING, loading: false});
@@ -244,7 +258,7 @@ const App = () => {
           const user = firebaseUserCredential.user.toJSON();
           const {uid, displayName: name, email, phoneNumber, photoURL} = user;
           const userInfo = {name, email, phoneNumber, photoURL};
-          await setItem(uid);
+          await setAsyncToken(uid);
           dispatch({type: SIGN_IN, token: uid, userInfo});
         } catch (err) {
           if (err.code === statusCodes.SIGN_IN_CANCELLED) {
