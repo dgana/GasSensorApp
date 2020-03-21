@@ -1,3 +1,4 @@
+/* eslint-disable eslint-comments/no-unlimited-disable */
 import React from 'react';
 import {Platform} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -30,9 +31,11 @@ const HomeScreen = () => {
   React.useEffect(() => {
     const registerNotificationIOS = async () => {
       try {
-        await messaging().registerForRemoteNotifications();
-        const fcmToken = await messaging().getToken();
-        console.log('FCM TOKEN ', fcmToken);
+        const granted = await messaging().registerForRemoteNotifications();
+        if (granted) {
+          const fcmToken = await messaging().getToken();
+          writeDatabase(fcmToken);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -40,6 +43,7 @@ const HomeScreen = () => {
     if (Platform.OS === 'ios') {
       registerNotificationIOS();
     }
+    // eslint-disable-next-line
   }, []);
 
   React.useEffect(() => {
