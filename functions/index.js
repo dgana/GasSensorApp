@@ -44,6 +44,7 @@ exports.sendNotification = functions.database
         title: 'Methane Gas Detected',
         body,
         icon,
+        sound: 'alarm_frenzy.mp3',
       },
     };
 

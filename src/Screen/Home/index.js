@@ -28,6 +28,10 @@ const HomeScreen = () => {
     [getItem],
   );
 
+  /**
+   * Trigger iOS only device to register for remote
+   * notification and save it to Firestore
+   */
   React.useEffect(() => {
     const registerNotificationIOS = async () => {
       try {
@@ -37,7 +41,7 @@ const HomeScreen = () => {
           writeDatabase(fcmToken);
         }
       } catch (error) {
-        console.log(error);
+        console.warn(error);
       }
     };
     if (Platform.OS === 'ios') {
