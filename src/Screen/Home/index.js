@@ -15,7 +15,7 @@ import {useAsyncStorage} from '~/utils';
 
 const Tab = createBottomTabNavigator();
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const {getItem: getAsyncToken} = useAsyncStorage('userToken');
   const {setItem: setAsyncFCM} = useAsyncStorage('fcmToken');
 
@@ -66,6 +66,7 @@ const HomeScreen = () => {
       onOpenNotification,
       SENDER_ID,
     );
+    // eslint-disable-next-line
   }, [onRegister]);
 
   const onRegister = React.useCallback(
@@ -83,6 +84,7 @@ const HomeScreen = () => {
 
   const onOpenNotification = notify => {
     console.log('[Notification] onOpenNotification ', notify);
+    navigation.navigate('Details', {name: notify.data.name});
   };
 
   return (

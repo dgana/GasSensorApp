@@ -50,6 +50,9 @@ exports.sendNotification = functions.database
 
     // Notification details.
     const payload = {
+      data: {
+        name: 'Sensor A', // WIP: should be the name of device from firestore
+      },
       notification: {
         title: 'Methane Gas Detected',
         body,
