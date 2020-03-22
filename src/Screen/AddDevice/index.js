@@ -19,6 +19,7 @@ const AddDeviceScreen = ({navigation}) => {
     <View style={styles.container}>
       <FlatList
         data={DUMMY_DATA}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => (
           <RenderItem
             navigation={navigation}
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
 });
 
 AddDeviceScreen.propTypes = {
-  navigation: PropTypes.func.isRequired,
+  navigation: PropTypes.object.isRequired,
 };
 
 export default AddDeviceScreen;
