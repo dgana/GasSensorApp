@@ -7,16 +7,19 @@ import {useAsyncStorage} from '~/utils';
 
 const MAX_POINTS = 5000;
 
-const GaugeMeterScreen = () => {
+const GaugeMeterScreen = ({route}) => {
+  const {
+    params: {deviceId},
+  } = route;
   const [points, setPoints] = React.useState(0);
   const {getItem} = useAsyncStorage('userToken');
   const fill = (points / MAX_POINTS) * 100;
 
   React.useEffect(() => {
     const callDatabase = async () => {
-      const idUser = await getItem();
+      const userId = await getItem();
       await database()
-        .ref(`${idUser}/Methane01`)
+        .ref(`${userId}/${deviceId}`)
         .on('value', function(snapshot) {
           const value = snapshot.val();
           if (value) {

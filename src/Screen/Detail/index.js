@@ -8,12 +8,13 @@ import Chart from '~/screen/Chart';
 
 const Tab = createBottomTabNavigator();
 
-const DetailScreen = props => {
+const DetailScreen = ({route}) => {
   return (
     <Tab.Navigator>
       <Tab.Screen
         name="GaugeMeter"
         component={GaugeMeter}
+        initialParams={route.params}
         options={{
           tabBarLabel: 'Gauge Meter',
           tabBarIcon: ({color, size}) => (
@@ -24,6 +25,7 @@ const DetailScreen = props => {
       <Tab.Screen
         name="Chart"
         component={Chart}
+        initialParams={route.params}
         options={{
           tabBarLabel: 'Chart',
           tabBarIcon: ({color, size}) => (

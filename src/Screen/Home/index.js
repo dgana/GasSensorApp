@@ -22,10 +22,10 @@ const HomeScreen = ({navigation}) => {
   const writeFirestore = React.useCallback(
     async fcmToken => {
       await setAsyncFCM(fcmToken);
-      const idUser = await getAsyncToken();
+      const userId = await getAsyncToken();
       const getUserDoc = await firestore()
         .collection('users')
-        .doc(idUser);
+        .doc(userId);
       const getFields = await getUserDoc.get();
       const getPrevToken = await getFields.get('fcm_token');
       if (!getPrevToken.includes(fcmToken)) {
@@ -84,7 +84,10 @@ const HomeScreen = ({navigation}) => {
 
   const onOpenNotification = notify => {
     console.log('[Notification] onOpenNotification ', notify);
-    navigation.navigate('Details', {name: notify.data.name});
+    const {
+      data: {deviceName, deviceId},
+    } = notify;
+    navigation.navigate('Details', {deviceName, deviceId});
   };
 
   return (

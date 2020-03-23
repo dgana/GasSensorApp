@@ -25,25 +25,25 @@ exports.sendNotification = functions.database
     }
 
     // Get FCM Token
-    const getUserData = await admin
+    const userPayload = await admin
       .firestore()
       .collection('users')
       .doc(userId)
       .get();
 
-    const getToken = getUserData.get('fcm_token');
+    const getToken = await userPayload.get('fcm_token');
+    const getDevice = await userPayload.get('devices');
+
+    const device = getDevice.find(x => x.id === deviceId);
+    const {name: deviceName} = device;
 
     if (!getToken) {
-      return console.log('user has no fcm token!');
+      return console.log('User has no fcm token!');
     }
-
-    console.log('FCM Token ', getToken);
 
     // Get the user profile.
     const user = await admin.auth().getUser(userId);
     const {displayName = '', photoURL = ''} = user;
-
-    console.log('User profile, ', user);
 
     const body = `${displayName}, device ${deviceId} detected methane gas ${ppmValue} ppm`;
     const icon = photoURL;
@@ -51,7 +51,8 @@ exports.sendNotification = functions.database
     // Notification details.
     const payload = {
       data: {
-        name: 'Sensor A', // WIP: should be the name of device from firestore
+        deviceName,
+        deviceId,
       },
       notification: {
         title: 'Methane Gas Detected',

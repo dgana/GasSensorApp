@@ -1,50 +1,48 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import firestore from '@react-native-firebase/firestore';
+import {useAsyncStorage} from '~/utils';
 
-const DUMMY_DATA = [
-  {
-    name: 'Sensor A',
-    id: 'F6JFY8F-ASIFHSFO-ASFHSFOI',
-  },
-  {
-    name: 'Sensor B',
-    id: 'ASD2HK9-A8JDH1S2-OIU83HF',
-  },
-  {
-    name: 'Sensor C',
-    id: 'GA2JS01-0DAK1J21-LS8JSN1',
-  },
-  {
-    name: 'Sensor D',
-    id: 'F6JFY1F-KZIFHSFO-AFHSFO8',
-  },
-  {
-    name: 'Sensor E',
-    id: 'ALP2HT9-A8JDH1S2-OIZ83OF',
-  },
-];
+const DashboardScreen = ({navigation}) => {
+  const [data, setData] = React.useState([]);
+  const {getItem} = useAsyncStorage('userToken');
 
-const DashboardScreen = ({navigation}) => (
-  <View style={styles.container}>
-    <FlatList
-      data={DUMMY_DATA}
-      renderItem={({item}) => (
-        <RenderItem navigation={navigation} name={item.name} id={item.id} />
-      )}
-    />
-    <TouchableOpacity
-      onPress={() => navigation.navigate('AddDevice')}
-      style={styles.addButton}>
-      <Icon name="plus" size={30} color="#5588EE" />
-    </TouchableOpacity>
-  </View>
-);
+  React.useEffect(() => {
+    const callUserDevices = async () => {
+      const userId = await getItem();
+      const userPayload = await firestore()
+        .collection('users')
+        .doc(userId)
+        .get();
+      const getDevices = await userPayload.get('devices');
+      setData(getDevices);
+    };
+    callUserDevices();
+  }, [getItem, setData]);
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={data}
+        renderItem={({item}) => (
+          <RenderItem navigation={navigation} name={item.name} id={item.id} />
+        )}
+      />
+      <TouchableOpacity
+        onPress={() => navigation.navigate('AddDevice')}
+        style={styles.addButton}>
+        <Icon name="plus" size={30} color="#5588EE" />
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const RenderItem = ({name, id, navigation}) => {
+  const params = {deviceName: name, deviceId: id};
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Details', {name})}
+      onPress={() => navigation.navigate('Details', params)}
       style={styles.item}>
       <Text style={styles.text}>{name}</Text>
       <Text style={styles.subtext}>{id}</Text>

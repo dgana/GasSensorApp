@@ -347,7 +347,9 @@ const App = () => {
               <Stack.Screen
                 name="Details"
                 component={DetailsScreen}
-                options={({route}) => ({title: `${route.params.name} Detail`})}
+                options={({route}) => ({
+                  title: route.params.deviceName || 'Detail',
+                })}
               />
               <Stack.Screen
                 name="AddDeviceId"
