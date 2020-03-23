@@ -1,11 +1,19 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import firestore from '@react-native-firebase/firestore';
 import {useAsyncStorage} from '~/utils';
 
 const DashboardScreen = ({navigation}) => {
   const [data, setData] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
   const {getItem} = useAsyncStorage('userToken');
 
   React.useEffect(() => {
@@ -17,18 +25,27 @@ const DashboardScreen = ({navigation}) => {
         .get();
       const getDevices = await userPayload.get('devices');
       setData(getDevices);
+      setIsLoading(false);
     };
     callUserDevices();
   }, [getItem, setData]);
 
+  const loadingStyle = isLoading
+    ? {alignItems: 'center', justifyContent: 'center'}
+    : {};
+
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={data}
-        renderItem={({item}) => (
-          <RenderItem navigation={navigation} name={item.name} id={item.id} />
-        )}
-      />
+    <View style={[styles.container, loadingStyle]}>
+      {isLoading ? (
+        <ActivityIndicator animating={isLoading} size="large" color="black" />
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={({item}) => (
+            <RenderItem navigation={navigation} name={item.name} id={item.id} />
+          )}
+        />
+      )}
       <TouchableOpacity
         onPress={() => navigation.navigate('AddDevice')}
         style={styles.addButton}>

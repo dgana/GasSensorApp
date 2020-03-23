@@ -337,7 +337,7 @@ const App = () => {
               <Stack.Screen
                 name="Home"
                 component={HomeScreen}
-                options={{title: 'Home'}}
+                options={{title: 'Dashboard'}}
               />
               <Stack.Screen
                 name="AddDevice"
