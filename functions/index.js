@@ -16,37 +16,27 @@ exports.sendNotification = functions.database
   .onUpdate(async (change, context) => {
     const userId = context.params.userId;
     const deviceId = context.params.deviceId;
-
     const ppmValue = change.after.val();
 
-    // If no PPM or under 500 we exit the function.
-    if (!ppmValue || ppmValue < 500) {
-      return console.log('User', userId, 'Device', deviceId, 'PPM', ppmValue);
-    }
-
-    // Get FCM Token
     const userPayload = await admin
       .firestore()
       .collection('users')
       .doc(userId)
       .get();
 
-    const getToken = await userPayload.get('fcm_token');
-    const getDevice = await userPayload.get('devices');
+    const userData = await userPayload.data();
+    const {fcm_token, name, devices} = userData;
 
-    const device = getDevice.find(x => x.id === deviceId);
-    const {name: deviceName} = device;
+    const device = devices.find(x => x.id === deviceId);
+    const {name: deviceName, config} = device;
 
-    if (!getToken) {
-      return console.log('User has no fcm token!');
+    console.log('Firestore Device ', device);
+
+    if (ppmValue < config.limit) {
+      return console.log('User', userId, 'Device', deviceId, 'PPM', ppmValue);
     }
 
-    // Get the user profile.
-    const user = await admin.auth().getUser(userId);
-    const {displayName = '', photoURL = ''} = user;
-
-    const body = `${displayName}, device ${deviceId} detected methane gas ${ppmValue} ppm`;
-    const icon = photoURL;
+    const body = `${name}, device ${deviceName} detected methane gas ${ppmValue} ppm`;
 
     // Notification details.
     const payload = {
@@ -56,14 +46,13 @@ exports.sendNotification = functions.database
       },
       notification: {
         title: 'Methane Gas Detected',
-        body,
-        icon,
         sound: 'alarm_frenzy.mp3',
+        body,
       },
     };
 
     // Send notification
-    const response = await admin.messaging().sendToDevice(getToken, payload);
+    const response = await admin.messaging().sendToDevice(fcm_token, payload);
 
     return response;
   });

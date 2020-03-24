@@ -2,8 +2,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import {View, Text, StyleSheet} from 'react-native';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
-import database from '@react-native-firebase/database';
-import {useAsyncStorage} from '~/utils';
+import {useRealtimeDatabase} from '~/hooks';
 
 const MAX_POINTS = 5000;
 
@@ -11,25 +10,8 @@ const GaugeMeterScreen = ({route}) => {
   const {
     params: {deviceId},
   } = route;
-  const [points, setPoints] = React.useState(0);
-  const {getItem} = useAsyncStorage('userToken');
-  const fill = (points / MAX_POINTS) * 100;
-
-  React.useEffect(() => {
-    const callDatabase = async () => {
-      const userId = await getItem();
-      await database()
-        .ref(`${userId}/${deviceId}`)
-        .on('value', function(snapshot) {
-          const value = snapshot.val();
-          if (value) {
-            setPoints(value.PPM);
-          }
-        });
-    };
-    callDatabase();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const {PPM, color} = useRealtimeDatabase(deviceId);
+  const fill = (PPM / MAX_POINTS) * 100;
 
   return (
     <View style={styles.container}>
@@ -38,7 +20,7 @@ const GaugeMeterScreen = ({route}) => {
         width={30}
         backgroundWidth={24}
         fill={fill}
-        tintColor="#00e0ff"
+        tintColor={color}
         backgroundColor="#3d5875">
         {x => (
           <>
