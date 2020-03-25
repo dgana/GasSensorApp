@@ -50,7 +50,11 @@ function SignInScreen({navigation}) {
           onPressHide={setPasswordVisibility}
         />
       </View>
-      <Button onPress={onPressButton} loading={buttonLoading} text="Sign In" />
+      <Button
+        onPress={onPressButton}
+        isLoading={buttonLoading}
+        text="Sign In"
+      />
       <LinkText
         onPress={() => navigation.navigate('SignUp')}
         description="New to GasSensorApp?"

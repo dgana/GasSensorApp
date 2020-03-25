@@ -18,6 +18,7 @@ import SignUpScreen from '~/screen/SignUp';
 import AddDeviceScreen from '~/screen/AddDevice';
 import AddBluetoothScreen from '~/screen/AddBluetooth';
 import AddDeviceIdScreen from '~/screen/AddDeviceId';
+import AddSSIDScreen from '~/screen/AddSSID';
 
 import ForgotPasswordScreen from '~/screen/ForgotPassword';
 import PhoneAuthScreen from '~/screen/PhoneAuth';
@@ -355,6 +356,14 @@ const App = () => {
                 name="AddDeviceId"
                 component={AddDeviceIdScreen}
                 options={{title: 'Add Device ID'}}
+              />
+              <Stack.Screen
+                name="AddSSID"
+                component={AddSSIDScreen}
+                options={({route}) => ({
+                  title:
+                    `Connect ${route.params.deviceName}` || 'Connect Device',
+                })}
               />
               <Stack.Screen
                 name="AddBluetooth"

@@ -36,7 +36,7 @@ function WelcomeScreen({navigation}) {
           onPress={() => googleLogin({navigation})}
           text="Connect with Google"
           icon={{name: 'google', color: 'white', size: 18}}
-          loading={buttonLoading}
+          isLoading={buttonLoading}
         />
         <Button
           containerStyle={styles.buttonMargin}

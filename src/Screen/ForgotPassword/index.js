@@ -44,7 +44,7 @@ function ForgotPasswordScreen({navigation}) {
       <Button
         style={styles.button}
         onPress={onPressButton}
-        loading={buttonLoading}
+        isLoading={buttonLoading}
         text="Reset Password"
       />
       <LinkText

@@ -119,7 +119,7 @@ function PhoneVerificationScreen({navigation}) {
           </View>
         </View>
       </View>
-      <Button onPress={onPressButton} loading={buttonLoading} text="Verify" />
+      <Button onPress={onPressButton} isLoading={buttonLoading} text="Verify" />
       <LinkText
         onPress={onPressLink}
         description="Already have an account?"

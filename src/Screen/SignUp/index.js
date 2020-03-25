@@ -53,7 +53,11 @@ function SignUpScreen({navigation}) {
           onPressHide={setPasswordVisibility}
         />
       </View>
-      <Button onPress={onPressButton} loading={buttonLoading} text="Sign Up" />
+      <Button
+        onPress={onPressButton}
+        isLoading={buttonLoading}
+        text="Sign Up"
+      />
       <LinkText
         onPress={onPressLinkText}
         description="Already have an account?"

@@ -60,7 +60,7 @@ function PhoneAuthScreen({navigation}) {
       </View>
       <Button
         onPress={onPressButton}
-        loading={buttonLoading}
+        isLoading={buttonLoading}
         text="Get Verification Code"
       />
       <LinkText

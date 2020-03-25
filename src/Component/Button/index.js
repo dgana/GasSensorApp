@@ -12,7 +12,7 @@ import theme from '~/utils/theme';
 
 const Button = ({
   onPress,
-  loading,
+  isLoading,
   text,
   icon,
   style,
@@ -24,7 +24,7 @@ const Button = ({
     <View style={containerStyle} {...restProps}>
       <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
         <View style={styles.buttonView}>
-          {icon && !loading && (
+          {icon && !isLoading && (
             <IconMaterial
               name={icon.name}
               color={icon.color}
@@ -32,20 +32,20 @@ const Button = ({
               style={[styles.icon, icon.style]}
             />
           )}
-          {text ? <ButtonText loading={loading} text={text} /> : children}
+          {text ? <ButtonText isLoading={isLoading} text={text} /> : children}
         </View>
       </TouchableOpacity>
-      {loading && (
+      {isLoading && (
         <View style={styles.loadingButton}>
-          <ActivityIndicator animating={loading} size="large" color="white" />
+          <ActivityIndicator animating={isLoading} size="large" color="white" />
         </View>
       )}
     </View>
   );
 };
 
-const ButtonText = ({loading, text}) => (
-  <Text style={styles.text}>{loading ? '' : text}</Text>
+const ButtonText = ({isLoading, text}) => (
+  <Text style={styles.text}>{isLoading ? '' : text}</Text>
 );
 
 const styles = StyleSheet.create({
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 
 Button.propTypes = {
   onPress: PropTypes.func.isRequired,
-  loading: PropTypes.bool,
+  isLoading: PropTypes.bool,
   text: PropTypes.string,
   icon: PropTypes.object,
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
@@ -90,7 +90,7 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  loading: false,
+  isLoading: false,
   text: '',
   icon: {},
   containerStyle: {},

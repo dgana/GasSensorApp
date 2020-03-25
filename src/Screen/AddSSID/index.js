@@ -9,14 +9,21 @@ import theme from '~/utils/theme';
 import {useAsyncStorage} from '~/utils';
 import firestore from '@react-native-firebase/firestore';
 
-const AddDeviceIdScreen = ({navigation}) => {
-  const [deviceName, setDeviceName] = React.useState('');
-  const [deviceId, setDeviceId] = React.useState('');
+const AddSSIDScreen = ({navigation, route}) => {
+  const {deviceName, deviceId} = route.params;
+  const [ssid, setssid] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [hidePassword, setHidePassword] = React.useState(true);
+
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const {getItem: getAsyncToken} = useAsyncStorage('userToken');
 
-  const writeFirestore = async (name, id) => {
+  const setPasswordVisibility = () => {
+    setHidePassword(state => !state);
+  };
+
+  const writeFirestore = async (name, pass) => {
     try {
       const userId = await getAsyncToken();
       const device = await firestore()
@@ -25,24 +32,36 @@ const AddDeviceIdScreen = ({navigation}) => {
       const getFields = await device.get();
       const currentDevices = getFields.get('devices');
 
-      const config = {timeout: 5, limit: 1000};
-      const devices = [...currentDevices, {name, id, config}];
+      const devices = currentDevices.map(x => {
+        if (x.id === deviceId) {
+          return {
+            ...x,
+            config: {
+              ...x.config,
+              ssid: name,
+              password: pass,
+            },
+          };
+        } else {
+          return x;
+        }
+      });
 
       await device.update({devices});
       setIsLoading(false);
-      Alert.alert(`Device ${name} added`);
-      navigation.navigate('AddSSID', {deviceName: name, deviceId: id});
+      Alert.alert(`Device ${deviceName} connected`);
+      navigation.navigate('Dashboard');
     } catch (error) {
       console.log(error);
     }
   };
 
   const onPressButton = () => {
-    if (deviceName && deviceId) {
+    if (ssid && password) {
       setIsLoading(true);
-      writeFirestore(deviceName, deviceId);
+      writeFirestore(ssid, password);
     } else {
-      setErrorMessage('Device name and Device ID is required');
+      setErrorMessage('SSID and password is required');
     }
   };
 
@@ -53,20 +72,19 @@ const AddDeviceIdScreen = ({navigation}) => {
         setErrorMessage={setErrorMessage}
       />
       <View style={styles.form}>
+        <TextInput label="SSID *" value={ssid} onChangeText={setssid} />
         <TextInput
-          label="Device Name *"
-          value={deviceName}
-          onChangeText={setDeviceName}
-        />
-        <TextInput
-          label="Device ID *"
-          value={deviceId}
-          onChangeText={setDeviceId}
+          label="Password *"
+          value={password}
+          onChangeText={setPassword}
+          isPassword
+          isHidden={hidePassword}
+          onPressHide={setPasswordVisibility}
         />
         <Button
           style={styles.button}
           onPress={onPressButton}
-          text="Add Device"
+          text="Connect Device"
           isLoading={isLoading}
         />
       </View>
@@ -88,6 +106,6 @@ const styles = StyleSheet.create({
   },
 });
 
-AddDeviceIdScreen.propTypes = {};
+AddSSIDScreen.propTypes = {};
 
-export default AddDeviceIdScreen;
+export default AddSSIDScreen;
