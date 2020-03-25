@@ -50,7 +50,7 @@ const HomeScreen = ({navigation}) => {
           writeFirestore(fcmToken);
         }
       } catch (error) {
-        console.warn(error);
+        console.log(error);
       }
     };
     if (Platform.OS === 'ios') {

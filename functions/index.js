@@ -51,8 +51,12 @@ exports.sendNotification = functions.database
       },
     };
 
+    console.log('FCM Tokens ', fcm_token);
+
     // Send notification
     const response = await admin.messaging().sendToDevice(fcm_token, payload);
+
+    console.log('Messaging send to device response ', response);
 
     return response;
   });

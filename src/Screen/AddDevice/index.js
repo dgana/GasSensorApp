@@ -2,15 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {View, FlatList, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import theme from '~/utils/theme';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const DUMMY_DATA = [
   {
     name: 'Input Device ID',
     path: 'AddDeviceId',
+    icon: 'format-list-bulleted-square',
   },
   {
-    name: 'Scan Bluetooth Devices',
+    name: 'Scan Bluetooth Devices (BLE)',
     path: 'AddBluetooth',
+    icon: 'bluetooth-settings',
   },
 ];
 
@@ -25,6 +29,7 @@ const AddDeviceScreen = ({navigation}) => {
             navigation={navigation}
             name={item.name}
             path={item.path}
+            icon={item.icon}
           />
         )}
       />
@@ -32,12 +37,18 @@ const AddDeviceScreen = ({navigation}) => {
   );
 };
 
-const RenderItem = ({name, path, navigation}) => {
+const RenderItem = ({name, path, icon, navigation}) => {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate(path)}
       style={styles.item}>
-      <Text style={styles.text}>{name}</Text>
+      <View style={styles.flexRow}>
+        <Icon style={styles.icon} name={icon} size={24} color={theme.black} />
+        <Text style={styles.text}>{name}</Text>
+      </View>
+      <View style={styles.box}>
+        <Icon name="arrow-right" size={24} color="#5588EE" />
+      </View>
     </TouchableOpacity>
   );
 };
@@ -45,11 +56,21 @@ const RenderItem = ({name, path, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: theme.lightGray,
+    paddingTop: 12,
+  },
+  icon: {
+    marginRight: 12,
   },
   item: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     padding: 12,
-    borderWidth: 1,
-    borderColor: 'rgb(230,230,230)',
+    paddingLeft: 0,
+    borderBottomColor: theme.lightWhite,
+    borderBottomWidth: 1.5,
+    marginVertical: 8,
+    marginHorizontal: 12,
   },
   text: {
     fontSize: 18,
@@ -58,6 +79,12 @@ const styles = StyleSheet.create({
   subtext: {
     fontSize: 16,
     color: 'rgb(150,150,150)',
+  },
+  flexRow: {
+    flexDirection: 'row',
+  },
+  box: {
+    alignItems: 'center',
   },
 });
 

@@ -5,6 +5,7 @@ import {View, StyleSheet} from 'react-native';
 import ErrorMessage from '~/component/ErrorMessage';
 import TextInput from '~/component/TextInput';
 import Button from '~/component/Button';
+import theme from '~/utils/theme';
 
 const AddDeviceIdScreen = props => {
   const [deviceName, setDeviceName] = React.useState('');
@@ -45,7 +46,9 @@ const AddDeviceIdScreen = props => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 30,
+    flex: 1,
+    paddingHorizontal: 30,
+    backgroundColor: theme.lightGray,
   },
   form: {
     marginTop: 12,
