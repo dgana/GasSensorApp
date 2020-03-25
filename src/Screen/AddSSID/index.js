@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {View, StyleSheet, Alert} from 'react-native';
 
 import ErrorMessage from '~/component/ErrorMessage';
@@ -68,6 +68,7 @@ const AddSSIDScreen = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       <ErrorMessage
+        style={styles.marginHorizontal}
         errorMessage={errorMessage}
         setErrorMessage={setErrorMessage}
       />
@@ -82,7 +83,7 @@ const AddSSIDScreen = ({navigation, route}) => {
           onPressHide={setPasswordVisibility}
         />
         <Button
-          style={styles.button}
+          style={styles.marginHorizontal}
           onPress={onPressButton}
           text="Connect Device"
           isLoading={isLoading}
@@ -101,11 +102,14 @@ const styles = StyleSheet.create({
   form: {
     marginTop: 12,
   },
-  button: {
+  marginHorizontal: {
     marginHorizontal: 0,
   },
 });
 
-AddSSIDScreen.propTypes = {};
+AddSSIDScreen.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  route: PropTypes.object.isRequired,
+};
 
 export default AddSSIDScreen;

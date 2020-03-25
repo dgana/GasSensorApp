@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {View, StyleSheet, Alert} from 'react-native';
 
 import ErrorMessage from '~/component/ErrorMessage';
@@ -49,6 +49,7 @@ const AddDeviceIdScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ErrorMessage
+        style={styles.marginHorizontal}
         errorMessage={errorMessage}
         setErrorMessage={setErrorMessage}
       />
@@ -64,7 +65,7 @@ const AddDeviceIdScreen = ({navigation}) => {
           onChangeText={setDeviceId}
         />
         <Button
-          style={styles.button}
+          style={styles.marginHorizontal}
           onPress={onPressButton}
           text="Add Device"
           isLoading={isLoading}
@@ -83,11 +84,13 @@ const styles = StyleSheet.create({
   form: {
     marginTop: 12,
   },
-  button: {
+  marginHorizontal: {
     marginHorizontal: 0,
   },
 });
 
-AddDeviceIdScreen.propTypes = {};
+AddDeviceIdScreen.propTypes = {
+  navigation: PropTypes.object.isRequired,
+};
 
 export default AddDeviceIdScreen;

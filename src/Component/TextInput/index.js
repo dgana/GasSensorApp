@@ -17,16 +17,20 @@ const TextInputForm = ({
   isPassword,
   isHidden,
   onPressHide,
+  description,
+  ...restProps
 }) => {
   return (
     <View style={styles.marginBottom}>
       <Text style={styles.inputTitle}>{label}</Text>
+      {description && <Text style={styles.description}>{description}</Text>}
       <TextInput
         style={styles.input}
         value={value}
         onChangeText={onChangeText}
         autoCapitalize="none"
         secureTextEntry={isPassword && isHidden}
+        {...restProps}
       />
       {isPassword && (
         <TouchableOpacity
@@ -63,6 +67,11 @@ const styles = StyleSheet.create({
     fontSize: 10,
     textTransform: 'uppercase',
   },
+  description: {
+    marginTop: 6,
+    color: theme.gray,
+    fontSize: 9,
+  },
   input: {
     borderBottomColor: theme.gray,
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -84,7 +93,7 @@ const styles = StyleSheet.create({
 
 TextInputForm.propTypes = {
   label: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   onChangeText: PropTypes.func,
   isPassword: PropTypes.bool,
   isHidden: PropTypes.bool,

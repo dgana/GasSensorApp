@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Text, View, StyleSheet} from 'react-native';
 import theme from '~/utils/theme';
 
-const ErrorMessage = ({errorMessage, setErrorMessage}) => {
+const ErrorMessage = ({errorMessage, setErrorMessage, style}) => {
   React.useEffect(() => {
     if (errorMessage) {
       setTimeout(() => setErrorMessage(''), 6000);
@@ -11,7 +11,7 @@ const ErrorMessage = ({errorMessage, setErrorMessage}) => {
   }, [errorMessage, setErrorMessage]);
 
   return (
-    <View style={styles.errorMessage}>
+    <View style={[styles.errorMessage, style]}>
       {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
     </View>
   );
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
 ErrorMessage.propTypes = {
   errorMessage: PropTypes.string.isRequired,
   setErrorMessage: PropTypes.func,
+  style: PropTypes.object,
 };
 
 export default ErrorMessage;
