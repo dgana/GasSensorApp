@@ -10,11 +10,13 @@ const DUMMY_DATA = [
     name: 'Input Device ID',
     path: 'AddDeviceId',
     icon: 'format-list-bulleted-square',
+    disabled: false,
   },
   {
-    name: 'Scan Bluetooth Devices (BLE)',
+    name: 'Scan Bluetooth Devices (WIP)',
     path: 'AddBluetooth',
     icon: 'bluetooth-settings',
+    disabled: true,
   },
 ];
 
@@ -25,23 +27,19 @@ const AddDeviceScreen = ({navigation}) => {
         data={DUMMY_DATA}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => (
-          <RenderItem
-            navigation={navigation}
-            name={item.name}
-            path={item.path}
-            icon={item.icon}
-          />
+          <RenderItem navigation={navigation} {...item} />
         )}
       />
     </View>
   );
 };
 
-const RenderItem = ({name, path, icon, navigation}) => {
+const RenderItem = ({name, path, icon, disabled, navigation}) => {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate(path)}
-      style={styles.item}>
+      style={styles.item}
+      disabled={disabled}>
       <View style={styles.flexRow}>
         <Icon style={styles.icon} name={icon} size={24} color={theme.black} />
         <Text style={styles.text}>{name}</Text>
@@ -73,7 +71,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
   },
   text: {
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 6,
   },
   subtext: {
