@@ -56,11 +56,14 @@ const AddDeviceIdScreen = ({navigation}) => {
       <View style={styles.form}>
         <TextInput
           label="Device Name *"
+          placeholder="Sensor Lobby"
           value={deviceName}
           onChangeText={setDeviceName}
         />
         <TextInput
           label="Device ID *"
+          description="Device ID is printed on the device hardware"
+          placeholder="B7891-JU8KS-911LA-ADN11-1O9OP"
           value={deviceId}
           onChangeText={setDeviceId}
         />

@@ -73,9 +73,14 @@ const AddSSIDScreen = ({navigation, route}) => {
         setErrorMessage={setErrorMessage}
       />
       <View style={styles.form}>
-        <TextInput label="SSID *" value={ssid} onChangeText={setssid} />
         <TextInput
-          label="Password *"
+          label="WiFi SSID *"
+          description="WiFi name for the device network"
+          value={ssid}
+          onChangeText={setssid}
+        />
+        <TextInput
+          label="WiFi Password *"
           value={password}
           onChangeText={setPassword}
           isPassword
