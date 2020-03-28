@@ -43,7 +43,7 @@ const HomeScreen = ({navigation}) => {
   React.useEffect(() => {
     const registerNotificationIOS = async () => {
       try {
-        const granted = await messaging().registerForRemoteNotifications();
+        const granted = await messaging().registerDeviceForRemoteMessages();
         if (granted) {
           const fcmToken = await messaging().getToken();
           console.log('FCM TOKEN ', fcmToken);
