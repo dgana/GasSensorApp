@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     marginBottom: 26,
   },
   inputTitle: {
-    color: theme.gray,
+    color: theme.black,
     fontSize: 10,
     textTransform: 'uppercase',
   },

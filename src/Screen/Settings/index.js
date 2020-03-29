@@ -88,7 +88,7 @@ const Settings = ({route}) => {
       const userId = await getAsyncToken();
       database()
         .ref(`${userId}/${deviceId}`)
-        .update({limit: Number(limit), timeout: Number(time)});
+        .update({limit: Number(limit), timeout: Number(time), ssid, password});
     } catch (error) {
       console.log(error);
     }
@@ -141,15 +141,17 @@ const Settings = ({route}) => {
           keyboardType={'numeric'}
         />
         <TextInput
-          label="WiFi SSID  *"
+          label="Device WiFi SSID  *"
           value={ssid}
-          placeholder="Set WiFi SSID"
+          description="Set WiFi SSID of your device to connect"
+          placeholder="Device SSID"
           onChangeText={setSsid}
         />
         <TextInput
-          label="WiFi Password  *"
+          label="Device WiFi Password  *"
           value={password}
-          placeholder="Set device WiFi Password"
+          description="Set WiFi Password of your device to connect"
+          placeholder="Device password"
           onChangeText={setPassword}
           isPassword
           isHidden={hidePassword}

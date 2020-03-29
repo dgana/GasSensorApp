@@ -8,6 +8,7 @@ import Button from '~/component/Button';
 import theme from '~/utils/theme';
 import {useAsyncStorage} from '~/utils';
 import firestore from '@react-native-firebase/firestore';
+import database from '@react-native-firebase/database';
 
 const AddSSIDScreen = ({navigation, route}) => {
   const {deviceName, deviceId} = route.params;
@@ -23,7 +24,7 @@ const AddSSIDScreen = ({navigation, route}) => {
     setHidePassword(state => !state);
   };
 
-  const writeFirestore = async (name, pass) => {
+  const writeFirestore = async () => {
     try {
       const userId = await getAsyncToken();
       const device = await firestore()
@@ -38,8 +39,8 @@ const AddSSIDScreen = ({navigation, route}) => {
             ...x,
             config: {
               ...x.config,
-              ssid: name,
-              password: pass,
+              ssid,
+              password,
             },
           };
         } else {
@@ -56,10 +57,18 @@ const AddSSIDScreen = ({navigation, route}) => {
     }
   };
 
+  const writeDatabase = async () => {
+    const userId = await getAsyncToken();
+    await database()
+      .ref(`${userId}/${deviceId}`)
+      .update({ssid, password});
+  };
+
   const onPressButton = () => {
     if (ssid && password) {
       setIsLoading(true);
-      writeFirestore(ssid, password);
+      writeDatabase();
+      writeFirestore();
     } else {
       setErrorMessage('SSID and password is required');
     }

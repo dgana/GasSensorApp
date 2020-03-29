@@ -8,6 +8,9 @@ import Button from '~/component/Button';
 import theme from '~/utils/theme';
 import {useAsyncStorage} from '~/utils';
 import firestore from '@react-native-firebase/firestore';
+import database from '@react-native-firebase/database';
+
+const DEFAULT_CONFIG = {timeout: 5, limit: 1000};
 
 const AddDeviceIdScreen = ({navigation}) => {
   const [deviceName, setDeviceName] = React.useState('');
@@ -25,24 +28,75 @@ const AddDeviceIdScreen = ({navigation}) => {
       const getFields = await device.get();
       const currentDevices = getFields.get('devices');
 
-      const config = {timeout: 5, limit: 1000};
-      const devices = [...currentDevices, {name, id, config}];
+      const devices = [...currentDevices, {name, id, config: DEFAULT_CONFIG}];
 
       await device.update({devices});
-      setIsLoading(false);
-      Alert.alert(`Device ${name} added`);
+      Alert.alert(`Device id ${deviceId} added!`);
       navigation.navigate('AddSSID', {deviceName: name, deviceId: id});
     } catch (error) {
       console.log(error);
     }
   };
 
-  const onPressButton = () => {
+  const checkCurrentIdFromCurrentDevices = async () => {
+    try {
+      const userId = await getAsyncToken();
+      const getDevice = await database()
+        .ref(`${userId}/${deviceId}`)
+        .once('value');
+      if (getDevice.exists()) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
+  const checkUnregisteredDevice = async () => {
+    try {
+      const deviceRef = await database().ref(`unregisteredDevices/${deviceId}`);
+      const getValue = await deviceRef.once('value');
+      if (getValue.exists()) {
+        await writeDatabase();
+        await deviceRef.remove();
+        return true;
+      } else {
+        Alert.alert(`Device id ${deviceId} not found!`);
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
+  const writeDatabase = async () => {
+    const userId = await getAsyncToken();
+    await database()
+      .ref(`${userId}/${deviceId}`)
+      .set({PPM: 0, ...DEFAULT_CONFIG});
+  };
+
+  const onPressButton = async () => {
     if (deviceName && deviceId) {
       setIsLoading(true);
-      writeFirestore(deviceName, deviceId);
+      const isAdded = await checkCurrentIdFromCurrentDevices();
+      if (isAdded) {
+        Alert.alert(`Device id ${deviceId} already added!`);
+        navigation.navigate('AddSSID', {deviceName, deviceId});
+      } else {
+        const checkId = await checkUnregisteredDevice();
+        if (checkId) {
+          writeFirestore(deviceName, deviceId);
+        }
+      }
+      setIsLoading(false);
     } else {
       setErrorMessage('Device name and Device ID is required');
+      setIsLoading(false);
     }
   };
 
