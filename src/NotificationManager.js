@@ -66,7 +66,7 @@ class NotificationManager {
     };
   };
 
-  buildIOSNotification = (id, title, message, data = {}, options = {}) => {
+  buildIOSNotification = (id, data = {}, options = {}) => {
     return {
       alertAction: options.alertAction || 'view',
       category: options.category || '',
@@ -82,7 +82,7 @@ class NotificationManager {
       /* Android Only Properties */
       ...this.buildAndroidNotification(id, title, message, data, options),
       /* IOS Only Properties */
-      ...this.buildIOSNotification(id, title, message, data, options),
+      ...this.buildIOSNotification(id, data, options),
       /* IOS and Android Properties */
       title: title || '',
       message: message || '',

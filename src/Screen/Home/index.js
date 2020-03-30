@@ -36,9 +36,35 @@ const HomeScreen = ({navigation}) => {
     [setAsyncFCM, getAsyncToken],
   );
 
+  React.useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('onMessage ', remoteMessage);
+      const {
+        messageId,
+        data,
+        notification: {title, body, sound},
+      } = remoteMessage;
+      const options = {
+        playSound: true,
+        soundName: sound,
+        vibrate: true,
+      };
+      notificationManager.showNotification(
+        messageId,
+        title,
+        body,
+        data,
+        options,
+      );
+    });
+    return unsubscribe;
+  }, []);
+
   /**
    * Trigger iOS only device to register for remote
    * notification and save it to Firestore
+   * @see https://rnfb-docs.netlify.com/messaging/notifications#handling-interaction
+   * @see https://github.com/invertase/react-native-firebase/pull/3339
    */
   React.useEffect(() => {
     const registerNotificationIOS = async () => {
@@ -48,6 +74,14 @@ const HomeScreen = ({navigation}) => {
           const fcmToken = await messaging().getToken();
           console.log('FCM TOKEN ', fcmToken);
           writeFirestore(fcmToken);
+
+          messaging().onNotificationOpenedApp(async remoteMessage => {
+            console.log('onNotificationOpenedApp ', remoteMessage);
+            const {
+              data: {deviceName, deviceId},
+            } = remoteMessage;
+            navigation.navigate('Details', {deviceName, deviceId});
+          });
         }
       } catch (error) {
         console.log(error);
