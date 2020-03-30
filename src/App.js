@@ -17,6 +17,7 @@ import SignInScreen from '~/screen/SignIn';
 import SignUpScreen from '~/screen/SignUp';
 import AddDeviceScreen from '~/screen/AddDevice';
 import AddBluetoothScreen from '~/screen/AddBluetooth';
+import AddAccessPointScreen from '~/screen/AddAccessPoint';
 import AddDeviceIdScreen from '~/screen/AddDeviceId';
 import AddSSIDScreen from '~/screen/AddSSID';
 
@@ -351,6 +352,11 @@ const App = () => {
                 options={({route}) => ({
                   title: route.params.deviceName || 'Detail',
                 })}
+              />
+              <Stack.Screen
+                name="AddAccessPoint"
+                component={AddAccessPointScreen}
+                options={{title: 'Device Access Point'}}
               />
               <Stack.Screen
                 name="AddDeviceId"

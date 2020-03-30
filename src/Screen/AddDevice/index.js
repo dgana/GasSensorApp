@@ -7,10 +7,16 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const DUMMY_DATA = [
   {
-    name: 'Input Device ID',
+    name: 'Scan Device Access Point',
+    path: 'AddAccessPoint',
+    icon: 'wifi',
+    disabled: false,
+  },
+  {
+    name: 'Input Device ID (WIP)',
     path: 'AddDeviceId',
     icon: 'format-list-bulleted-square',
-    disabled: false,
+    disabled: true,
   },
   {
     name: 'Scan Bluetooth Devices (WIP)',
