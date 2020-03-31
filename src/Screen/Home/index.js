@@ -15,30 +15,38 @@ import {useAsyncStorage} from '~/utils';
 
 const Tab = createBottomTabNavigator();
 
+/**
+ * After user successfully log in goes to HomeScreen below
+ * Docs for firebase :
+ * @see https://github.com/invertase/react-native-firebase/pull/3339
+ */
 const HomeScreen = ({navigation}) => {
+  const [loading, setLoading] = React.useState(true);
   const {getItem: getAsyncToken} = useAsyncStorage('userToken');
   const {setItem: setAsyncFCM} = useAsyncStorage('fcmToken');
 
-  const writeFirestore = React.useCallback(
+  /**
+   * @see https://rnfb-docs.netlify.com/messaging/server-integration#saving-tokens
+   */
+  const saveTokenToFirestore = React.useCallback(
     async fcmToken => {
       await setAsyncFCM(fcmToken);
       const userId = await getAsyncToken();
-      const getUserDoc = await firestore()
+      await firestore()
         .collection('users')
-        .doc(userId);
-      const getFields = await getUserDoc.get();
-      const getPrevToken = await getFields.get('fcm_token');
-      if (!getPrevToken.includes(fcmToken)) {
-        const fcm_token = [...getPrevToken, fcmToken];
-        await getUserDoc.set({fcm_token}, {merge: true});
-      }
+        .doc(userId)
+        .update({fcm_token: firestore.FieldValue.arrayUnion(fcmToken)});
     },
     [setAsyncFCM, getAsyncToken],
   );
 
+  /**
+   * @see https://rnfb-docs.netlify.com/messaging/usage#message-handlers
+   * @see https://rnfb-docs.netlify.com/messaging/usage#foreground-state-messages
+   */
   React.useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('onMessage ', remoteMessage);
+      console.log('On receiving remote message in foreground ', remoteMessage);
       const {
         messageId,
         data,
@@ -61,10 +69,42 @@ const HomeScreen = ({navigation}) => {
   }, []);
 
   /**
+   * @see https://rnfb-docs.netlify.com/messaging/notifications#handling-interaction
+   */
+  React.useEffect(() => {
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage,
+      );
+      const {
+        data: {deviceName, deviceId},
+      } = remoteMessage;
+      navigation.navigate('Details', {deviceName, deviceId});
+    });
+
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage,
+          );
+          const {
+            data: {deviceName, deviceId},
+          } = remoteMessage;
+          navigation.navigate('Details', {deviceName, deviceId});
+        }
+        setLoading(false);
+      });
+  }, [navigation]);
+
+  /**
    * Trigger iOS only device to register for remote
    * notification and save it to Firestore
-   * @see https://rnfb-docs.netlify.com/messaging/notifications#handling-interaction
-   * @see https://github.com/invertase/react-native-firebase/pull/3339
+   * @see https://rnfb-docs.netlify.com/messaging/usage#registering-devices-with-fcm
    */
   React.useEffect(() => {
     const registerNotificationIOS = async () => {
@@ -73,15 +113,7 @@ const HomeScreen = ({navigation}) => {
         if (granted) {
           const fcmToken = await messaging().getToken();
           console.log('FCM TOKEN ', fcmToken);
-          writeFirestore(fcmToken);
-
-          messaging().onNotificationOpenedApp(async remoteMessage => {
-            console.log('onNotificationOpenedApp ', remoteMessage);
-            const {
-              data: {deviceName, deviceId},
-            } = remoteMessage;
-            navigation.navigate('Details', {deviceName, deviceId});
-          });
+          saveTokenToFirestore(fcmToken);
         }
       } catch (error) {
         console.log(error);
@@ -90,6 +122,13 @@ const HomeScreen = ({navigation}) => {
     if (Platform.OS === 'ios') {
       registerNotificationIOS();
     }
+    /**
+     * @see https://rnfb-docs.netlify.com/messaging/server-integration#saving-tokens
+     */
+    return () =>
+      messaging().onTokenRefresh(fcmToken => {
+        saveTokenToFirestore(fcmToken);
+      });
     // eslint-disable-next-line
   }, []);
 
@@ -106,10 +145,10 @@ const HomeScreen = ({navigation}) => {
   const onRegister = React.useCallback(
     token => {
       if (Platform.OS === 'android') {
-        writeFirestore(token);
+        saveTokenToFirestore(token);
       }
     },
-    [writeFirestore],
+    [saveTokenToFirestore],
   );
 
   const onNotification = notify => {
@@ -123,6 +162,10 @@ const HomeScreen = ({navigation}) => {
     } = notify;
     navigation.navigate('Details', {deviceName, deviceId});
   };
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <Tab.Navigator>

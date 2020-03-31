@@ -51,10 +51,20 @@ exports.sendNotification = functions.database
       },
     };
 
+    /**
+     * @see https://firebase.google.com/docs/reference/admin/node/admin.messaging.MessagingOptions
+     */
+    const options = {
+      contentAvailable: true,
+      priority: 'high',
+    };
+
     console.log('FCM Tokens ', fcm_token);
 
     // Send notification
-    const response = await admin.messaging().sendToDevice(fcm_token, payload);
+    const response = await admin
+      .messaging()
+      .sendToDevice(fcm_token, payload, options);
 
     console.log('Messaging send to device response ', response);
 

@@ -151,20 +151,24 @@ const App = () => {
                 const idUser = await getAsyncToken();
                 const fcmToken = await getAsyncFCM();
 
-                const getUserDoc = await firestore()
+                await firestore()
                   .collection('users')
-                  .doc(idUser);
-                const getFields = await getUserDoc.get();
-                const getPrevToken = await getFields.get('fcm_token');
-                const fcm_token = getPrevToken.filter(x => x !== fcmToken);
-                await getUserDoc.set({fcm_token}, {merge: true});
+                  .doc(idUser)
+                  .update({
+                    fcm_token: firestore.FieldValue.arrayRemove(fcmToken),
+                  });
+
+                try {
+                  const isGoogleSignIn = await GoogleSignin.isSignedIn();
+                  if (isGoogleSignIn) {
+                    await GoogleSignin.revokeAccess();
+                    await GoogleSignin.signOut();
+                  }
+                } catch (error) {
+                  console.log(error);
+                }
 
                 await clearStorage();
-                const isGoogleSignIn = await GoogleSignin.isSignedIn();
-                if (isGoogleSignIn) {
-                  await GoogleSignin.revokeAccess();
-                  await GoogleSignin.signOut();
-                }
                 dispatch({type: SIGN_OUT});
               },
             },
