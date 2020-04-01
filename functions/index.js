@@ -29,6 +29,8 @@ exports.sendNotification = functions.database
     const userData = await userPayload.data();
     const {fcm_token, name, devices} = userData;
 
+    console.log('FCM Tokens ', fcm_token);
+
     const device = devices.find(x => x.id === deviceId);
     const {name: deviceName, config} = device;
 
@@ -38,39 +40,58 @@ exports.sendNotification = functions.database
       return console.log('User', userId, 'Device', deviceId, 'PPM', ppmValue);
     }
 
+    const title = 'Methane Gas Detected';
     const body = `${name}, device ${deviceName} detected methane gas ${ppmValue} ppm`;
+    const priority = 'high';
+    const sound = 'alarm_frenzy.mp3';
 
-    // Notification details.
-    const payload = {
+    /**
+     * @see https://firebase.google.com/docs/reference/admin/node/admin.messaging.Messaging#send-multicast
+     */
+    const message = {
       data: {
         deviceName,
         deviceId,
       },
       notification: {
-        title: 'Methane Gas Detected',
-        sound: 'alarm_frenzy.mp3',
+        title,
         body,
       },
+      android: {
+        priority,
+        data: {
+          deviceName,
+          deviceId,
+        },
+        notification: {
+          title,
+          body,
+          sound,
+          priority,
+        },
+      },
+      apns: {
+        headers: {
+          'apns-push-type': 'alert',
+          'apns-priority': '10',
+        },
+        payload: {
+          aps: {
+            alert: {
+              title,
+              body,
+            },
+            contentAvailable: true,
+            sound,
+          },
+        },
+      },
+      tokens: fcm_token,
     };
 
-    /**
-     * @see https://github.com/FirebaseExtended/flutterfire/issues/1041#issuecomment-586320861
-     * @see https://firebase.google.com/docs/reference/admin/node/admin.messaging.MessagingOptions
-     */
-    const options = {
-      contentAvailable: true,
-      mutableContent: true,
-      priority: 'high',
-    };
+    const response = await admin.messaging().sendMulticast(message);
 
-    console.log('FCM Tokens ', fcm_token);
-
-    // Send notification
-    const response = await admin
-      .messaging()
-      .sendToDevice(fcm_token, payload, options);
-
-    console.log('Messaging send to device response ', response);
+    console.log('Messaging send multicast response ', JSON.stringify(response));
 
     return response;
   });
