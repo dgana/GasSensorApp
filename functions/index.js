@@ -24,6 +24,8 @@ exports.sendNotification = functions.database
       .doc(userId)
       .get();
 
+    console.log('PPM Value ', ppmValue);
+
     const userData = await userPayload.data();
     const {fcm_token, name, devices} = userData;
 
@@ -52,10 +54,12 @@ exports.sendNotification = functions.database
     };
 
     /**
+     * @see https://github.com/FirebaseExtended/flutterfire/issues/1041#issuecomment-586320861
      * @see https://firebase.google.com/docs/reference/admin/node/admin.messaging.MessagingOptions
      */
     const options = {
       contentAvailable: true,
+      mutableContent: true,
       priority: 'high',
     };
 

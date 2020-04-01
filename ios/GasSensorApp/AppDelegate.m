@@ -85,13 +85,4 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
   completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
 }
 
-// Called when a user taps on a notification in the foreground
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(nonnull void(^)(void))completionHandler
-{
-  NSMutableDictionary *userData = [NSMutableDictionary dictionaryWithDictionary:response.notification.request.content.userInfo];
-  [userData setObject:@(1) forKey:@"openedInForeground"];
-  [RNCPushNotificationIOS didReceiveRemoteNotification:userData];
-  completionHandler();
-}
-
 @end

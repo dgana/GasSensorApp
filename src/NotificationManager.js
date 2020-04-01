@@ -14,10 +14,8 @@ class NotificationManager {
       onNotification: function(notification) {
         console.log('[NotificationManager] onNotification:', notification);
 
-        if (Platform.OS === 'ios') {
-          if (notification.data.openedInForeground) {
-            notification.userInteraction = true;
-          }
+        if (Platform.OS === 'android') {
+          notification.userInteraction = true;
         }
 
         if (notification.userInteraction) {
@@ -26,17 +24,9 @@ class NotificationManager {
           onNotification(notification);
         }
 
-        if (Platform.OS === 'android') {
-          notification.userInteraction = true;
-        }
-
-        // Only call callback if not from foreground
+        // Only call finish callback from iOS
         if (Platform.OS === 'ios') {
-          if (!notification.data.openedInForeground) {
-            notification.finish(PushNotificationIOS.FetchResult.NoData);
-          }
-        } else {
-          notification.finish(PushNotificationIOS.FetchResult.NoData);
+          notification.finish(PushNotificationIOS.FetchResult.NewData);
         }
       },
       permissions: {
