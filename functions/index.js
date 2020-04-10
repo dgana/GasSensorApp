@@ -47,6 +47,7 @@ exports.sendNotification = functions.database
 
     /**
      * @see https://firebase.google.com/docs/reference/admin/node/admin.messaging.Messaging#send-multicast
+     * @see https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/sending_notification_requests_to_apns/
      */
     const message = {
       data: {
@@ -72,8 +73,10 @@ exports.sendNotification = functions.database
       },
       apns: {
         headers: {
+          method: 'POST',
           'apns-push-type': 'alert',
           'apns-priority': '10',
+          'apns-topic': 'GasSensorApp',
         },
         payload: {
           aps: {
@@ -81,7 +84,6 @@ exports.sendNotification = functions.database
               title,
               body,
             },
-            contentAvailable: true,
             sound,
           },
         },

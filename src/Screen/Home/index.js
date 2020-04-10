@@ -26,6 +26,7 @@ const HomeScreen = ({navigation}) => {
   const {setItem: setAsyncFCM} = useAsyncStorage('fcmToken');
 
   /**
+   * Save FCM Token to firestore
    * @see https://rnfb-docs.netlify.com/messaging/server-integration#saving-tokens
    */
   const saveTokenToFirestore = React.useCallback(
@@ -41,6 +42,7 @@ const HomeScreen = ({navigation}) => {
   );
 
   /**
+   * Notification received in foreground will call this method
    * @see https://rnfb-docs.netlify.com/messaging/usage#message-handlers
    * @see https://rnfb-docs.netlify.com/messaging/usage#foreground-state-messages
    */
@@ -69,6 +71,7 @@ const HomeScreen = ({navigation}) => {
   }, []);
 
   /**
+   * Method will trigger when user taps the notification
    * @see https://rnfb-docs.netlify.com/messaging/notifications#handling-interaction
    */
   React.useEffect(() => {
@@ -102,14 +105,19 @@ const HomeScreen = ({navigation}) => {
   }, [navigation]);
 
   /**
-   * Trigger iOS only device to register for remote
-   * notification and save it to Firestore
+   * Trigger iOS only device to register for remote notification and save it to Firestore
    * @see https://rnfb-docs.netlify.com/messaging/usage#registering-devices-with-fcm
    */
   React.useEffect(() => {
     const registerNotificationIOS = async () => {
       try {
+        const settings = await messaging().requestPermission();
         const granted = await messaging().registerDeviceForRemoteMessages();
+
+        if (settings) {
+          console.log('Permission settings:', settings);
+        }
+
         if (granted) {
           const fcmToken = await messaging().getToken();
           console.log('FCM TOKEN ', fcmToken);

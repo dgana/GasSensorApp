@@ -540,25 +540,26 @@ PODS:
     - React
   - RNCPushNotificationIOS (1.1.0):
     - React
-  - RNFBApp (6.4.0-rc4):
+  - RNFBApp (6.4.0):
     - Firebase/Core (~> 6.13.0)
     - React
-  - RNFBAuth (6.4.0-rc4):
+  - RNFBAuth (6.4.0):
     - Firebase/Auth (~> 6.13.0)
     - Firebase/Core (~> 6.13.0)
     - React
     - RNFBApp
-  - RNFBDatabase (6.4.0-rc4):
+  - RNFBDatabase (6.4.0):
     - Firebase/Core (~> 6.13.0)
     - Firebase/Database (~> 6.13.0)
     - React
     - RNFBApp
-  - RNFBFirestore (6.4.0-rc4):
+  - RNFBFirestore (6.4.0):
     - Firebase/Core (~> 6.13.0)
     - Firebase/Firestore (~> 6.13.0)
     - React
     - RNFBApp
-  - RNFBMessaging (6.4.0-rc4):
+  - RNFBMessaging (6.4.0):
+    - Firebase/Core (~> 6.13.0)
     - Firebase/Messaging (~> 6.13.0)
     - React
     - RNFBApp
@@ -814,11 +815,11 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: e0dd7c8a36543b4ef84969acd9f8aceba3a92dc2
   RNCMaskedView: 76c40a1d41c3e2535df09246a2b5487f04de0814
   RNCPushNotificationIOS: ec3e8c17cda6a92a0bb97a53ec5ecf5771d94d21
-  RNFBApp: 59fc2bc4bfca503fbb6159d7a66223680a91cc12
-  RNFBAuth: 6b30742f2758cfb94e0f3520efb7b9825a2176b4
-  RNFBDatabase: db50d29de158b00069dc68c9d905bde337935848
-  RNFBFirestore: 12d0a46be10da8c6205598634367b1c8df035c5a
-  RNFBMessaging: 0947a8aebb4a2125ff548e6cb058816f562545ca
+  RNFBApp: 69781cf10ce41f6f6db789e6264dd80119ef2fb7
+  RNFBAuth: 50fcc7826344dc96caad8bc4f5b40a64904297b8
+  RNFBDatabase: 393536c2bd82bd11de82795c2d5893f04d5bf587
+  RNFBFirestore: 69e59e5266927857fa3629715111ee65f4de1cd0
+  RNFBMessaging: 805710731a2b616030514f6f416e8787de521f41
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNGoogleSignin: a00f87261ea13df9a5cea8deafa6927d6f2c3562
   RNPermissions: 1008d3511fee0e25739cf81c4af0d1b2248f1053
