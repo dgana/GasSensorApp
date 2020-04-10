@@ -43,15 +43,6 @@
   return YES;
 }
 
-- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
-{
-#if DEBUG
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-#else
-  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-#endif
-}
-
 // Required to register for notifications
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
@@ -82,6 +73,15 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
 {
   completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
+}
+
+- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
+{
+#if DEBUG
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+#else
+  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+#endif
 }
 
 @end
