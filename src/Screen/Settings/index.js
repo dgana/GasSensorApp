@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import PropTypes from 'prop-types';
-import {View, StyleSheet, Alert} from 'react-native';
+import {View, StyleSheet, Alert, ScrollView} from 'react-native';
 import ErrorMessage from '~/component/ErrorMessage';
 import TextInput from '~/component/TextInput';
 import Button from '~/component/Button';
@@ -18,10 +18,7 @@ const Settings = ({route}) => {
   const [name, setName] = React.useState('');
   const [limit, setLimit] = React.useState('');
   const [time, setTime] = React.useState('');
-  const [ssid, setSsid] = React.useState('');
-  const [password, setPassword] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
-  const [hidePassword, setHidePassword] = React.useState(true);
 
   React.useEffect(() => {
     readFirestore();
@@ -40,8 +37,6 @@ const Settings = ({route}) => {
       setName(deviceName);
       setLimit(String(config.limit));
       setTime(String(config.timeout));
-      setSsid(config.ssid);
-      setPassword(config.password);
     } catch (error) {
       console.log(error);
     }
@@ -66,8 +61,6 @@ const Settings = ({route}) => {
               ...x.config,
               timeout: Number(time),
               limit: Number(limit),
-              ssid,
-              password,
             },
           };
         } else {
@@ -88,18 +81,14 @@ const Settings = ({route}) => {
       const userId = await getAsyncToken();
       database()
         .ref(`${userId}/${deviceId}`)
-        .update({limit: Number(limit), timeout: Number(time), ssid, password});
+        .update({limit: Number(limit), timeout: Number(time)});
     } catch (error) {
       console.log(error);
     }
   };
 
-  const setPasswordVisibility = () => {
-    setHidePassword(state => !state);
-  };
-
   const onPressButton = () => {
-    if (limit && time && name && ssid && password) {
+    if (limit && time && name) {
       setIsLoading(true);
       writeFirestore();
       writeDatabase();
@@ -111,7 +100,7 @@ const Settings = ({route}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <ErrorMessage
         style={styles.marginHorizontal}
         errorMessage={errorMessage}
@@ -140,23 +129,6 @@ const Settings = ({route}) => {
           onChangeText={setTime}
           keyboardType={'numeric'}
         />
-        <TextInput
-          label="Device WiFi SSID  *"
-          value={ssid}
-          description="Set WiFi SSID of your device to connect"
-          placeholder="Device SSID"
-          onChangeText={setSsid}
-        />
-        <TextInput
-          label="Device WiFi Password  *"
-          value={password}
-          description="Set WiFi Password of your device to connect"
-          placeholder="Device password"
-          onChangeText={setPassword}
-          isPassword
-          isHidden={hidePassword}
-          onPressHide={setPasswordVisibility}
-        />
         <Button
           style={styles.marginHorizontal}
           onPress={onPressButton}
@@ -164,7 +136,7 @@ const Settings = ({route}) => {
           isLoading={isLoading}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

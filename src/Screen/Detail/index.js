@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import GaugeMeter from '~/screen/GaugeMeter';
-import Chart from '~/screen/Chart';
+// import Chart from '~/screen/Chart';
 import Settings from '~/screen/Settings';
 
 const Tab = createBottomTabNavigator();
@@ -23,7 +23,7 @@ const DetailScreen = ({route}) => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Chart"
         component={Chart}
         initialParams={route.params}
@@ -33,7 +33,7 @@ const DetailScreen = ({route}) => {
             <Icon name="chart-line" color={color} size={size} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Settings"
         component={Settings}

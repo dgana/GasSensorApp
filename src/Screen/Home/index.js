@@ -165,9 +165,7 @@ const HomeScreen = ({navigation}) => {
 
   const onOpenNotification = notify => {
     console.log('[Notification] onOpenNotification ', notify);
-    const {
-      data: {deviceName, deviceId},
-    } = notify;
+    const {deviceName, deviceId} = notify;
     navigation.navigate('Details', {deviceName, deviceId});
   };
 
