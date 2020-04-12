@@ -18,7 +18,7 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* GasSensorAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* GasSensorAppTests.m */; };
 		455B3EBA2424BF7F0011A6C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 455B3EB92424BF7F0011A6C0 /* GoogleService-Info.plist */; };
-		45A7707B2443045600D08BDF /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A7707A2443045600D08BDF /* File.swift */; };
+		457FB4AB244331780090894A /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457FB4AA244331780090894A /* File.swift */; };
 		45ED0083241FFFEB00FD988A /* alarm_frenzy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 45ED0082241FFDD200FD988A /* alarm_frenzy.mp3 */; };
 		5E4F5D59DE724D27A043AC21 /* libPods-GasSensorApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BC21D7A0EEDB972D4487B7 /* libPods-GasSensorApp.a */; };
 		A5BC245688349EF2FD8E4099 /* libPods-GasSensorApp-GasSensorAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFCE22F62D5A7041166532E3 /* libPods-GasSensorApp-GasSensorAppTests.a */; };
@@ -61,8 +61,8 @@
 		2D02E47B1E0B4A5D006451C7 /* GasSensorApp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GasSensorApp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* GasSensorApp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GasSensorApp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		455B3EB92424BF7F0011A6C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		457FB4AA244331780090894A /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		45A770792443045600D08BDF /* GasSensorApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GasSensorApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		45A7707A2443045600D08BDF /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = File.swift; path = ../File.swift; sourceTree = "<group>"; };
 		45BE6DBE2426562800D1D572 /* GasSensorApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = GasSensorApp.entitlements; path = GasSensorApp/GasSensorApp.entitlements; sourceTree = "<group>"; };
 		45ED0082241FFDD200FD988A /* alarm_frenzy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = alarm_frenzy.mp3; path = ../../src/assets/sounds/alarm_frenzy.mp3; sourceTree = "<group>"; };
 		5ADB2CC2889992C89D9BCBC6 /* Pods-GasSensorApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GasSensorApp.debug.xcconfig"; path = "Target Support Files/Pods-GasSensorApp/Pods-GasSensorApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -150,7 +150,7 @@
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
-				45A7707A2443045600D08BDF /* File.swift */,
+				457FB4AA244331780090894A /* File.swift */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
@@ -692,7 +692,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				45A7707B2443045600D08BDF /* File.swift in Sources */,
+				457FB4AB244331780090894A /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -807,7 +807,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 487SV8K524;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = GasSensorApp/Info.plist;
