@@ -9,18 +9,30 @@ const useRealtimeDatabase = deviceId => {
   const {getItem} = useAsyncStorage('userToken');
 
   React.useEffect(() => {
+    let isCancelled = false;
+
     const callDatabase = async () => {
-      const userId = await getItem();
-      await database()
-        .ref(`${userId}/${deviceId}`)
-        .on('value', function(snapshot) {
-          const value = snapshot.val();
-          if (value) {
-            setData({PPM: value.PPM, limit: value.limit});
-          }
-        });
+      try {
+        const userId = await getItem();
+        await database()
+          .ref(`${userId}/${deviceId}`)
+          .on('value', function(snapshot) {
+            const value = snapshot.val();
+            if (value) {
+              setData({PPM: value.PPM, limit: value.limit});
+            }
+          });
+      } catch (e) {
+        if (!isCancelled) {
+          throw e;
+        }
+      }
     };
     callDatabase();
+
+    return () => {
+      isCancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

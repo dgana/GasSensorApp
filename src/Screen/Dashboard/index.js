@@ -20,17 +20,29 @@ const DashboardScreen = ({navigation}) => {
   const {getItem} = useAsyncStorage('userToken');
 
   React.useEffect(() => {
+    let isCancelled = false;
+
     const callUserDevices = async () => {
-      const userId = await getItem();
-      const userPayload = await firestore()
-        .collection('users')
-        .doc(userId)
-        .get();
-      const getDevices = await userPayload.get('devices');
-      setData(getDevices);
-      setIsLoading(false);
+      try {
+        const userId = await getItem();
+        const userPayload = await firestore()
+          .collection('users')
+          .doc(userId)
+          .get();
+        const getDevices = await userPayload.get('devices');
+        setData(getDevices);
+        setIsLoading(false);
+      } catch (e) {
+        if (!isCancelled) {
+          throw e;
+        }
+      }
     };
     callUserDevices();
+
+    return () => {
+      isCancelled = true;
+    };
   }, [getItem, setData]);
 
   const loadingStyle = isLoading
