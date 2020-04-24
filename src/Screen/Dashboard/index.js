@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   badge: {
-    width: 46,
+    width: 50,
     marginTop: 6,
     paddingVertical: 3,
     paddingHorizontal: 6,
