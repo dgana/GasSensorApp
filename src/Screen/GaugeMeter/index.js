@@ -4,30 +4,34 @@ import {View, Text, StyleSheet} from 'react-native';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import {useRealtimeDatabase} from '~/hooks';
 
-const MAX_POINTS = 5000;
+const ADDED_MAX_POINTS_PERCENTAGE = 0.5;
 
 const GaugeMeterScreen = ({route}) => {
   const {
     params: {deviceId},
   } = route;
-  const {PPM, color} = useRealtimeDatabase(deviceId);
+  const {PPM, limit, color} = useRealtimeDatabase(deviceId);
+  const MAX_POINTS = limit * ADDED_MAX_POINTS_PERCENTAGE + limit;
   const fill = (PPM / MAX_POINTS) * 100;
 
   return (
     <View style={styles.container}>
       <AnimatedCircularProgress
-        size={240}
-        width={30}
+        size={260}
+        width={32}
         backgroundWidth={24}
         fill={fill}
         tintColor={color}
         backgroundColor="#3d5875">
         {x => (
           <>
-            <Text style={styles.points}>
-              {Math.round((MAX_POINTS * x) / 100)}
-            </Text>
-            <Text style={styles.unit}>ppm</Text>
+            <View style={styles.wrapText}>
+              <Text style={styles.points}>
+                {Math.round((MAX_POINTS * x) / 100)}
+              </Text>
+              <Text style={styles.unit}> ppm</Text>
+            </View>
+            <Text style={styles.subpoints}>limit : {limit} ppm</Text>
           </>
         )}
       </AnimatedCircularProgress>
@@ -45,7 +49,7 @@ const styles = StyleSheet.create({
   },
   points: {
     color: '#7591af',
-    fontSize: 50,
+    fontSize: 46,
     fontWeight: '100',
   },
   unit: {
@@ -53,6 +57,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#7591af',
     fontSize: 16,
+    lineHeight: 56,
+    marginLeft: 2,
+  },
+  subpoints: {
+    color: '#7591af',
+    fontSize: 12,
+    fontWeight: '300',
+    marginTop: 8,
+  },
+  wrapText: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
 });
 

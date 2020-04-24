@@ -4,8 +4,8 @@ import {useAsyncStorage} from '~/utils';
 import theme from '~/utils/theme';
 
 const useRealtimeDatabase = deviceId => {
-  const [data, setData] = React.useState({PPM: 0, limit: 0});
-  const {PPM, limit} = data;
+  const [data, setData] = React.useState({PPM: 0, limit: 1, timeout: 1});
+  const {PPM, limit, timeout} = data;
   const {getItem} = useAsyncStorage('userToken');
 
   React.useEffect(() => {
@@ -19,7 +19,8 @@ const useRealtimeDatabase = deviceId => {
           .on('value', function(snapshot) {
             const value = snapshot.val();
             if (value) {
-              setData({PPM: value.PPM, limit: value.limit});
+              const {PPM: ppm, limit: lim, timeout: tim} = value;
+              setData({PPM: ppm, limit: lim, timeout: tim});
             }
           });
       } catch (e) {
@@ -37,7 +38,7 @@ const useRealtimeDatabase = deviceId => {
   }, []);
 
   const color = PPM > limit ? theme.danger : theme.success;
-  return {PPM, color};
+  return {PPM, limit, timeout, color};
 };
 
 export default useRealtimeDatabase;
