@@ -17,6 +17,7 @@ exports.sendNotification = functions.database
     const userId = context.params.userId;
     const deviceId = context.params.deviceId;
     const ppmValue = change.after.val();
+    const prevPPM = change.before.val();
 
     const userPayload = await admin
       .firestore()
@@ -35,6 +36,10 @@ exports.sendNotification = functions.database
     const {name: deviceName, config} = device;
 
     console.log('Firestore Device ', device);
+
+    if (prevPPM > config.limit && ppmValue > config.limit) {
+      return console.log('Hold notification ', prevPPM, ppmValue, config.limit);
+    }
 
     if (ppmValue < config.limit) {
       return console.log('User', userId, 'Device', deviceId, 'PPM', ppmValue);
